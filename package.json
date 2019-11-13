@@ -1,0 +1,16 @@
+{
+  "name": "tg2",
+  "version": "1.0.0",
+  "description": "terrain gen 2",
+  "main": "app.js",
+  "scripts": {
+    "test": "exit 1",
+    "start": "node app.js"
+  },
+  "author": "eric",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}

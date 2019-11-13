@@ -1,0 +1,25 @@
+Things to Add to Terrain Gen 2; sorted by easiest to hardest
+A button that lets you change the initial upgrade level of a building -> 15 lines
+Fallowing Farms in Different Seasons -> 15 lines
+AI Nobles (& Factions in General) -> potentially easy since bots are functioning (still 100+ lines)
+Polished Siege -> 75-125 lines
+Dock/Boats -> 150+ lines
+Castles & Keeps (& Outposts[?] - maybe not part of any zones[?]) -> 150+ lines
+Cultures & Technology
+Country management aspects rather than just city management
+//Boats transporting goods
+Boats transporting units
+
+//Army Reworks:
+-Add follow feature for armies so that they can follow allied armies/pursue enemy armies (noble levies will autofollow your units or else just patrol)
+
+-Add patroling for armies (patroling armies will autofollow enemies within 2 tiles)
+
+-Add optional autocharge for cavalry/maybe infantry
+
+-Add supply wagons which carry food & can be raided
+
+-Add castles which units can drop food off at and would have to be sieged
+	Castles: Consist of a keep, a set of walls, and whatever buildings are built within the walls
+	A castle is not considered finished until it is fully walled, but has no max size.
+	Instead, the castle will cost gold per tile of its size (no gigacastles u apes)
