@@ -1,8 +1,12 @@
 body {
 	height: 100vh;
+	overflow-y:hidden;
 }
-
-
+h1{
+	color: white;
+}
 .row div{
-	border: 2px black solid;
+	padding: 0px;
+	border: 0px black solid;
+	background-color: rgb(41,49,52);
 }
