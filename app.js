@@ -25,6 +25,12 @@
 		} else if (pathname == "/public/AI.js") {
 			draw = fs.readFileSync("AI.js", "utf8");
 			response.write(draw);
+		} else if (pathname == "/public/style.css") {
+			draw = fs.readFileSync("style.css", "utf8");
+			response.write(draw);
+		} else if (pathname == "/public/handler.js") {
+			draw = fs.readFileSync("handler.js", "utf8");
+			response.write(draw);
 		}
 		response.end();
 	});
@@ -51,7 +57,7 @@
 	var navies = [];
 	var colors = ["#e6194b", "#1E90FF","#ffe119","#f58231","#911eb4","#46f0f0","#f032e6","#d2f53c","#fabebe","#aa6e28","#fffac8","#800000","#aaffc3","#ffd8b1"];
 	colors = shuffle(colors);
-	const MAPSIZE = 432;
+	const MAPSIZE = 150;
 	const MODI = MAPSIZE/1500;
 	var map = new Array(MAPSIZE);
 	var day = 0;
