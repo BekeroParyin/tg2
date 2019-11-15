@@ -1,12 +1,9 @@
 body {
 	height: 100vh;
-	overflow-y:hidden;
 }
-h1{
-	color: white;
-}
+
+
 .row div{
-<<<<<<< HEAD
 	background: gray;
 }
 
@@ -24,9 +21,4 @@ h1{
 
 .active {
 	background-color: red !important; 
-=======
-	padding: 0px;
-	border: 0px black solid;
-	background-color: rgb(41,49,52);
->>>>>>> master
 }
