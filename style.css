@@ -4,21 +4,5 @@ body {
 
 
 .row div{
-	background: gray;
-}
-
-#body {
-	background: white;
-}
-
-.nav-link {
-	color: white;
-}
-
-.nav-link:hover {
-	color:red;
-}
-
-.active {
-	background-color: red !important; 
+	border: 2px black solid;
 }
