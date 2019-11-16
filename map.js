@@ -121,12 +121,11 @@
 							}
 						}
 					}
-					if(map[i][j].type == 'f' && map[i][j].elevation == 0){ map[i][j].type = 'w'; }
+					if(map[i][j].type == 'f' && map[i][j].elevation <= 0){ map[i][j].type = 'w'; }
 				}
 			}
 			slap(50, 's', 'g', 2, 3);
 			console.log("Everything Else Completed");
-			
 		}
 		function forest(treeCount, forestsNumber){
 			var arbs = treeCount;
