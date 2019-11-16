@@ -648,10 +648,10 @@ var MAPSIZE = 1000;
 				let bSS = map[safeC(tileSelected[0])][safeC(tileSelected[1])].building;
 				let b0 = bSS[0]; let b1 = bSS[1];
 				if(map[safeC(tileSelected[0])][safeC(tileSelected[1])].owner == p.turn && b0 == 0 && b1 == 8){
-					drawRightBar(0);
+//					drawRightBar(0);
 				}
 			}
-			drawMenus();
+//			drawMenus();
 		});
 		c.addEventListener("scroll", function(){
 			if(this.oldScroll > this.scrollY){
@@ -670,8 +670,8 @@ var MAPSIZE = 1000;
 		});
 		document.addEventListener('keydown', mapV);
 		c.addEventListener('mousedown', handleMapClick);
-		r.addEventListener('mousedown', drawRightBar);
-		l.addEventListener('mousedown', drawLeftBar);
+//		r.addEventListener('mousedown', drawRightBar);
+//		l.addEventListener('mousedown', drawLeftBar);
 		setInterval(function(){
 			if(start){
 				t++;
@@ -712,9 +712,9 @@ var MAPSIZE = 1000;
 			}
 			if(delta){
 				if(!p.appraising){
-					drawRightBar(0);
+//					drawRightBar(0);
 				}
-				drawLeftBar(0);
+//				drawLeftBar(0);
 				delta = false;
 			}
 		}, 8);
