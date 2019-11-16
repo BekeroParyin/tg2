@@ -10,3 +10,6 @@ h1{
 	border: 0px black solid;
 	background-color: rgb(41,49,52);
 }
+.col-md-2half {
+	width: 20.83333%;
+}
