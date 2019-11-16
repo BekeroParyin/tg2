@@ -57,7 +57,7 @@
 	var navies = [];
 	var colors = ["#5B6C44", "#d2f53c", "#46f0f0", "#f58231", "#C336D8", "#79CFF4", "#800000", "#ACAE3A", "#aa6e28", "#EBDF6C", "#aaffc3", "#980632", "#e6194b", "#ffe119", "#F2A2CB", "#fabebe", "#fffac8", "#ffd8b1", "#1E90FF","#1A3F6A", "#3BA073", "#f032e6", "#7C73A5", "#34D3C1", "#911eb4", "#0B0477"];
 	colors = shuffle(colors);
-	const MAPSIZE = 150;
+	const MAPSIZE = 462;
 	const MODI = MAPSIZE/1500;
 	var map = new Array(MAPSIZE);
 	var day = 0;
