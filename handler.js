@@ -8,7 +8,7 @@ var MAPSIZE = 1000;
 		var start = false; var mapLoaded = false;
 		var view = 1;
 		var drawCoasts = false;
-		var tileSelected = [];
+		var tS = [];
 		var establishing = false;
 		var p = new Player();
 		p.manpower = 100;
@@ -240,8 +240,8 @@ var MAPSIZE = 1000;
 		}
 		function clear(e, y1, x1){
 			var x, y;
-			var tY = tileSelected[0];
-			var tX = tileSelected[1];
+			var tY = tS[0];
+			var tX = tS[1];
 			if(e == 0){
 				x = x1; y = y1;
 			}
@@ -249,8 +249,8 @@ var MAPSIZE = 1000;
 				x = safeC(p.xView + Math.floor((e.clientX - c.getBoundingClientRect().x)/(p.zoom)));
 				y = safeC(p.yView + Math.floor((e.clientY - c.getBoundingClientRect().y)/(p.zoom)));
 			}
-			tileSelected[0] = y;
-			tileSelected[1] = x;
+			tS[0] = y;
+			tS[1] = x;
 			if(e.type == "mousemove" || e == 0){
 				if(map[y][x].zone > -1 && map[y][x].owner == p.turn && map[y][x].type == 'f'){
 					if(p.manpower >= 3){
@@ -290,8 +290,8 @@ var MAPSIZE = 1000;
 		}
 		function build(e, y1, x1){
 			var x, y;
-			var tY = tileSelected[0];
-			var tX = tileSelected[1];
+			var tY = tS[0];
+			var tX = tS[1];
 			if(e == 0){
 				x = x1; y = y1;
 			}
@@ -299,8 +299,8 @@ var MAPSIZE = 1000;
 				x = safeC(p.xView + Math.floor((e.clientX - c.getBoundingClientRect().x)/(p.zoom)));
 				y = safeC(p.yView + Math.floor((e.clientY - c.getBoundingClientRect().y)/(p.zoom)));
 			}
-			tileSelected[0] = y;
-			tileSelected[1] = x;
+			tS[0] = y;
+			tS[1] = x;
 			drawTile(y, x);
 			if(e.type == "mousemove" || e == 0){
 				if(canBuy(y, x, p.menView[1][0], p.menView[1][1], p)){
@@ -365,8 +365,8 @@ var MAPSIZE = 1000;
 		function move(y1, x1){
 			var x=x1;
 			var y=y1;
-			var tY = tileSelected[0];
-			var tX = tileSelected[1];
+			var tY = tS[0];
+			var tX = tS[1];
 			if((map[y][x].elevation > 0 && map[y][x].elevation < .85 && map[y][x].pass > -1) || map[y][x].building[0] == 4){
 				let pa = p.armies[p.following];
 				var pY = p.armies[p.following].y;
@@ -389,8 +389,8 @@ var MAPSIZE = 1000;
 		function nMove(y1, x1){
 			var x=x1;
 			var y=y1;
-			var tY = tileSelected[0];
-			var tX = tileSelected[1];
+			var tY = tS[0];
+			var tX = tS[1];
 			if(map[y][x].elevation <= 0){
 				for(let i = 0; i < p.navies[p.nFollowing].path.length; i++){
 					drawTile(p.navies[p.nFollowing].path[i][0], p.navies[p.nFollowing].path[i][1]);
@@ -408,8 +408,8 @@ var MAPSIZE = 1000;
 		}
 		function claim(e, y1, x1){
 			var x, y;
-			var tY = tileSelected[0];
-			var tX = tileSelected[1];
+			var tY = tS[0];
+			var tX = tS[1];
 			if(e == 0){
 				x = x1; y = y1;
 			}
@@ -417,8 +417,8 @@ var MAPSIZE = 1000;
 				x = safeC(p.xView + Math.floor((e.clientX - c.getBoundingClientRect().x)/(p.zoom)));
 				y = safeC(p.yView + Math.floor((e.clientY - c.getBoundingClientRect().y)/(p.zoom)));
 			}
-			tileSelected[0] = y;
-			tileSelected[1] = x;
+			tS[0] = y;
+			tS[1] = x;
 			drawTile(y, x);
 			if(e.type == "mousemove" || e == 0){
 				var canClaim = p.size == 0 && map[y][x].army == -1 && map[y][x].elevation > 0 && map[y][x].owner == -1 && map[y][x].type != 'm';
@@ -488,11 +488,11 @@ var MAPSIZE = 1000;
 				if(x >= 0 && y >= 0 && x < e.clientX < c.width && e.clientY < c.height){
 					var tY = y;
 					var tX = x;
-					if(tileSelected.length == 2){
-						tY = tileSelected[0];
-						tX = tileSelected[1];
+					if(tS.length == 2){
+						tY = tS[0];
+						tX = tS[1];
 					}
-					tileSelected = [y, x];
+					tS = [y, x];
 					drawTile(y, x);
 					if(tY != y || tX != x){
 						drawTile(tY, tX);
@@ -624,6 +624,33 @@ var MAPSIZE = 1000;
 							p.action = "claiming";
 						}
 					}
+					$('#building-select').hide();
+					$('#building-upgrade').hide();
+					$('#building-special').hide();
+					$('#nothing').hide();
+					let specialIDs = ["Dock", "Manor", "Market"];
+					if(tS.length == 2 && tS[0] > -1){
+						let t = map[tS[0]][tS[1]];
+						if(t.owner == p.turn){
+							if(t.building[0] == -1){
+								$('#building-select').show();
+							}
+							else if(t.building[0] != 3){
+								if(t.building[0] == 2 || specialIDs.indexOf(buildings[t.building[0]][t.building[1]].name) != -1){
+									$('#building-special').show();
+								}
+								else{
+									$('#building-upgrade').show();
+								}
+							}
+						}
+						else{
+							$('#nothing').show();
+						}
+					}
+					else{
+						$('#nothing').show();
+					}
 				}
 			}
 		}
@@ -644,10 +671,10 @@ var MAPSIZE = 1000;
 			if(day %10 == 0){
 				drawDelta = true;
 			}
-			if(tileSelected.length > 0){
-				let bSS = map[safeC(tileSelected[0])][safeC(tileSelected[1])].building;
+			if(tS.length > 0){
+				let bSS = map[safeC(tS[0])][safeC(tS[1])].building;
 				let b0 = bSS[0]; let b1 = bSS[1];
-				if(map[safeC(tileSelected[0])][safeC(tileSelected[1])].owner == p.turn && b0 == 0 && b1 == 8){
+				if(map[safeC(tS[0])][safeC(tS[1])].owner == p.turn && b0 == 0 && b1 == 8){
 //					drawRightBar(0);
 				}
 			}

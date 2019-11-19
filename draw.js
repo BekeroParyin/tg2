@@ -416,7 +416,7 @@ function drawTile(y1, x1){
 			ctx.stroke();
 			ctx.lineWidth = 1;
 		}
-		if(y == tileSelected[0] && x == tileSelected[1]){ 
+		if(y == tS[0] && x == tS[1]){ 
 			ctx.strokeStyle = "gold"; 
 			ctx.strokeRect(Math.floor(dX * p.zoom)+1, Math.floor(dY * p.zoom)+1, p.zoom-2, p.zoom-2);
 		}

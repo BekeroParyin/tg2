@@ -19,9 +19,9 @@ function drawRightBar(e){ //Handles Right Menus. Menu interfacing is handled by 
 	drawMenus();
 	var yS = -1;
 	var xS = -1;
-	if(tileSelected.length == 2){
-		yS = tileSelected[0];
-		xS = tileSelected[1];
+	if(tS.length == 2){
+		yS = tS[0];
+		xS = tS[1];
 	}
 	if(p.menView[0] != 3 && yS != -1){
 		if(map[yS][xS].army != -1){ p.menView[0] = 2; }
@@ -1846,11 +1846,11 @@ function drawLeftBar(ev){
 		totGoldIncome += p.zones[i].income.gold;
 	}
 	ltx.fillText("Gold Income: " + Math.floor(100*(totGoldIncome))/100, 5, 190);
-	if(tileSelected.length > 0 && map[tileSelected[0]][tileSelected[1]].owner == p.turn){
-		let t = map[tileSelected[0]][tileSelected[1]];
+	if(tS.length > 0 && map[tS[0]][tS[1]].owner == p.turn){
+		let t = map[tS[0]][tS[1]];
 		var a = -1; var r = -1;
 		if(t.manager == -1 && t.zone > -1){
-			a = p.zones[map[tileSelected[0]][tileSelected[1]].zone]; r = p.roads[map[tileSelected[0]][tileSelected[1]].zone].length || 0;
+			a = p.zones[map[tS[0]][tS[1]].zone]; r = p.roads[map[tS[0]][tS[1]].zone].length || 0;
 		}
 		else if(t.manager > -1 && p.vassals[t.manager].roads.length > 0){
 			a = p.vassals[t.manager].zones[0];

@@ -1,0 +1,454 @@
+	function getValue(y, x, r, playerParam){
+		let p = playerParam;
+		var vals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Wood, Food, 2-Manpower, Population, 4-Gold, Well Being, Stone, market cap // 8-culture, 9-tech, 10- horses
+		var imVals = [0, 0, 0]; //Wood, Food, Manpower
+		var rmVals = [0, 0, 0, 0, 0, 0]; //Wood, Food, Population, size, market cap, horses
+		var luxVals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Copper Ore, Bronze Ore, 2Iron Ore, rHd, rLux, 5-rPerf, 6-Copper, Bronze, Iron, Hides, 10-Perf, Lux, 12-rSk, Sk, 14-Sp
+		let month = Math.floor(day/100);
+		if(map[y][x].damage > 0){
+			map[y][x].damage -= .05;
+		}
+		var bNames = [["Road","Farm", "Orchard", "Lumber Mill","Granary","Warehouse","Mine","Metalworks","Market", "Bazaar", "Stable", "Spice Plantation", "Silk Orchard", "Ebony Orchard"],
+	
+		["Housing","Plaza","Tax Office","Dock","Temple","Town Office","Manor", "Woodworker's Shop", "Perfumery", "Leather Worker", "Tavern", "Winery", "Weavery", "Theatre", "Library"],
+		
+		["Palisade","Low Wall","High Wall","Gatehouse","Moat","Guard Tower","Small Keep","Castle"],
+		
+		["Training Ground","Infantry Yard","Archery Yard","Cavalry Yard","Siege Yard", "Barracks", "Military Academy", "Mercenary Yard"]];
+		switch(buildings[map[y][x].building[0]][map[y][x].building[1]].id){
+			//economic
+			case "road": vals[3]+=.05; vals[2] += .01; break;
+			case "farm": vals[1] += 10; vals[2] += .025; vals[3] += .2;
+			for(let t = -1; t < 2; t+=2){
+				for(let u = 0; u < 2; u++){
+					if(u == 0){ temp = safeC(y+t); temp1 = x;} else { temp = y; temp1 = safeC(x+t); }
+					switch(buildings[map[y][x].building[0]][map[y][x].building[1]].id){
+						case "farm": vals[1]+= 1; vals[2] += .00125; break;
+						case "granary": vals[1]+= 3; vals[2] += .005; rmVals[1] += 25; break;
+					}
+				}
+			} break;
+			case "orchard": vals[1] += 6; vals[5] += .2; vals[0] += .06; 
+			for(let t = -1; t < 2; t+=2){
+				for(let u = 0; u < 2; u++){
+					if(u == 0){ temp = safeC(y+t); temp1 = x;} else { temp = y; temp1 = safeC(x+t); }
+					switch(buildings[map[y][x].building[0]][map[y][x].building[1]].id){
+						case "orchard": vals[1]+= .75; break;
+						case "granary": vals[1]+= 3; rmVals[1] += 25; break;
+					}
+				}
+			} break;
+			case "lmill": imVals[0] += 1.25; vals[2] += .05; let wInc = 0;
+			for(let i = -2; i < 3; i++){
+				for(let j = -2; j < 3; j++){
+					if(map[safeC(y+i)][safeC(x+j)].resource >= 11  && map[safeC(y+i)][safeC(x+j)].resource <= 13){
+						luxVals[map[safeC(y+i)][safeC(x+j)].resource-8] += .018;
+					}	
+					else if(map[safeC(y+i)][safeC(x+j)].resource >= 15){
+						if(map[safeC(y+i)][safeC(x+j)].resource == 15){
+							luxVals[12] += .016;
+						}
+						else{
+							luxVals[14] += .016;
+						}
+					}
+					if(map[safeC(y+i)][safeC(x+j)].type == 'f'){
+						wInc+=.7;
+					}
+					else if(buildings[map[y][x].building[0]][map[y][x].building[1]].id == "orchard"){
+						wInc += .7;
+					}
+				}
+			}
+			vals[0] += Math.sqrt(wInc)/10;
+			break;
+			case "granary": break;
+			case "bazaar": break;
+			case "warehouse": break;
+			case "market": break;
+			case "metalworks": break;
+			case "mine": break;
+			case "stable": break;
+			case "spiceplant": break;
+			case "silkorchard": break;
+			case "ebonyorchard": break;
+			//social:
+			case "house": break;
+			case "plaza": break;
+			case "taxoffice": break;
+			case "dock": break;
+			case "office": break;
+			case "tavern": break;
+			case "winery": break;
+			case "library": break;
+			case "theatre": break;
+			case "manor": break;
+		}
+			switch(map[y][x].building[1]){
+				case 3: //Lumber Mill
+				case 4:rmVals[1] += 300; imVals[1] += 100; vals[2]+=.05; break; //Granary
+				case 5:rmVals[0] += 15; imVals[1] += 25; rmVals[1] += 200; rmVals[2]+=2;vals[2]+=.05; break; //Warehouse
+				case 6:vals[6] += .25; vals[2] -= .5; vals[5] -= .75; var temp, temp1; //Mine
+				for(let t = -1; t < 2; t++){
+					for(let u = 0; u < 2; u++){
+						if(!(u == 1 && t == 0)){
+							if(u == 0){ temp = safeC(y+t); temp1 = x;} else { temp = y; temp1 = safeC(x+t); }
+							if(map[temp][temp1].building[0]==1){
+								vals[5]-=.3;
+							}
+							if(map[temp][temp1].resource < 11){
+								if(map[temp][temp1].resource < 7){
+									vals[6] += .1;
+								}
+								else {
+									if(r>=map[temp][temp1].resource-7){
+										luxVals[map[temp][temp1].resource-7] += .075+(map[temp][temp1].resource-6)*.075;
+									}
+									else if(map[temp][temp1].resource == 10){//gold
+										vals[5] -= .5;
+										vals[4] += 17;
+									}
+								}
+							}
+						}
+					}
+				}
+				break; //Quarry/Mine
+				case 7: luxVals[6] += .1; luxVals[7] += .1; luxVals[8] += .1; break; //Metalworks
+				case 8: vals[7] += 5; rmVals[4] += 25; break; //Market
+				case 9: vals[7] += 3; vals[3] += .25; rmVals[2] += 1.5; imVals[2] += .1; rmVals[4] += 5;  //bazaar s
+				for(let i = -1; i < 2; i++){
+					for(let j = -1; j < 2; j++){
+						if(!(i==0&&j==0)){
+							let b0 = map[safeC(y+i)][safeC(x+j)].building[0];
+							let b1 = map[safeC(y+i)][safeC(x+j)].building[1];
+							if(b0==0&&b1==9){
+								vals[4]+=.75;
+								imVals[2] += .2;
+							}
+						}
+					}
+				}
+				break; //Bazaar e
+				case 10: //stable
+				let hasChecked = [[y,x]];
+				function isValid(y,x, cArr){
+					if(!(map[y][x].building[0] == 2 && map[y][x].building[1] < 4)){
+						for(let i = 0; i < cArr.length; i++) {
+							if(cArr[i][0] == y && cArr[i][1] == x) {
+								return false;  
+							}
+						}
+						return true;
+					}
+					return false;   // Not found
+				}
+				let stack = [[y,x]]; let size = 0; let numStables = 0; let numTrash = 0;
+				while(stack.length > 0 && ++size < 22){
+					let loc = stack.pop();
+					let yy = safeC(loc[0]); let xx = safeC(loc[1]);
+					if(map[yy][xx].building[0] == 0 && map[yy][xx].building[1] == 10){
+						numStables++;
+					}
+					else if(map[yy][xx].building[0] != -1){
+						numTrash++;
+					}
+					else {
+						switch(map[yy][xx].type){
+							case 'c': break;
+							case 'h': break;
+							case 's': break;
+							case 'i': break;
+							case 'k': break;
+							case 'h': break;
+							case 'g': break;
+							default: numTrash++; break;
+						}
+					}
+					if(isValid(safeC(yy+1),xx,hasChecked)){
+						stack.push([safeC(yy+1), xx]);
+						hasChecked.push([safeC(yy+1), xx]);
+					}
+					if(isValid(safeC(yy-1),xx,hasChecked)){
+						stack.push([safeC(yy-1), xx]);
+						hasChecked.push([safeC(yy-1), xx]);
+					}
+					if(isValid(yy,safeC(xx+1),hasChecked)){
+						stack.push([yy, safeC(xx+1)]);
+						hasChecked.push([yy, safeC(xx+1)]);
+					}
+					if(isValid(yy,safeC(xx-1),hasChecked)){
+						stack.push([yy, safeC(xx-1)]);
+						hasChecked.push([yy, safeC(xx-1)]);
+					}
+				}
+				if(size < 22 && numStables > 0){
+					let modifier = (((size-numTrash)-numStables)/4);
+					if(modifier > 1){
+						modifier = Math.sqrt(modifier);
+					}
+					else{ modifier = Math.pow(modifier,2); }
+					vals[10] += .25*modifier;
+					
+					rmVals[5] += Math.round(40*modifier);
+					vals[1] += 30*modifier;
+				}
+				break; //Stable
+				case 11: luxVals[14] += .5; vals[2] -= .5; break;//spice plantation
+				case 12: luxVals[12] += .1;  break;//silk orchard
+				case 13: luxVals[4] += .1; break; //lux wood orchard
+			}
+		}
+		else if(map[y][x].building[0] == 1){ 
+			switch(map[y][x].building[1]){
+				case 0:rmVals[2] += 6.5; //House
+				vals[3] += .25;	vals[4] += 1; vals[2] += .01; imVals[2]+=.3;
+				var temp, temp1;
+				for(let t = -1; t < 2; t+=2){
+					for(let u = 0; u < 2; u++){
+						if(u == 0){ temp = safeC(y+t); temp1 = x;} else { temp = y; temp1 = safeC(x+t); }
+						switch(map[temp][temp1].building[0]){
+							case 0:vals[4]+=.2; break;
+							case 1:vals[5]+=.02; if(map[temp][temp1].building[1] == 0 || map[temp][temp1].building[1] == 2){ vals[5] -= .0125; vals[2]+=.01; }break;
+							case 2:vals[2]+=.05; vals[5] += .05; break;
+							case 3:vals[2]+=.05; break;
+						}
+					}
+				}
+				break;
+				case 1: vals[2] += .1; var temp, temp1; //plaza
+				for(let t = -1; t < 2; t+=2){
+					for(let u = 0; u < 2; u++){
+						if(u == 0){ temp = safeC(y+t); temp1 = x;} else { temp = y; temp1 = safeC(x+t); }
+						let b0 = map[temp][temp1].building[0];
+						let b1 = map[temp][temp1].building[1];
+						if((b0==1&&b1==0) || (b0==0&&b1==9)){
+							vals[5]+=.15;
+							if(b0==1){
+								vals[5]+=.05;
+							}
+						}
+					}
+				}
+				break;
+				case 2: vals[5] -= .1; vals[2]+=.1; var temp, temp1; //tax office
+				for(let t = -1; t < 2; t+=2){
+					for(let u = 0; u < 2; u++){
+						if(u == 0){ temp = safeC(y+t); temp1 = x;} else { temp = y; temp1 = safeC(x+t); }
+						let b0 = map[temp][temp1].building[0];
+						let b1 = map[temp][temp1].building[1];
+						if((b0==1&&b1==0) || (b0==0&&b1==9)){
+							vals[5] -= .35;
+							vals[4] += 4;
+						}
+					}
+				}
+				break; //tax office
+				case 3: vals[7]+=2; rmVals[4] += 25; break; //Dock
+				case 4: if(typeof p.zones[map[y][x].zone] != 'undefined'){ vals[5] += Math.max(10,p.zones[map[y][x].zone].res.population * .005); }break; //temple
+				case 5: rmVals[3] += 15; vals[4] -= 30; break; //admin building
+				case 6: //Manor
+				let stack = [[y,x]]; let spots = [];
+				for(let i = -2; i < 3; i++){
+					spots.push([]);
+					for(let j = -2; j < 3; j++){
+						spots[i+2][j+2] = -1;
+					}
+				}
+				while(stack.length > 0){
+					let loc = stack.pop();
+					let yy = loc[0]; let xx = loc[1];
+					if(yy-y > -2 && spots[yy-y+1][xx-x+2] == -1){
+						m = map[safeC(yy-1)][safeC(xx)]
+						if(m.elevation > .9 || m.elevation < 0 || (m.building[0] == 2 && m.building[1] <= 4)){
+							spots[yy-y+1][xx-x+2] = 0;
+						}
+						else{
+							spots[yy-y+1][xx-x+2] = 1;
+							stack.push([yy-1, xx]);
+						}
+					}
+					if(yy-y < 2 && spots[yy-y+3][xx-x+2] == -1){
+						m = map[safeC(yy+1)][safeC(xx)]
+						if(m.elevation > .9 || m.elevation < 0 || (m.building[0] == 2 && m.building[1] <= 4)){
+							spots[yy-y+3][xx-x+2] = 0;
+						}
+						else{
+							spots[yy-y+3][xx-x+2] = 1;
+							stack.push([yy+1, xx]);
+						}
+					}
+					if(xx-x > -2 && spots[yy-y+2][xx-x+1] == -1){
+						m = map[safeC(yy)][safeC(xx-1)]
+						if(m.elevation > .9 || m.elevation < 0 || (m.building[0] == 2 && m.building[1] <= 4)){
+							spots[yy-y+2][xx-x+1] = 0;
+						}
+						else{
+							spots[yy-y+2][xx-x+1] = 1;
+							stack.push([yy, xx-1]);
+						}
+					}
+
+					if(xx-x < 2 && spots[yy-y+2][xx-x+3] == -1){
+						m = map[safeC(yy)][safeC(xx+1)]
+						if(m.elevation > .9 || m.elevation < 0 || (m.building[0] == 2 && m.building[1] <= 4)){
+							spots[yy-y+2][xx-x+3] = 0;
+						}
+						else{
+							spots[yy-y+2][xx-x+3] = 1;
+							stack.push([yy, xx+1]);
+						}
+					}
+				}
+				let walled = true;
+				var mod = .2;
+				for(let i = -2; i < 3; i++){
+					for(let j = -2; j < 3; j++){
+						if(spots[i+2][j+2] != -1){
+							if(map[safeC(i+y)][safeC(j+x)].elevation > .6){
+								vals[6] += 1;
+							}
+							if(map[safeC(i+y)][safeC(j+x)].elevation <= 0){
+								vals[1] += 10;
+								vals[5] -= .5;
+							}
+							switch(map[safeC(i+y)][safeC(j+x)].building[0]){
+								case -1:
+									switch(map[safeC(i+y)][safeC(j+x)].type){
+										case 's': vals[0] += 1; vals[1] += 10; luxVals[3]++; break; //steppe
+										case 'm': vals[6] += 1; break; //mountain
+										case 'f': vals[0] += 1; vals[1] += 25; break; //forest
+									}
+								break;
+								case 0: //eco buildings
+									switch(map[safeC(i+y)][safeC(j+x)].building[1]){
+										case 1: vals[1] += 45; vals[2]++; break; //Farm
+										case 2: vals[1] += 20; vals[0] += 1; vals[5] += 2.5; break; //Orchard
+										case 3: vals[0] += 1.5; rmVals[0] += 15; imVals[0] += 5; break; // Lumber mill
+										case 4: imVals[1] += 150; rmVals[1] += 900; vals[1] += 10; break;  //Granary
+										case 5: rmVals[1] += 450; rmVals[0] += 75; break; //Warehouse
+										case 6: vals[6]+=2.5; vals[4] += 15; break; //Mine
+										case 7: luxVals[6] += 1.5; luxVals[7] += 1.5; luxVals[8] += 1.5; break; //Metalworks
+										case 8: vals[7] += 25; rmVals[4] += 75; vals[4] += 15;break; //market
+									}
+								break;
+								case 1: //social buildings
+									switch(map[safeC(i+y)][safeC(j+x)].building[1]){
+										case 0: vals[2] += 3; vals[3] -= 3; break; //house
+										case 1: vals[5] += 5; break; //plaza
+										case 2: vals[4] += 30; vals[5] -= 4; break; //tax office
+										case 3: vals[5]--; vals[1] += 15; vals[2]++; break; //dock
+										case 4: vals[4] += 30; vals[5] -= 6; break; //temple
+										case 5: rmVals[3] += 35; vals[4]-=45; vals[5]--; break; //Administration Office
+										case 7: luxVals[10] += 2;
+										case 8: luxVals[11] += 2;
+										case 9: luxVals[9] += 2;
+										case 9: luxVals[9] += 2; break; //Tanner
+										case 10: vals[5] += .5; break; //Tavern
+										case 11: vals[1] -= 25; vals[5]+=4; vals[8]+=3; break; //Winery
+										case 12: luxVals[13] += 2; //weavery
+									}
+								break;
+								case 2:
+									switch(map[safeC(i+y)][safeC(j+x)].building[1]){
+										case 0: vals[5] += .1; break;
+										case 1: vals[5] += .1; vals[2] += .1; break;
+										case 2: vals[5] += .2; vals[2] += .15; break;
+										case 3: vals[4] += 10; break; vals[5] -= 1; break;
+										case 4: vals[5] += .1; vals[1] += 5; break;
+										case 5: vals[5] += .1; break;
+										case 6: rmVals[1] += 400; break;
+									}
+								break;
+								case 3:
+									vals[2] += 2;
+									vals[5] += 1;
+								break;
+							}
+						}
+						if(Math.abs(i) == 2 || Math.abs(j == 2)){
+							if(spots[i+2][j+2] == 1){
+								vals[5] -= 25;
+								walled = false; i = 3; j = 3;
+							}
+						}
+					}
+				}
+				if(walled){ //0:Wood, 1:Food, 2Manpower, 3Population, 4Gold, 5Well Being, 6Stone
+					vals[2] += 1;
+					vals[4] += 7.5;
+					vals[5] += 1;
+					mod = 1;
+				}
+				break; //manor
+				case 7: luxVals[10] += 1; break; //perfumery
+				case 8: luxVals[11] += 1; break; //woodworker's shop
+				case 9: luxVals[9] += 1; break; //Tanner
+				case 10: vals[1] += 10; imVals[2]++; vals[2] += .1; vals[3] += .5; vals[4] += 9; vals[5] += .5; rmVals[2] += 35; break; //Tavern
+				case 11: vals[1] -= 20; vals[5] += 1.5; vals[8]++; break; //Winery
+				case 12: luxVals[13] += 1.25;  break;//weavery
+				case 13: vals[5]++; vals[8]++; vals[4] -= 15; break; //theatre
+				case 14: vals[4]-=15; vals[5]+=.5; vals[8]+=.25; vals[9]+=.75; //library
+				case 15: vals[4]-=30; vals[9]+=2;
+			}
+		}
+		if(month == 0){
+			vals[1] *= 1.1;
+		}
+		if(month == 2){
+			vals[1] *= 1.5;
+			vals[3] *= 1.33;
+		}
+		if(month == 3){
+			vals[1] *= .5;
+			if(vals[5] > 0){
+				vals[5] *= .7;
+			}
+		}
+		var allVals = [vals, imVals, rmVals, luxVals];
+		if(r > 0 && (map[y][x].building[0] != 1 || map[y][x].building[1] != 6)){
+			for(let i = 0; i < allVals.length; i++){
+				for(let j = 0; j < allVals[i].length; j++){
+					allVals[i][j] *= (1-(.25*r));
+				}
+			}
+		}
+		else if(map[y][x].building[0] == 1 && map[y][x].building[1] == 6){  //Manor Treasure Income
+			for(let i = 0; i < allVals.length; i++){
+				for(let j = 0; j < allVals[i].length; j++){
+					allVals[i][j] *= mod;
+				}
+			}
+			for(let i = 1; i < map[y][x].building[3].length; i++){ //["Cursed", "Demonic", "Evil", "Enchanted", "Arcane", "Magic", "Divine", "Blessed", "Holy", "Legendary", "Ancient", "Antique", "Old"];
+				allVals[0][4] += 15*(2 + 1.55*map[y][x].building[3][i].quality);
+				allVals[0][8] += map[y][x].building[3][i].quality/2;
+				if(map[y][x].building[3][i].material == 5){
+					allVals[0][4] += 90;
+				}
+				if(map[y][x].building[3][i].status > -1){
+					if(map[y][x].building[3][i].status < 4){
+						allVals[0][5] -= 6;
+					}
+					if(map[y][x].building[3][i].status > 6 && map[y][x].building[3][i].status < 9){
+						allVals[0][4] -= 15*(1.55*map[y][x].building[3][i].quality);
+						allVals[0][5] += 2 + 2*map[y][x].building[3][i].quality;
+					}
+					if(map[y][x].building[3][i].status == 9){
+						allVals[0][5] += 1 + map[y][x].building[3][i].quality;
+					}
+				}
+				else{
+					allVals[0][5] += 4;
+					if(map[y][x].building[3][i].material.legend == p.bloodline){
+						allVals[0][4] += 60;
+						allVals[0][5] += 3 + 1.5*map[y][x].building[3][i].quality;
+					}
+				}
+			}
+			if(map[y][x].building[3][0]){
+				allVals[0][4] -= 450;
+			}
+			allVals[2][3] -= 150;
+		}
+		return allVals;
+	}

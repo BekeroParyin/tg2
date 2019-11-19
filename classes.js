@@ -98,7 +98,7 @@
 	//Economic
 	buildings[0][0].cost = [0,0,0,1,[-1,0]];
 	buildings[0][0].description = "Road";
-	buildings[0][0].effect = function(m){ map[tileSelected[0]][tileSelected[1]].zone = -1; p = Roads(p); p = scanRoads(p, tileSelected[0], tileSelected[1]);}
+	buildings[0][0].effect = function(m){ map[tS[0]][tS[1]].zone = -1; p = Roads(p); p = scanRoads(p, tS[0], tS[1]);}
 	buildings[0][1].cost = [2,0,0,2,[-1,0]];
 	buildings[0][1].description = "Farm";
 	
@@ -169,19 +169,19 @@
 	
 	buildings[2][0].cost = [1,0,0,1,[-1,0]];
 	buildings[2][0].description = "Palisade";
-	buildings[2][0].effect = function(m){ map[tileSelected[0]][tileSelected[1]].pass = m-1;}
+	buildings[2][0].effect = function(m){ map[tS[0]][tS[1]].pass = m-1;}
 	buildings[2][1].cost = [2,0,0,2,[-1,0]];
 	buildings[2][1].description = "Low Wall";
-	buildings[2][1].effect = function(m){ map[tileSelected[0]][tileSelected[1]].pass = m-1;}
+	buildings[2][1].effect = function(m){ map[tS[0]][tS[1]].pass = m-1;}
 	buildings[2][2].cost = [2,2,0,2,[-1,0]];
 	buildings[2][2].description = "High Wall";
-	buildings[2][2].effect = function(m){ map[tileSelected[0]][tileSelected[1]].pass = m-1;}
+	buildings[2][2].effect = function(m){ map[tS[0]][tS[1]].pass = m-1;}
 	buildings[2][3].cost = [4, 4, 0, 4,[-1,0]];
 	buildings[2][3].description = "Gate House";
-	buildings[2][3].effect = function(m){ map[tileSelected[0]][tileSelected[1]].zone = -1; p = Roads(p); p = scanRoads(p, tileSelected[0], tileSelected[1]);}
+	buildings[2][3].effect = function(m){ map[tS[0]][tS[1]].zone = -1; p = Roads(p); p = scanRoads(p, tS[0], tS[1]);}
 	buildings[2][4].cost = [4, 4, 0, 6,[-1,0]];
 	buildings[2][4].description = "moat";
-	buildings[2][4].effect = function(m){ map[tileSelected[0]][tileSelected[1]].elevation = -1; map[tileSelected[0]][tileSelected[1]].pass = m-1;}
+	buildings[2][4].effect = function(m){ map[tS[0]][tS[1]].elevation = -1; map[tS[0]][tS[1]].pass = m-1;}
 	buildings[2][5].cost = [5, 10, 0, 15,[-1,0]];
 	buildings[2][5].description = "Guard Tower";
 	buildings[2][6].cost = [999, 999, 999, 999,[-1,0]];
@@ -732,190 +732,11 @@
 		this.index = -1;
 		this.size = 0;
 		this.color = "red";
-		this.tileSelected = [];
+		this.tS = [];
 		this.yView = 0;
 		this.xView = 0;
 		this.zoom = 10;
 		this.vassals = [];
-	}
-	function getRandomColor() {
-		var letters = '0123456789ABCDEF';
-		var color = '#';
-		for(var i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-		return color;
-	}
-	function shuffle(a) {
-		var j, x, i;
-		for (i = a.length - 1; i > 0; i--) {
-			j = Math.floor(Math.random() * (i + 1));
-			x = a[i];
-			a[i] = a[j];
-			a[j] = x;
-		}
-		return a;
-	}
-	function getTCost(y1,x1,u){
-		if(u == -1){
-			return 1;
-		}
-		let y = safeC(y1);
-		let x = safeC(x1);
-		let running = 4;
-		switch(map[y][x].type){
-			case 'f': running+=6/(1+u.stats[4]);
-			case 'h': running+=6/(1+u.stats[4]);
-			case 'k': running+=6/(1+u.stats[4]); break;
-			case 'd': running+=6; break;
-		}
-		if(map[y][x].building[0] > -1){
-			if(map[y][x].building[1] == 0 && map[y][x].building[0] == 0){
-				running -= 2;
-			}
-			else{
-				running += 2;
-			}
-		}
-		if(map[y][x].owner > -1){
-			if(map[y][x].owner == u.owner){
-				running-=2;
-			}
-			else{
-				running+=2;
-			}
-		}
-		return running;
-	}
-	function pathfind(y1, x1, yD, xD, claiming, t, u){ //Uses A*
-		let unit = u || -1;
-		let naval = false;
-		if(unit != -1){
-			naval = unit.stats.length == 6;
-		}
-		if(!naval && (map[safeC(yD)][safeC(xD)].elevation <= 0 || map[safeC(yD)][safeC(xD)].elevation > .9 || map[safeC(yD)][safeC(xD)].type == 'd') && !map[yD][xD].building[0] == 4){
-			return [];
-		}
-		let claimCheck = claiming || false;
-		let turn = t || -1;
-		let y = safeC(y1);
-		let x = safeC(x1);
-		function dist(ys,xs,y2,x2){
-			let yI = safeC(ys);
-			let xI = safeC(xs);
-			if(naval){
-				if(map[yI][xI].elevation > 0){
-					return 999;
-				}
-			}
-			else if(claiming){
-				if(map[yI][xI].owner != t && map[yI][xI].owner != -1){
-					return 999;
-				}
-				if((claiming && map[yI][xI].owner != t && map[yI][xI].owner != -1) || (map[yI][xI].elevation <= 0 || map[yI][xI].elevation > .85 || map[yI][xI].pass < 0 || map[safeC(yD)][safeC(xD)].type == 'd')){
-					return 999;
-				}
-			}
-			else if((map[yI][xI].elevation <= 0 || map[yI][xI].elevation > .85 || map[yI][xI].pass < 0 || map[safeC(yD)][safeC(xD)].type == 'd')&& map[yD][xD].building[0] != 4){
-				return 999;
-			}
-			let dist = Math.abs(yI-y2) + Math.abs(xI-x2); //This is 'Manhattan dist', since units can't move diagonallyI
-			if(dist > MAPSIZE/2){
-				return Math.abs(MAPSIZE - dist);
-			}
-			return dist;
-		}
-		function spot(){
-			this.parent = -1;
-			this.coords = [-1, -1];
-			this.distEnd = -1;
-			this.distStart = -1;
-			this.f = function() { return this.distEnd + this.distStart; };
-		}
-		let counter = 0;
-		var open = [];
-		open[0] = new spot();
-		open[0].coords = [y, x];
-		open[0].distEnd = dist(y, x, yD, xD);
-		open[0].distStart = 0;
-		var path = [];
-		var arr = [];
-		arr[safeC(y)] = [];
-		arr[safeC(y)][safeC(x)] = -1;
-		let min = 998;
-		let minDex = -1;
-		let parent;
-		let vary = false;
-		let shortDist = dist(y,x,yD,xD) < 100;
-		while(open.length > 0){
-			if(open.length > 25 && claiming){
-				return [];
-			}
-			if(open.length > 1500){
-				console.log("ERR: HIGH PATHFIND");
-				console.log("y1: " + y1);
-				console.log("x1: " + x1);
-				console.log("yD: " + yD);
-				console.log("xD: " + xD);
-				return [];
-			}
-			min = 998;
-			let lastI = -1;
-			for(let i = 0; i < open.length; i++){
-				if(open[i].f() <= min){
-					min = open[i].f();
-					if(vary){ min = Math.floor(min) + .1; }
-					parent = open[i];
-					lastI = i;
-				}
-			}
-			open.splice(lastI, 1);
-			if(lastI > -1){
-				y = safeC(parent.coords[0]);
-				x = safeC(parent.coords[1]);
-				if(y == yD && x == xD){ //At Destination, return path
-					while(parent.parent != -1){
-						path.unshift(parent.coords);
-						parent = parent.parent;
-					}
-					return path;
-				}
-				let a = -1;
-				if(vary){ a = 1; }
-				while((a > -2 && vary) || (!vary && a < 2)){
-					let b = -1;
-					if(vary){ b = 1; }
-					while((b > -2 && vary) || (!vary && b < 2)){
-						if(a == 0 || b == 0){
-							if(!naval || ((a >= 0 || y > yD) && (b >= 0 || x > xD)) || shortDist){
-								if(parent.parent == -1 || parent.parent.coords[0] != safeC(y+a) || parent.parent.coords[1] != safeC(x+b)){
-									if(typeof arr[safeC(y+a)] == 'undefined' || typeof arr[safeC(y+a)][safeC(x+b)] == 'undefined'){
-										arr[safeC(y+a)] = arr[safeC(y+a)] || [];
-										arr[safeC(y+a)][safeC(x+b)] = -1;
-										let s = new spot();
-										s.coords = [safeC(y+a), safeC(x+b)]; s.parent = parent;
-										s.distEnd = dist(y+a, x+b, yD, xD);
-										s.distStart = parent.distStart+1;
-										if(!naval){
-											s.distStart += (getTCost(y+a, x+b, unit)-1);
-										}
-										if(s.distEnd + s.distStart < 999){
-											open.push(s);
-										}
-									}
-								}
-							}
-						}
-						b++;
-						if(vary){b-=2;}
-					}
-					a++;
-					if(vary){a-=2;}
-				}
-				vary = !(naval && vary);
-			}
-		}
-		return [];
 	}
 	function getValue(y, x, r, playerParam){
 		let p = playerParam;
@@ -1346,6 +1167,187 @@
 		}
 		return allVals;
 	}
+	
+	function getRandomColor() {
+		var letters = '0123456789ABCDEF';
+		var color = '#';
+		for(var i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
+	}
+	function shuffle(a) {
+		var j, x, i;
+		for (i = a.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			x = a[i];
+			a[i] = a[j];
+			a[j] = x;
+		}
+		return a;
+	}
+	function getTCost(y1,x1,u){
+		if(u == -1){
+			return 1;
+		}
+		let y = safeC(y1);
+		let x = safeC(x1);
+		let running = 4;
+		switch(map[y][x].type){
+			case 'f': running+=6/(1+u.stats[4]);
+			case 'h': running+=6/(1+u.stats[4]);
+			case 'k': running+=6/(1+u.stats[4]); break;
+			case 'd': running+=6; break;
+		}
+		if(map[y][x].building[0] > -1){
+			if(map[y][x].building[1] == 0 && map[y][x].building[0] == 0){
+				running -= 2;
+			}
+			else{
+				running += 2;
+			}
+		}
+		if(map[y][x].owner > -1){
+			if(map[y][x].owner == u.owner){
+				running-=2;
+			}
+			else{
+				running+=2;
+			}
+		}
+		return running;
+	}
+	function pathfind(y1, x1, yD, xD, claiming, t, u){ //Uses A*
+		let unit = u || -1;
+		let naval = false;
+		if(unit != -1){
+			naval = unit.stats.length == 6;
+		}
+		if(!naval && (map[safeC(yD)][safeC(xD)].elevation <= 0 || map[safeC(yD)][safeC(xD)].elevation > .9 || map[safeC(yD)][safeC(xD)].type == 'd') && !map[yD][xD].building[0] == 4){
+			return [];
+		}
+		let claimCheck = claiming || false;
+		let turn = t || -1;
+		let y = safeC(y1);
+		let x = safeC(x1);
+		function dist(ys,xs,y2,x2){
+			let yI = safeC(ys);
+			let xI = safeC(xs);
+			if(naval){
+				if(map[yI][xI].elevation > 0){
+					return 999;
+				}
+			}
+			else if(claiming){
+				if(map[yI][xI].owner != t && map[yI][xI].owner != -1){
+					return 999;
+				}
+				if((claiming && map[yI][xI].owner != t && map[yI][xI].owner != -1) || (map[yI][xI].elevation <= 0 || map[yI][xI].elevation > .85 || map[yI][xI].pass < 0 || map[safeC(yD)][safeC(xD)].type == 'd')){
+					return 999;
+				}
+			}
+			else if((map[yI][xI].elevation <= 0 || map[yI][xI].elevation > .85 || map[yI][xI].pass < 0 || map[safeC(yD)][safeC(xD)].type == 'd')&& map[yD][xD].building[0] != 4){
+				return 999;
+			}
+			let dist = Math.abs(yI-y2) + Math.abs(xI-x2); //This is 'Manhattan dist', since units can't move diagonallyI
+			if(dist > MAPSIZE/2){
+				return Math.abs(MAPSIZE - dist);
+			}
+			return dist;
+		}
+		function spot(){
+			this.parent = -1;
+			this.coords = [-1, -1];
+			this.distEnd = -1;
+			this.distStart = -1;
+			this.f = function() { return this.distEnd + this.distStart; };
+		}
+		let counter = 0;
+		var open = [];
+		open[0] = new spot();
+		open[0].coords = [y, x];
+		open[0].distEnd = dist(y, x, yD, xD);
+		open[0].distStart = 0;
+		var path = [];
+		var arr = [];
+		arr[safeC(y)] = [];
+		arr[safeC(y)][safeC(x)] = -1;
+		let min = 998;
+		let minDex = -1;
+		let parent;
+		let vary = false;
+		let shortDist = dist(y,x,yD,xD) < 100;
+		while(open.length > 0){
+			if(open.length > 25 && claiming){
+				return [];
+			}
+			if(open.length > 1500){
+				console.log("ERR: HIGH PATHFIND");
+				console.log("y1: " + y1);
+				console.log("x1: " + x1);
+				console.log("yD: " + yD);
+				console.log("xD: " + xD);
+				return [];
+			}
+			min = 998;
+			let lastI = -1;
+			for(let i = 0; i < open.length; i++){
+				if(open[i].f() <= min){
+					min = open[i].f();
+					if(vary){ min = Math.floor(min) + .1; }
+					parent = open[i];
+					lastI = i;
+				}
+			}
+			open.splice(lastI, 1);
+			if(lastI > -1){
+				y = safeC(parent.coords[0]);
+				x = safeC(parent.coords[1]);
+				if(y == yD && x == xD){ //At Destination, return path
+					while(parent.parent != -1){
+						path.unshift(parent.coords);
+						parent = parent.parent;
+					}
+					return path;
+				}
+				let a = -1;
+				if(vary){ a = 1; }
+				while((a > -2 && vary) || (!vary && a < 2)){
+					let b = -1;
+					if(vary){ b = 1; }
+					while((b > -2 && vary) || (!vary && b < 2)){
+						if(a == 0 || b == 0){
+							if(!naval || ((a >= 0 || y > yD) && (b >= 0 || x > xD)) || shortDist){
+								if(parent.parent == -1 || parent.parent.coords[0] != safeC(y+a) || parent.parent.coords[1] != safeC(x+b)){
+									if(typeof arr[safeC(y+a)] == 'undefined' || typeof arr[safeC(y+a)][safeC(x+b)] == 'undefined'){
+										arr[safeC(y+a)] = arr[safeC(y+a)] || [];
+										arr[safeC(y+a)][safeC(x+b)] = -1;
+										let s = new spot();
+										s.coords = [safeC(y+a), safeC(x+b)]; s.parent = parent;
+										s.distEnd = dist(y+a, x+b, yD, xD);
+										s.distStart = parent.distStart+1;
+										if(!naval){
+											s.distStart += (getTCost(y+a, x+b, unit)-1);
+										}
+										if(s.distEnd + s.distStart < 999){
+											open.push(s);
+										}
+									}
+								}
+							}
+						}
+						b++;
+						if(vary){b-=2;}
+					}
+					a++;
+					if(vary){a-=2;}
+				}
+				vary = !(naval && vary);
+			}
+		}
+		return [];
+	}
+
 	function createRandomUnit(zoneIndex, owner, num, p){
 		var loc = [0, 0];
 		var stop = false;
