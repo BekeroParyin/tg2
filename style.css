@@ -6,9 +6,9 @@ h1{
 	color: white;
 }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: #fff;
-    background-color: #007bff	;
-    border-color: #dee2e6 #dee2e6 #fff;
+	color: #fff;
+	background-color: #007bff	;
+	border-color: #dee2e6 #dee2e6 #fff;
 }
 a{
 	color: #fff;
@@ -27,4 +27,19 @@ a{
 *{
 	margin:0;
 	padding:0;
+}
+.badge {
+	font-size: 0.7rem;
+}
+.btn {
+	font-size: 1.5rem;
+}
+.mainRes {
+	font-size: 1.5rem;
+}
+
+* {
+	border-radius: 0 !important;
+	font-family: 'Staatliches', cursive;
+	text-transform: uppercase;
 }

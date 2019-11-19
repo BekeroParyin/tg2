@@ -1,42 +1,48 @@
-	var fs = require('fs');
-	var http = require('http');
-	var url = require('url');
-	const express = require('express')
-	const app = express()
-	eval(fs.readFileSync('map.js')+'');
-	eval(fs.readFileSync('classes.js')+'');
-	eval(fs.readFileSync('AI.js')+'');
-	app.use(express.static('public'))
-	var server = http.createServer(function (request, response) {
-		var pathname = url.parse(request.url).pathname;
-		response.writeHead(200);
-		if(pathname == "/") {
-			html = fs.readFileSync("index.html", "utf8");
-			response.write(html);
-		} else if (pathname == "/public/canvas.js") {
-			canvas = fs.readFileSync("canvas.js", "utf8");
-			response.write(canvas);
-		} else if (pathname == "/public/classes.js") {
-			classes = fs.readFileSync("classes.js", "utf8");
-			response.write(classes);
-		} else if (pathname == "/public/draw.js") {
-			draw = fs.readFileSync("draw.js", "utf8");
-			response.write(draw);
-		} else if (pathname == "/public/AI.js") {
-			draw = fs.readFileSync("AI.js", "utf8");
-			response.write(draw);
-		} else if (pathname == "/public/style.css") {
-			draw = fs.readFileSync("style.css", "utf8");
-			response.write(draw);
-		} else if (pathname == "/public/handler.js") {
-			draw = fs.readFileSync("handler.js", "utf8");
-			response.write(draw);
-		}
-		response.end();
-	});
-	server.listen(process.env.PORT || 3000);
-	console.log("Ape started on port 3000.");
-	var io = require('socket.io')(server,{});
+//= require bootstrap
+//= require jquery
+//= require jquery_ujs
+//= require jquery-ui	
+
+
+var fs = require('fs');
+var http = require('http');
+var url = require('url');
+const express = require('express')
+const app = express()
+eval(fs.readFileSync('map.js')+'');
+eval(fs.readFileSync('classes.js')+'');
+eval(fs.readFileSync('AI.js')+'');
+app.use(express.static('public'))
+var server = http.createServer(function (request, response) {
+	var pathname = url.parse(request.url).pathname;
+	response.writeHead(200);
+	if(pathname == "/") {
+		html = fs.readFileSync("index.html", "utf8");
+		response.write(html);
+	} else if (pathname == "/public/canvas.js") {
+		canvas = fs.readFileSync("canvas.js", "utf8");
+		response.write(canvas);
+	} else if (pathname == "/public/classes.js") {
+		classes = fs.readFileSync("classes.js", "utf8");
+		response.write(classes);
+	} else if (pathname == "/public/draw.js") {
+		draw = fs.readFileSync("draw.js", "utf8");
+		response.write(draw);
+	} else if (pathname == "/public/AI.js") {
+		draw = fs.readFileSync("AI.js", "utf8");
+		response.write(draw);
+	} else if (pathname == "/public/style.css") {
+		draw = fs.readFileSync("style.css", "utf8");
+		response.write(draw);
+	} else if (pathname == "/public/handler.js") {
+		draw = fs.readFileSync("handler.js", "utf8");
+		response.write(draw);
+	}
+	response.end();
+});
+server.listen(process.env.PORT || 3000);
+console.log("Ape started on port 3000.");
+var io = require('socket.io')(server,{});
 	//Code can safely go below:
 	var socketList = [];
 	var http = require('http'); //importing http
