@@ -697,7 +697,7 @@ var MAPSIZE = 1000;
 		});
 		document.addEventListener('keydown', mapV);
 		c.addEventListener('mousedown', handleMapClick);
-//		r.addEventListener('mousedown', drawRightBar);
+		r.addEventListener('mousedown', drawRightBar);
 //		l.addEventListener('mousedown', drawLeftBar);
 		setInterval(function(){
 			if(start){
@@ -739,7 +739,7 @@ var MAPSIZE = 1000;
 			}
 			if(delta){
 				if(!p.appraising){
-//					drawRightBar(0);
+					drawRightBar(0);
 				}
 //				drawLeftBar(0);
 				delta = false;
