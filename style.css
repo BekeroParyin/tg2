@@ -37,9 +37,6 @@ a{
 .mainRes {
 	font-size: 1.5rem;
 }
-
-* {
-	border-radius: 0 !important;
-	font-family: 'Staatliches', cursive;
-	text-transform: uppercase;
+#rightTab > .nav-item{
+	font-size:1.05rem;
 }

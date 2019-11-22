@@ -3,42 +3,44 @@
 //= require jquery_ujs
 //= require jquery-ui	
 
-
+const path = require('path');
 var fs = require('fs');
-var http = require('http');
+const express = require('express');
+const app = express();
+var server = require('http').Server(app);
 var url = require('url');
-const express = require('express')
-const app = express()
+
+
 eval(fs.readFileSync('map.js')+'');
 eval(fs.readFileSync('classes.js')+'');
 eval(fs.readFileSync('AI.js')+'');
-app.use(express.static('public'))
-var server = http.createServer(function (request, response) {
-	var pathname = url.parse(request.url).pathname;
-	response.writeHead(200);
-	if(pathname == "/") {
-		html = fs.readFileSync("index.html", "utf8");
-		response.write(html);
-	} else if (pathname == "/public/canvas.js") {
-		canvas = fs.readFileSync("canvas.js", "utf8");
-		response.write(canvas);
-	} else if (pathname == "/public/classes.js") {
-		classes = fs.readFileSync("classes.js", "utf8");
-		response.write(classes);
-	} else if (pathname == "/public/draw.js") {
-		draw = fs.readFileSync("draw.js", "utf8");
-		response.write(draw);
-	} else if (pathname == "/public/AI.js") {
-		draw = fs.readFileSync("AI.js", "utf8");
-		response.write(draw);
-	} else if (pathname == "/public/style.css") {
-		draw = fs.readFileSync("style.css", "utf8");
-		response.write(draw);
-	} else if (pathname == "/public/handler.js") {
-		draw = fs.readFileSync("handler.js", "utf8");
-		response.write(draw);
-	}
-	response.end();
+app.use(express.static('public'));
+app.get("/", function (req, res) {
+	res.sendFile(__dirname + "/index.html");
+});
+app.get("/public/canvas.js", function (req, res) {
+	res.sendFile(__dirname + "/canvas.js");
+});
+app.get("/public/handler.js", function (req, res) {
+	res.sendFile(__dirname + "/handler.js");
+});
+app.get("/public/classes.js", function (req, res) {
+	res.sendFile(__dirname + "/classes.js");
+});
+app.get("/public/draw.js", function (req, res) {
+	res.sendFile(__dirname + "/draw.js");
+});
+app.get("/public/AI.js", function (req, res) {
+	res.sendFile(__dirname + "/AI.js");
+});
+app.get("/public/style.css", function (req, res) {
+	res.sendFile(__dirname + "/style.css");
+});
+app.get("/public/handler.js", function (req, res) {
+	res.sendFile(__dirname + "/handler.js");
+});
+app.get("/public/sprites.png", function (req, res) {
+	res.sendFile(__dirname + "/sprites.png");
 });
 server.listen(process.env.PORT || 3000);
 console.log("Ape started on port 3000.");
@@ -63,7 +65,7 @@ var io = require('socket.io')(server,{});
 	var navies = [];
 	var colors = ["#5B6C44", "#d2f53c", "#46f0f0", "#f58231", "#C336D8", "#79CFF4", "#800000", "#ACAE3A", "#aa6e28", "#EBDF6C", "#aaffc3", "#980632", "#e6194b", "#ffe119", "#F2A2CB", "#fabebe", "#fffac8", "#ffd8b1", "#1E90FF","#1A3F6A", "#3BA073", "#f032e6", "#7C73A5", "#34D3C1", "#911eb4", "#0B0477"];
 	colors = shuffle(colors);
-	const MAPSIZE = 100;
+	const MAPSIZE = 300;
 	const MODI = MAPSIZE/1500;
 	var map = new Array(MAPSIZE);
 	var day = 0;

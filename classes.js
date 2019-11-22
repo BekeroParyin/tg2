@@ -710,6 +710,7 @@
 		this.bloodline = "";
 		this.following = -1;
 		this.nFollowing = -1;
+		this.sprites = true;
 		this.navies = [];
 		this.armies = [];
 		this.commanders = [];

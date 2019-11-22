@@ -45,3 +45,7 @@
 				c.height = h;
 				ctx.scale(scale, scale);
 			}
+			
+		var sprites = new Image();
+		sprites.src = "/public/sprites.png";
+		ctx.imageSmoothingEnabled = false;

@@ -148,57 +148,83 @@ function drawTile(y1, x1){
 	let dY = safeC(y1 - p.yView);
 	let dX = safeC(x1 - p.xView);
 	if(p.draw == "normal"){
-		switch(t.type){
-			case 'w': ctx.fillStyle = "#005fc6"; break;//water
-			case 'a': ctx.fillStyle = "#006adc"; break;//lAke
-			case 'r': ctx.fillStyle = "#1978DF"; break; //river
-			case 'g': ctx.fillStyle = "#3cb371"; break; //grass
-			case 's': ctx.fillStyle = "#b3f0a5"; break; //steppe
-			case 'd': ctx.fillStyle = "tan"; break; //desert
-			case 'h': if(t.wetness > .1){ctx.fillStyle = "olivedrab";} 
-			else{ctx.fillStyle = "#898a74"; }
-			break; //hill
-			case 'k': ctx.fillStyle = "#4ba520"; if(t.wetness < .1){ctx.fillStyle = "#7FCB63";} break; //knoll
-			case 'm': ctx.fillStyle = "#B4B4B4"; break; //mountain
-			case 'i': if(t.wetness > .1){ctx.fillStyle = "#36a165";} 
-			else{ctx.fillStyle = "#80dd9b"; }
-			break; //hIghland
-			case 'c': if(drawCoasts){ ctx.fillStyle = "tan";} else { ctx.fillStyle = "#3cb371";}  break; //coast
-			case 'f': ctx.fillStyle = "#005000";
-			if(t.heat > .5 && t.heat < 2.5){
-				let autCols = ["#D45B12", "#C64E0F", "#B8410C", "#AA3409", "#9C2706"];
-				if(day > 250){
-					for(let i = 0; i < (day-250)/5; i++){
-						autCols.push("#475a3e");
-					}
-				}
-				if(day < 200){
-					let gVal = 100 - 40*(day/200); let colo = "rgb(0, "+gVal+",0)";
-					let sprCols = [colo, colo, colo, colo, colo, colo, colo];
-					if(day < 165){ sprCols.push(colo); sprCols.push(colo); sprCols.push(colo); }
-					else if(day < 170){ sprCols.push(colo); sprCols.push(colo); }
-					else if(day < 175){ sprCols.push(colo); }
-					if(day > 155){
-						for(let i = 0; i < (day-150)/8; i++){
-							sprCols.push(autCols[i]);
+		var dDraw = false;
+		if(p.sprites){
+			dDraw = true;
+			switch(t.type){
+				case 'w': ctx.drawImage(sprites, 0, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//water
+				case 'a': ctx.drawImage(sprites, 0, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//lAke
+				case 'r': ctx.drawImage(sprites, 0, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //river
+				case 'i': ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //grass
+				case 's': ctx.drawImage(sprites, 8, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //steppe
+				case 'd': ctx.drawImage(sprites, 8, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //desert
+				case 'h':  ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
+				break; //hill
+				case 'k': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
+				case 'm': ctx.drawImage(sprites, 40, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
+				case 'g': ctx.drawImage(sprites, 8, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //hIghland
+				case 'c': if(drawCoasts){ ctx.drawImage(sprites, 16, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} 
+				else { ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}  break; //coast
+				case 'f': if(t.elevation < .3){ ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
+				else if(t.elevation < .5){ctx.drawImage(sprites, 8, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);  }
+				else{ ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
+				ctx.drawImage(sprites, 24, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
+				case 'l': ctx.drawImage(sprites, 24, 8, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //high hilLs
+			}
+		}
+		else{
+			switch(t.type){
+				case 'w': ctx.fillStyle = "#005fc6"; break;//water
+				case 'a': ctx.fillStyle = "#006adc"; break;//lAke
+				case 'r': ctx.fillStyle = "#1978DF"; break; //river
+				case 'g': ctx.fillStyle = "#3cb371"; break; //grass
+				case 's': ctx.fillStyle = "#b3f0a5"; break; //steppe
+				case 'd': ctx.fillStyle = "tan"; break; //desert
+				case 'h': if(t.wetness > .1){ctx.fillStyle = "olivedrab";} 
+				else{ctx.fillStyle = "#898a74"; }
+				break; //hill
+				case 'k': ctx.fillStyle = "#4ba520"; if(t.wetness < .1){ctx.fillStyle = "#7FCB63";} break; //knoll
+				case 'm': ctx.fillStyle = "#B4B4B4"; break; //mountain
+				case 'i': if(t.wetness > .1){ctx.fillStyle = "#36a165";} 
+				else{ctx.fillStyle = "#80dd9b"; }
+				break; //hIghland
+				case 'c': if(drawCoasts){ ctx.fillStyle = "tan";} else { ctx.fillStyle = "#3cb371";}  break; //coast
+				case 'f': ctx.fillStyle = "#005000";
+				if(t.heat > .5 && t.heat < 2.5){
+					let autCols = ["#D45B12", "#C64E0F", "#B8410C", "#AA3409", "#9C2706"];
+					if(day > 250){
+						for(let i = 0; i < (day-250)/5; i++){
+							autCols.push("#475a3e");
 						}
 					}
-					let tInd = Math.floor(sprCols.length*rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)));
-					ctx.fillStyle = sprCols[tInd];
+					if(day < 200){
+						let gVal = 100 - 40*(day/200); let colo = "rgb(0, "+gVal+",0)";
+						let sprCols = [colo, colo, colo, colo, colo, colo, colo];
+						if(day < 165){ sprCols.push(colo); sprCols.push(colo); sprCols.push(colo); }
+						else if(day < 170){ sprCols.push(colo); sprCols.push(colo); }
+						else if(day < 175){ sprCols.push(colo); }
+						if(day > 155){
+							for(let i = 0; i < (day-150)/8; i++){
+								sprCols.push(autCols[i]);
+							}
+						}
+						let tInd = Math.floor(sprCols.length*rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)));
+						ctx.fillStyle = sprCols[tInd];
+					}
+					else if(day < 300){
+						let tInd = Math.floor(autCols.length*rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)));
+						ctx.fillStyle = autCols[tInd];
+					}
+					else{
+						ctx.fillStyle = "#475a3e";
+					}
 				}
-				else if(day < 300){
-					let tInd = Math.floor(autCols.length*rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)));
-					ctx.fillStyle = autCols[tInd];
-				}
-				else{
-					ctx.fillStyle = "#475a3e";
-				}
+				break; //forest*/
+				case 'l': ctx.fillStyle = "grey"; break; //high hilLs
+				case 'e': ctx.fillStyle = "white"; break; //ice
+				case 'n': ctx.fillStyle = "#EFFCFF"; break; //snow
+				default:  ctx.fillStyle = "red"; break;
 			}
-			break; //forest
-			case 'l': ctx.fillStyle = "grey"; break; //high hilLs
-			case 'e': ctx.fillStyle = "white"; break; //ice
-			case 'n': ctx.fillStyle = "#EFFCFF"; break; //snow
-			default:  ctx.fillStyle = "red"; break;
 		}
 	}
 	else if(p.draw == "resources"){
@@ -228,7 +254,9 @@ function drawTile(y1, x1){
 		}
 	}
 	else { p.draw = "normal"; }
-	ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+	if(!dDraw){
+		ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+	}
 	if(p.draw == "normal" || p.draw == "zones" || p.draw == "resources"){
 		if(t.owner > -1){
 			ctx.fillStyle = colors[Math.min(colors.length-1,t.owner)];

@@ -121,7 +121,7 @@
 							}
 						}
 					}
-					if(map[i][j].type == 'f' && map[i][j].elevation <= 0){ map[i][j].type = 'w'; }
+					if(map[i][j].type == 'f' && map[i][j].elevation <= 0){ map[i][j].type = 'w'; map[i][j].resource = 14; }
 				}
 			}
 			slap(50, 's', 'g', 2, 3);
