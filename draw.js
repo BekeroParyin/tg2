@@ -158,10 +158,13 @@ function drawTile(y1, x1){
 				case 'i': ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //grass
 				case 's': ctx.drawImage(sprites, 8, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //steppe
 				case 'd': ctx.drawImage(sprites, 8, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //desert
-				case 'h':  ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
+				case 'h':  ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				ctx.drawImage(sprites, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				break; //hill
-				case 'k': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
-				case 'm': ctx.drawImage(sprites, 40, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
+				case 'k': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //knoll
+				case 'm': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+					ctx.drawImage(sprites, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				break;
 				case 'g': ctx.drawImage(sprites, 8, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //hIghland
 				case 'c': if(drawCoasts){ ctx.drawImage(sprites, 16, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} 
 				else { ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}  break; //coast
@@ -169,7 +172,8 @@ function drawTile(y1, x1){
 				else if(t.elevation < .5){ctx.drawImage(sprites, 8, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);  }
 				else{ ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
 				ctx.drawImage(sprites, 24, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
-				case 'l': ctx.drawImage(sprites, 24, 8, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //high hilLs
+				case 'l': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+					ctx.drawImage(sprites, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //high hilLs
 			}
 		}
 		else{
@@ -347,15 +351,10 @@ function drawTile(y1, x1){
 				ctx.fillRect((dX + .45)*p.zoom, dY * p.zoom, .1*p.zoom, p.zoom);
 				ctx.fillRect(dX*p.zoom, (.45 + dY) * p.zoom, p.zoom, p.zoom*.1);
 			}
-			//else if(b0 == 0 && b1 == 1){//farm
-			//	var girth = buildings[b0][b1].draw[1];
-			//	ctx.fillStyle = buildings[b0][b1].draw[0];
-			//	ctx.fillRect((dX + (1-girth)/2)*p.zoom, ((1-girth)/2 + dY) * p.zoom, p.zoom*girth, p.zoom*girth);
-			//	for(let i = 0; i < 4; i++){
-			//		ctx.fillStyle = "black";
-			//		ctx.fillRect((dX + (1-girth)/2 + .1*(i+i))*p.zoom, (dY+(1-girth)/2) * p.zoom, p.zoom*.05, p.zoom*girth);
-			//	}
-			//}
+			else if(b0 == 0 && b1 == 1){//farm
+				var girth = buildings[b0][b1].draw[1];
+				ctx.drawImage(sprites, 48, 0, 8, 8,(dX + (1-girth)/2)*p.zoom, ((1-girth)/2 + dY) * p.zoom, p.zoom*girth, p.zoom*girth);
+			}
 			else {
 				var girth = buildings[b0][b1].draw[1];
 				ctx.fillStyle = buildings[b0][b1].draw[0];

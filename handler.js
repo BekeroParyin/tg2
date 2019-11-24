@@ -741,7 +741,7 @@ var MAPSIZE = 1000;
 				if(!p.appraising){
 					drawRightBar(0);
 				}
-//				drawLeftBar(0);
+				drawLeftBar();
 				delta = false;
 			}
 		}, 8);

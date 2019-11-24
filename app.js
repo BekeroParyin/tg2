@@ -39,6 +39,9 @@ app.get("/public/style.css", function (req, res) {
 app.get("/public/handler.js", function (req, res) {
 	res.sendFile(__dirname + "/handler.js");
 });
+app.get("/public/interface.js", function (req, res) {
+	res.sendFile(__dirname + "/interface.js");
+});
 app.get("/public/sprites.png", function (req, res) {
 	res.sendFile(__dirname + "/sprites.png");
 });

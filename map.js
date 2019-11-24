@@ -31,6 +31,7 @@
 			console.log("rivers");
 			currents(false);
 			console.log("currents 2");
+			elevSpread();
 			forest(1500*MODI, Math.floor(5*MODI));
 			forest(850 * MODI, Math.round(10* MODI));
 			forest(900*MODI, Math.round(150* MODI));
@@ -114,7 +115,7 @@
 						}
 					}
 					else{ 
-						map[i][j].elevation = -1;
+						map[i][j].elevation = -.5;
 						if(map[i][j].type == 'a' || map[i][j].type == 'r'){
 							if(Math.random()>.99){
 								map[i][j].resource = 14;
@@ -686,7 +687,7 @@
 						if(rS > 0){
 							map[y][x].type = 'a';
 							map[y][x].id = id;
-							map[y][x].elevation = -.1;
+							map[y][x].elevation = -.75;
 							for(let a = -1; a < 2; a++){
 								for(let b = -1; b < 2; b++){
 									map[safeC(y+a)][safeC(x+b)].wetness += .25;
@@ -807,7 +808,7 @@
 					xCoord = safeC(xCoord);
 					map[yCoord][xCoord].type = 'w';
 					map[yCoord][xCoord].wetness = 0;
-					map[yCoord][xCoord].elevation = -1;
+					map[yCoord][xCoord].elevation = -.75;
 					do{
 						dir = Math.floor(Math.random()*4);
 					}while(dir == lastDir);

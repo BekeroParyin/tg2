@@ -28,6 +28,16 @@ a{
 	margin:0;
 	padding:0;
 }
+#resource-list{
+	font-size:1.1rem;
+}
+.list-group-item{
+	background-color: rgb(55,65,67);
+	color: #fff;
+}
+.list-group-item > .{
+	color: #fff;
+}
 .badge {
 	font-size: 0.7rem;
 }

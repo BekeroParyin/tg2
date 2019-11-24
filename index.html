@@ -26,19 +26,53 @@
             <a class="nav-link" id="cultech-tab" data-toggle="tab" href="#cultech" role="tab">Culture/Tech</a>
           </li>
         </ul>
-        <input type="checkbox" checked data-toggle="toggle" data-on="Resources" data-off="Goods" data-onstyle="success" data-offstyle="info" data-width="100%" >
-        <button type="button" class="btn btn-warning btn-block my-0 text-center">302838</button>
-        <button type="button btn-block" class="btn btn-danger btn-block my-0 text-center">2002883</button>
         <div class="tab-content" id="leftTabContent">
-          <div class="tab-pane fade show active" id="resource" role="tabpanel">           
-            <div class="card mt-5 mx-2">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Efficiency</li>
-                <li class="list-group-item">Size 0/600
-                  <div class="progress progress-danger progress-striped">
-                    <div class="bar" style="width: 10%"></div>
-                  </div>
+          <div class="tab-pane fade show active" id="resource" role="tabpanel"> 
+			<input type="checkbox" checked data-toggle="toggle" id = "resgood" data-on="Resources" data-off="Goods" data-onstyle="info" data-offstyle="info" data-width="100%" >
+			<li class="list-group-item d-flex justify-content-sm-around">
+                Manpower: <span id = "manpower"style="color:red">0</span>
+            </li>
+			<li class="list-group-item d-flex justify-content-around">
+                Gold: <span id = "gold" style="color:gold">0</span>
+            </li>
+              <ul class="list-group list-group-flush" id = "resource-list" style="background-color: #f1f9fb;">
+				<li class="list-group-item">Size <span id = "size">0/600</span>
+					<div class = "progress" style="background-color:#CDCDCD">
+						<div class = "bar bg-info" style = "width:0%;"></div>
+					</div>
                 </li>
+                <li class="list-group-item">
+				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
+					<li>Wood: <span id = "wood"style="font-size:1rem;">0/15</span></li>
+					<li>Wood Inc: <span id = "woodInc"style="font-size:1rem;">0/2</span></li>
+				</ul>
+                </li>
+				<li class="list-group-item">
+				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
+					<li>stone: <span id = "stone"style="font-size:1rem;">0/15</span></li>
+					<li>stone Inc: <span id = "stoneInc"style="font-size:1rem;">0/2</span></li>
+				</ul>
+                </li>
+				<li class="list-group-item">
+				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
+					<li>wb: <span id = "stone"style="font-size:1rem;">0/15</span></li>
+					<li>wb Inc: <span id = "stone"style="font-size:1rem;">0/2</span></li>
+				</ul>
+                </li>
+				<li class="list-group-item">
+				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
+					<li>Food: <span id = "stone"style="font-size:1rem;">011111/511100</span></li>
+					<li>Food Inc: <span id = "stone"style="font-size:1rem;">0/50</span></li>
+				</ul>
+                </li>
+				<li class="list-group-item">
+				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
+					<li>pop: <span id = "stone"style="font-size:1rem;">0/15</span></li>
+					<li>pop Inc: <span id = "stone"style="font-size:1rem;">0/2</span></li>
+				</ul>
+                </li>
+              </ul>
+			  <ul class="list-group list-group-flush" id = "goods-list" style="background-color: #f1f9fb; visibility:hidden">
                 <li class="list-group-item d-flex justify-content-around">
                   <span class="badge badge-dark">WOOD  <span class="badge badge-light">12/20</span></span>
                   <span class="badge badge-dark">WOOD INCOME <span class="badge badge-light">12/20</span></span>
@@ -60,15 +94,13 @@
                   <span class="badge badge-dark">Population Income <span class="badge badge-light">12/20</span></span>
                 </li>
               </ul>
-            </div>
           </div>
           <div class="tab-pane fade" id="faction" role="tabpanel">
           </div>
           <div class="tab-pane fade" id="cultech" role="tabpanel">
           </div>
         </div>
-      </div>
-
+     </div>
       <div class="col-7" id="body">
         <canvas id="map"></canvas>
       </div>
@@ -121,8 +153,9 @@
 <script type="text/javascript" src="/public/AI.js"></script>
 <script type="text/javascript" src="/public/canvas.js"></script>
 <script type="text/javascript" src="/public/draw.js"></script>
+<script type="text/javascript" src="/public/interface.js"></script>
 <script type="text/javascript" src="/public/handler.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
