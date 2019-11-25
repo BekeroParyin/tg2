@@ -34,6 +34,7 @@ a{
 .list-group-item{
 	background-color: rgb(55,65,67);
 	color: #fff;
+	border: 0px;
 }
 .list-group-item > .{
 	color: #fff;

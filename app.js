@@ -45,6 +45,9 @@ app.get("/public/interface.js", function (req, res) {
 app.get("/public/sprites.png", function (req, res) {
 	res.sendFile(__dirname + "/sprites.png");
 });
+app.get("/public/sheet.png", function (req, res) {
+	res.sendFile(__dirname + "/sheet.png");
+});
 server.listen(process.env.PORT || 3000);
 console.log("Ape started on port 3000.");
 var io = require('socket.io')(server,{});

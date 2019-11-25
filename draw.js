@@ -171,7 +171,56 @@ function drawTile(y1, x1){
 				case 'f': if(t.elevation < .3){ ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
 				else if(t.elevation < .5){ctx.drawImage(sprites, 8, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);  }
 				else{ ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
-				ctx.drawImage(sprites, 24, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
+				[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].type == 'f'), (map[y][safeC(x+1)].type == 'f'), (map[safeC(y-1)][x].type == 'f'), (map[safeC(y+1)][x].type == 'f')];
+				if(leftT && rightT && upT && downT){ //0
+					ctx.drawImage(sprites2, 0, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&rightT&&downT){
+					ctx.drawImage(sprites2, (16), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&upT&&downT){ //2
+					ctx.drawImage(sprites2, (32), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(upT&&leftT&&rightT&&!downT){
+					ctx.drawImage(sprites2, (16*3), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&upT&&downT&&rightT){ //4
+					ctx.drawImage(sprites2, (16*4), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!upT&&downT&&rightT){
+					ctx.drawImage(sprites2, (16*5), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&downT&&!upT&&!rightT){ //6
+					ctx.drawImage(sprites2, (16*6), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&upT&&rightT){
+					ctx.drawImage(sprites2, (16*7), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&!downT&&upT&&!rightT){ //8
+					ctx.drawImage(sprites2, (16*8), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&downT&&!upT&&!rightT){ // 9 - done
+					ctx.drawImage(sprites2, (16*9), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&!downT&&!upT&&!rightT){ //10 -done
+					ctx.drawImage(sprites2, (16*10), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&upT&&!rightT){ //11 - done
+					ctx.drawImage(sprites2, (16*11), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&!upT&&rightT){ //12 - done
+					ctx.drawImage(sprites2, (16*12), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&downT&&upT&&!rightT){ //13 - done
+					ctx.drawImage(sprites2, (16*13), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&rightT&&!upT&&!downT){ //14 - done
+					ctx.drawImage(sprites2, (16*14), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&!upT&&!rightT){ //10 -done
+					ctx.drawImage(sprites2, (16*15), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				break;
 				case 'l': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 					ctx.drawImage(sprites, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //high hilLs
 			}

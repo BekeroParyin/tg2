@@ -13,137 +13,138 @@
 
 <body>
   <div class="container-fluid h-100" id="main">
-    <div class="row h-100">
-      <div class="col-md-2half" id="left">
-        <ul class="nav nav-tabs" id="leftTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="resource-tab" data-toggle="tab" href="#resource" role="tab">Resources</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="faction-tab" data-toggle="tab" href="#faction" role="tab">Factions</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="cultech-tab" data-toggle="tab" href="#cultech" role="tab">Culture/Tech</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="leftTabContent">
-          <div class="tab-pane fade show active" id="resource" role="tabpanel"> 
+	<div class="row h-100">
+	  <div class="col-md-2half" id="left">
+		<ul class="nav nav-tabs" id="leftTab" role="tablist">
+		  <li class="nav-item">
+			<a class="nav-link active" id="resource-tab" data-toggle="tab" href="#resource" role="tab">Resources</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" id="faction-tab" data-toggle="tab" href="#faction" role="tab">Factions</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" id="cultech-tab" data-toggle="tab" href="#cultech" role="tab">Culture/Tech</a>
+		  </li>
+		</ul>
+		<div class="tab-content" id="leftTabContent">
+		  <div class="tab-pane fade show active" id="resource" role="tabpanel"> 
 			<input type="checkbox" checked data-toggle="toggle" id = "resgood" data-on="Resources" data-off="Goods" data-onstyle="info" data-offstyle="info" data-width="100%" >
 			<li class="list-group-item d-flex justify-content-sm-around">
-                Manpower: <span id = "manpower"style="color:red">0</span>
-            </li>
+				Manpower: <span id = "manpower"style="color:red; font-size:1.2rem;">0</span>
+			</li>
 			<li class="list-group-item d-flex justify-content-around">
-                Gold: <span id = "gold" style="color:gold">0</span>
-            </li>
-              <ul class="list-group list-group-flush" id = "resource-list" style="background-color: #f1f9fb;">
+				Gold: <span id = "gold" style="color:gold; font-size:1.2rem;">0</span>
+			</li>
+			  <ul class="list-group list-group-flush" id = "resource-list"style="display:none">
 				<li class="list-group-item">Size <span id = "size">0/600</span>
 					<div class = "progress" style="background-color:#CDCDCD">
-						<div class = "bar bg-info" style = "width:0%;"></div>
+						<div id = "sizebar" class = "bar bg-info" style = "width:0%;"></div>
 					</div>
-                </li>
-                <li class="list-group-item">
+				</li>
+				<li class="list-group-item">
 				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
 					<li>Wood: <span id = "wood"style="font-size:1rem;">0/15</span></li>
 					<li>Wood Inc: <span id = "woodInc"style="font-size:1rem;">0/2</span></li>
 				</ul>
-                </li>
+				</li>
 				<li class="list-group-item">
 				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
-					<li>stone: <span id = "stone"style="font-size:1rem;">0/15</span></li>
-					<li>stone Inc: <span id = "stoneInc"style="font-size:1rem;">0/2</span></li>
+					<li>Stone: <span id = "stone"style="font-size:1rem;">0/15</span></li>
+					<li>Stone Inc: <span id = "stoneInc"style="font-size:1rem;">0/2</span></li>
 				</ul>
-                </li>
+				</li>
+				<div style="height: 20px; background-color: rgb(55,65,67)"></div>	
 				<li class="list-group-item">
 				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
-					<li>wb: <span id = "stone"style="font-size:1rem;">0/15</span></li>
-					<li>wb Inc: <span id = "stone"style="font-size:1rem;">0/2</span></li>
+					<li>Population: <span id = "pop"style="font-size:1rem;">0/15</span></li>
+					<li>Pop Inc: <span id = "popInc"style="font-size:1rem;">0/2</span></li>
 				</ul>
-                </li>
+				</li>
 				<li class="list-group-item">
 				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
-					<li>Food: <span id = "stone"style="font-size:1rem;">011111/511100</span></li>
-					<li>Food Inc: <span id = "stone"style="font-size:1rem;">0/50</span></li>
+					<li>Food: <span id = "food"style="font-size:1rem;">0/500</span></li>
+					<li>Food Inc: <span id = "foodInc"style="font-size:1rem;">0/50</span></li>
 				</ul>
-                </li>
+				</li>
 				<li class="list-group-item">
 				<ul class="list-group list-group-horizontal d-flex justify-content-sm-around"style="list-style-type:none">
-					<li>pop: <span id = "stone"style="font-size:1rem;">0/15</span></li>
-					<li>pop Inc: <span id = "stone"style="font-size:1rem;">0/2</span></li>
+					<li>Wellbeing: <span id = "wellbeing"style="font-size:1rem;">0/15</span></li>
+					<li>Wellbeing Inc: <span id = "wellbeingInc"style="font-size:1rem;">0/2</span></li>
 				</ul>
-                </li>
-              </ul>
-			  <ul class="list-group list-group-flush" id = "goods-list" style="background-color: #f1f9fb; visibility:hidden">
-                <li class="list-group-item d-flex justify-content-around">
-                  <span class="badge badge-dark">WOOD  <span class="badge badge-light">12/20</span></span>
-                  <span class="badge badge-dark">WOOD INCOME <span class="badge badge-light">12/20</span></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-around">
-                  <span class="badge badge-dark">Wellbeing  <span class="badge badge-light">12/20</span></span>
-                  <span class="badge badge-dark">Wellbeing Income <span class="badge badge-light">12/20</span></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-around">
-                  <span class="badge badge-dark">Stone  <span class="badge badge-light">12/20</span></span>
-                  <span class="badge badge-dark">Stone Income <span class="badge badge-light">12/20</span></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-around">
-                  <span class="badge badge-dark">Food  <span class="badge badge-light">12/20</span></span>
-                  <span class="badge badge-dark">Food Income <span class="badge badge-light">12/20</span></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-around">
-                  <span class="badge badge-dark">Population  <span class="badge badge-light">12/20</span></span>
-                  <span class="badge badge-dark">Population Income <span class="badge badge-light">12/20</span></span>
-                </li>
-              </ul>
-          </div>
-          <div class="tab-pane fade" id="faction" role="tabpanel">
-          </div>
-          <div class="tab-pane fade" id="cultech" role="tabpanel">
-          </div>
-        </div>
-     </div>
-      <div class="col-7" id="body">
-        <canvas id="map"></canvas>
-      </div>
+				</li>
+			</ul>
+			  <ul class="list-group list-group-flush" id = "goods-list" style="background-color: #f1f9fb; display:none">
+				<li class="list-group-item d-flex justify-content-around">
+				  <span class="badge badge-dark">WOOD  <span class="badge badge-light">12/20</span></span>
+				  <span class="badge badge-dark">WOOD INCOME <span class="badge badge-light">12/20</span></span>
+				</li>
+				<li class="list-group-item d-flex justify-content-around">
+				  <span class="badge badge-dark">Wellbeing  <span class="badge badge-light">12/20</span></span>
+				  <span class="badge badge-dark">Wellbeing Income <span class="badge badge-light">12/20</span></span>
+				</li>
+				<li class="list-group-item d-flex justify-content-around">
+				  <span class="badge badge-dark">Stone  <span class="badge badge-light">12/20</span></span>
+				  <span class="badge badge-dark">Stone Income <span class="badge badge-light">12/20</span></span>
+				</li>
+				<li class="list-group-item d-flex justify-content-around">
+				  <span class="badge badge-dark">Food  <span class="badge badge-light">12/20</span></span>
+				  <span class="badge badge-dark">Food Income <span class="badge badge-light">12/20</span></span>
+				</li>
+				<li class="list-group-item d-flex justify-content-around">
+				  <span class="badge badge-dark">Population  <span class="badge badge-light">12/20</span></span>
+				  <span class="badge badge-dark">Population Income <span class="badge badge-light">12/20</span></span>
+				</li>
+			  </ul>
+		  </div>
+		  <div class="tab-pane fade" id="faction" role="tabpanel">
+		  </div>
+		  <div class="tab-pane fade" id="cultech" role="tabpanel">
+		  </div>
+		</div>
+	 </div>
+	  <div class="col-7" id="body">
+		<canvas id="map"></canvas>
+	  </div>
 
-      <!--Right Bar--->
-      <div class="col-md-2half" id="right">
-        <ul class="nav nav-tabs" id="rightTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="selected-tab" data-toggle="tab" href="#selected" role="tab">Selected</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="military-tab" data-toggle="tab" href="#military" role="tab">Army/Navy</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="character-tab" data-toggle="tab" href="#character" role="tab">Character</a>
-          </li>
-        </ul>
+	  <!--Right Bar--->
+	  <div class="col-md-2half" id="right">
+		<ul class="nav nav-tabs" id="rightTab" role="tablist">
+		  <li class="nav-item">
+			<a class="nav-link active" id="selected-tab" data-toggle="tab" href="#selected" role="tab">Selected</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" id="military-tab" data-toggle="tab" href="#military" role="tab">Army/Navy</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" id="character-tab" data-toggle="tab" href="#character" role="tab">Character</a>
+		  </li>
+		</ul>
 
-        <div class="tab-content" id="rightTabContent">
-          <div class="tab-pane fade show active" id="selected" role="tabpanel">
-            <div id = "building-select">
+		<div class="tab-content" id="rightTabContent">
+		  <div class="tab-pane fade show active" id="selected" role="tabpanel">
+			<div id = "building-select">
 			<!-- BUILDING MENU IS HERE---->
 			<canvas id = "rightBar"></canvas>
-           </div> 
-           <div id = "building-upgrade">
-             <h1> Appraise Building </h1>
-           </div>
-           <div id = "building-special">
-             <h1> ie market offensive buildings, etc </h1>
-           </div>
-           <div id = "nothing">
-             <h1> You can't build here </h1>
-           </div>
-         </div>
-         <div class="tab-pane fade" id="military" role="tabpanel">
-          <h1> Armies and Navies </h1>
-        </div>
-        <div class="tab-pane fade" id="character" role="tabpanel">
-          <h1> Descendant of: </h1>
-        </div>
-      </div>
+			</div> 
+			<div id = "building-upgrade">
+			 <h1> Appraise Building </h1>
+			</div>
+			<div id = "building-special">
+			 <h1> ie market offensive buildings, etc </h1>
+			</div>
+			<div id = "nothing">
+			 <h1> You can't build here </h1>
+			</div>
+		 </div>
+		 <div class="tab-pane fade" id="military" role="tabpanel">
+		  <h1> Armies and Navies </h1>
+		</div>
+		<div class="tab-pane fade" id="character" role="tabpanel">
+		  <h1> Descendant of: </h1>
+		</div>
+	  </div>
 
-    </div>
+	</div>
 
   </div>
 </div>

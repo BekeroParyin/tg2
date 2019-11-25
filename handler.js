@@ -497,7 +497,6 @@ var MAPSIZE = 1000;
 					if(tY != y || tX != x){
 						drawTile(tY, tX);
 					}
-					delta = true;
 					if(e.ctrlKey){
 						let reRoute = false;
 						let canD = true;
@@ -632,6 +631,16 @@ var MAPSIZE = 1000;
 					if(tS.length == 2 && tS[0] > -1){
 						let t = map[tS[0]][tS[1]];
 						if(t.owner == p.turn){
+							if(t.zone == -1){
+								$('#resource-list').hide();
+								$('#goods-list').hide();
+							}
+							else{
+								if(document.getElementById("resgood").checked){
+									$('#resource-list').show();
+								}
+								else { $('#goods-list').show(); }
+							}
 							if(t.building[0] == -1){
 								$('#building-select').show();
 							}
@@ -646,13 +655,18 @@ var MAPSIZE = 1000;
 						}
 						else{
 							$('#nothing').show();
+							$('#resource-list').hide();
+							$('#goods-list').hide();
 						}
 					}
 					else{
 						$('#nothing').show();
+						$('#resource-list').hide();
+						$('#goods-list').hide();
 					}
 				}
 			}
+			delta = true;
 		}
 		//Make sure view is on grass
 		var t = 0;
