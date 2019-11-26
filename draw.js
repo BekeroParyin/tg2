@@ -152,11 +152,11 @@ function drawTile(y1, x1){
 		if(p.sprites){
 			dDraw = true;
 			switch(t.type){
-				case 'w': ctx.drawImage(sprites, 0, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//water
-				case 'a': ctx.drawImage(sprites, 0, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//lAke
-				case 'r': ctx.drawImage(sprites, 0, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //river
-				case 'i': let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .33){ctx.drawImage(sprites2, 48, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.88){ctx.drawImage(sprites2, 64, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //grass
-				case 's': ctx.drawImage(sprites, 8, 24, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //steppe
+				case 'w': ctx.drawImage(sprites2, 80, 48, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//water
+				case 'a': ctx.drawImage(sprites2, 0, 48, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//lAke
+				case 'r': ctx.drawImage(sprites2, 0, 48, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //river
+				case 'i': let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .33){ctx.drawImage(sprites2, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.88){ctx.drawImage(sprites2, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 112, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //grass
+				case 's': let tape1 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape1 < .33){ctx.drawImage(sprites2, 16, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape1 <.88){ctx.drawImage(sprites2, 32, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 48, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //steppe
 				case 'd': ctx.drawImage(sprites, 8, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //desert
 				case 'h':  ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				ctx.drawImage(sprites, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
@@ -165,27 +165,27 @@ function drawTile(y1, x1){
 				case 'm': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 					ctx.drawImage(sprites, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				break;
-				case 'g': ctx.drawImage(sprites, 8, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //hIghland
-				case 'c': if(drawCoasts){ ctx.drawImage(sprites, 16, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} 
-				else { ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}  break; //coast
+				case 'g': let tape2 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape2 < .33){ctx.drawImage(sprites2, 144, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape2 <.88){ctx.drawImage(sprites2, 160, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 176, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //hIghland
+				case 'c': if(drawCoasts){ ctx.drawImage(sprites2, 16, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} 
+				else { let tape4 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape4 < .33){ctx.drawImage(sprites2, 0, 64, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape4 <.88){ctx.drawImage(sprites2, 16, 64, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 32, 64, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;}  break; //coast
 				case 'f': if(t.elevation < .3){ ctx.drawImage(sprites, 0, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
 				else if(t.elevation < .5){ctx.drawImage(sprites, 8, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);  }
 				else{ ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
 				[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].type == 'f'), (map[y][safeC(x+1)].type == 'f'), (map[safeC(y-1)][x].type == 'f'), (map[safeC(y+1)][x].type == 'f')];
-				if(leftT && rightT && upT && downT){ //0
-					ctx.drawImage(sprites2, 0, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				if(leftT && rightT && upT && downT){ //0 && surrounded
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 0, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 0, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
 				}
-				else if(leftT&&rightT&&downT){
-					ctx.drawImage(sprites2, (16), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				else if(leftT&&rightT&&downT){//up
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 16, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 16, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
 				}
-				else if(leftT&&upT&&downT){ //2
-					ctx.drawImage(sprites2, (32), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				else if(leftT&&upT&&downT){ //2 && right
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 32, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 32, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
 				}
-				else if(upT&&leftT&&rightT&&!downT){
-					ctx.drawImage(sprites2, (16*3), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				else if(upT&&leftT&&rightT&&!downT){//down
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 48, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 48, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
 				}
-				else if(!leftT&&upT&&downT&&rightT){ //4
-					ctx.drawImage(sprites2, (16*4), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				else if(!leftT&&upT&&downT&&rightT){ //4 && left
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 64, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 64, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
 				}
 				else if(!leftT&&!upT&&downT&&rightT){
 					ctx.drawImage(sprites2, (16*5), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
