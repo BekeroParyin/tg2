@@ -1,3 +1,52 @@
+	[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].type == 'f'), (map[y][safeC(x+1)].type == 'f'), (map[safeC(y-1)][x].type == 'f'), (map[safeC(y+1)][x].type == 'f')];
+				if(leftT && rightT && upT && downT){ //0 && surrounded
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 0, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 0, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
+				}
+				else if(leftT&&rightT&&downT){//up
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 16, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 16, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
+				}
+				else if(leftT&&upT&&downT){ //2 && right
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 32, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 32, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
+				}
+				else if(upT&&leftT&&rightT&&!downT){//down
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 48, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 48, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
+				}
+				else if(!leftT&&upT&&downT&&rightT){ //4 && left
+					let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 64, 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else {ctx.drawImage(sprites2, 64, 32, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
+				}
+				else if(!leftT&&!upT&&downT&&rightT){
+					ctx.drawImage(sprites2, (16*5), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&downT&&!upT&&!rightT){ //6
+					ctx.drawImage(sprites2, (16*6), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&upT&&rightT){
+					ctx.drawImage(sprites2, (16*7), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&!downT&&upT&&!rightT){ //8
+					ctx.drawImage(sprites2, (16*8), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&downT&&!upT&&!rightT){ // 9 - done
+					ctx.drawImage(sprites2, (16*9), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&!downT&&!upT&&!rightT){ //10 -done
+					ctx.drawImage(sprites2, (16*10), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&upT&&!rightT){ //11 - done
+					ctx.drawImage(sprites2, (16*11), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&!upT&&rightT){ //12 - done
+					ctx.drawImage(sprites2, (16*12), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&downT&&upT&&!rightT){ //13 - done
+					ctx.drawImage(sprites2, (16*13), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(leftT&&rightT&&!upT&&!downT){ //14 - done
+					ctx.drawImage(sprites2, (16*14), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
+				else if(!leftT&&!downT&&!upT&&!rightT){ //10 -done
+					ctx.drawImage(sprites2, (16*15), 16, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				}
 	function getValue(y, x, r, playerParam){
 		let p = playerParam;
 		var vals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Wood, Food, 2-Manpower, Population, 4-Gold, Well Being, Stone, market cap // 8-culture, 9-tech, 10- horses

@@ -7,6 +7,9 @@
 		this.cost;		
 		this.description;
 	}
+	function Culture(){
+		this.womensRights = 0;
+	}
 	var buildings = [[], [], [], []];
 	var bNames = [["Road","Farm", "Orchard", "Lumber Mill","Granary","Warehouse","Mine","Metalworks","Market", "Bazaar", "Stable", "Spice Plantation", "Silk Orchard", "Ebony Orchard"],
 	
@@ -359,14 +362,13 @@
 	function genName(male){
 		var name = "";
 		var mBegs = ["Le", "Ke", "Je", "Be", "Me", "Ko", "Ye", "E", "Cy", "Ce", "Ci", "A"];
-		var mMids = ["k", "r", "ke", "re", "vin", "t", "s"];
-		var mEnds = ["os", "ih", "o", "it", "en", "in", "de", "des", "re", "ro", "ov", "us", "on", "ic"];
+		var mMids = ["k", "r", "ke", "re", "vin", "t", "s", "d", "v"];
+		var mEnds = ["os", "ih", "o", "it", "en", "in", "de", "des", "re", "ro", "ov", "us", "on", "ic", "am"];
 		
 		var fBegs = [["A", "E", "O", "Ke","Ti", "Di", "De", "Li", "Ki", "Ve", "Ma", "Ni", "Ari", "So", "Ky"], ["Al", "Ev", "Ky"]];
 		var fMids = [["or", "ex", "an"], ["r", "n", "c", "s", "r", "ret", "ken", "y"]];
 		var fEnds = ["a", "i", "ei", "is", "ia", "a", "iev", "ana", "in"];
 		if(male){
-			
 			return "" + mBegs[Math.floor(Math.random() * mBegs.length)] + "" + mMids[Math.floor(Math.random() * mMids.length)] + "" + mEnds[Math.floor(Math.random() * mEnds.length)];
 		}
 		else{
@@ -628,10 +630,15 @@
 	function Noble()
 	{
 		this.name = "";
+		this.seed = 0;
 		this.skill = 0;
-	}
-	function Society(){
-		this.levels = [];
+		this.gender = 1;
+		this.Rand = function(){ let r = rand(this.seed); this.seed = srand(this.seed); return r; }
+		this.area = 0;
+		this.branch = 0;
+		this.position = 0;
+		this.posString = "";
+		this.loyalties = [];
 	}
 	function Resources(w1, s1, f1, p1, wb, mc1, m1){ //Copper Ore, Bronze Ore, Iron Ore, Hides, Perfume, Luxury Wood
 	var w = w1 || 0; var s = s1 || 0; var f = f1 || 0; var p = p1 || 0; var b = wb || 0; var mC = mc1 || 0; var m = m1||0;
@@ -719,8 +726,8 @@
 		this.draw = "normal";
 		this.manpower = 100;
 		this.gold = 0;
-		this.culture = 50;
-		this.research = 0;
+		this.culturePts = 50;
+		this.researchPts = 0;
 		this.zones = [];
 		this.territory = [];
 		this.manors = [];
@@ -738,6 +745,40 @@
 		this.xView = 0;
 		this.zoom = 10;
 		this.vassals = [];
+		this.government = [[], [], []];
+		this.culture = new Culture;
+	}
+	function genAdministrator(a){
+		let p = a;
+		let areas = ["Commerce", "Agriculture", "Defense"];
+		let positions = ["Secretary of", "Minister of", "Bookkeeper of", "Record Keeper of"];
+		let n = new Noble();
+		n.seed = Math.floor(Math.random()*Math.pow(2,32));
+		if(p.culture.womensRights >= .4){
+			n.gender = Math.round(n.Rand());
+			if(p.culture.womensRights > .6){
+				n.gender = 0;
+			}
+		}
+		n.skill = 2+Math.floor(n.Rand() * 5);
+		n.name = genName(n.gender);
+		n.area = Math.floor(n.Rand()*3);
+		n.branch = Math.min(Math.floor(n.Rand()*8));
+		if(n.branch < 3){
+			n.branch = 0;
+			n.posString = "Senator";
+		}
+		else if(n.branch >= 4){
+			n.branch = 2;
+			n.position = Math.floor(n.Rand()*positions.length);
+			n.posString = positions[n.position] + " "+areas[n.area];
+		}
+		else {
+			n.branch = 1; 
+			n.posString = "Council" + ((n.gender == 0) ? 'woman' : 'man');
+		}
+		p.government[n.branch].push(n);
+		return p;
 	}
 	function getValue(y, x, r, playerParam){
 		let p = playerParam;

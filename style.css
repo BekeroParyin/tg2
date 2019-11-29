@@ -48,6 +48,13 @@ a{
 .mainRes {
 	font-size: 1.5rem;
 }
+#resource-list > .list-group-item{
+	
+}
 #rightTab > .nav-item{
 	font-size:1.05rem;
+}
+#mangold > .list-group-item{
+	font-size: 1.2rem;
+	height:45px;
 }

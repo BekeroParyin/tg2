@@ -286,6 +286,10 @@ var MAPSIZE = 1000;
 				c.removeEventListener('mouseup', clear);
 			}
 			drawTile(tY, tX);
+			drawTile(tY-1, tX);
+			drawTile(tY+1, tX);
+			drawTile(tY, tX-1);
+			drawTile(tY, tX+1);
 			delta = true;
 		}
 		function build(e, y1, x1){

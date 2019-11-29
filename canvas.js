@@ -48,6 +48,6 @@
 			
 		var sprites = new Image();
 		var sprites2 = new Image();
-		sprites2.src = "/public/sheet.png";
+		sprites2.src = "/public/ericsprites.png";
 		sprites.src = "/public/sprites.png";
 		ctx.imageSmoothingEnabled = false;
