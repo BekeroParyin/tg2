@@ -7,7 +7,6 @@ var MAPSIZE = 1000;
 		var delta = false;
 		var start = false; var mapLoaded = false;
 		var view = 1;
-		var drawCoasts = false;
 		var tS = [];
 		var establishing = false;
 		var p = new Player();
@@ -209,11 +208,6 @@ var MAPSIZE = 1000;
 					drawDelta = true; 
 					drawDir = -1;
 				}
-			}
-			else if(event.keyCode == 67){ //C
-				drawCoasts = !drawCoasts;
-				drawDelta = true;
-				
 			}
 			else if(event.keyCode == 68){ //D
 				if(p.draw == "normal"){
