@@ -15,6 +15,7 @@
   <div class="container-fluid h-100" id="main">
 	<div class="row h-100">
 	  <div class="col-md-2half" id="left">
+		<button type="button" id="actionChange"class="btn btn-info" style = "position:absolute; bottom:0; width:auto;">Action: <span id = "pact">Claiming</span></button>
 		<ul class="nav nav-tabs" id="leftTab" role="tablist">
 		  <li class="nav-item">
 			<a class="nav-link active" id="resource-tab" data-toggle="tab" href="#resource" role="tab">Resources</a>
@@ -44,36 +45,38 @@
 					</div>
 				</li>
 				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex "style="list-style-type:none">
-					<li>Wood: <span id = "wood"style="font-size:1rem;">0/15</span></li>
-					<li>Wood Inc: <span id = "woodInc"style="font-size:1rem;">0/2</span></li>
+				<ul class="list-group list-group-horizontal d-flex ">
+					<li class = "list-group-item">Wood: </li>
+					<li class = "list-group-item"><span id = "wood"style="font-size:1rem;">0/15</span></li>
+					<li class = "list-group-item"><span id = "woodInc"style="font-size:1rem;">0/2</span></li>
 				</ul>
 				</li>
 				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex "style="list-style-type:none">
-					<li>Stone: <span id = "stone"style="font-size:1rem;">0/15</span></li>
-					<li>Stone Inc: <span id = "stoneInc"style="font-size:1rem;">0/2</span></li>
-				</ul>
-				</li>
-				<div style="height: 10px; background-color: rgb(55,65,67)"></div>	
-				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex "style="list-style-type:none">
-					<li>Food: <span id = "food"style="font-size:1rem;">0/500</span></li>
-					<li>Food Inc: <span id = "foodInc"style="font-size:1rem;">0/50</span></li>
-				</ul>
-				</li>
-				<div style="height: 10px; background-color: rgb(55,65,67)"></div>	
-				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex "style="list-style-type:none">
-					<li>Population: <span id = "pop"style="font-size:1rem;">0/15</span></li>
-					<li>Pop Inc: <span id = "popInc"style="font-size:1rem;">0/2</span></li>
+				<ul class="list-group list-group-horizontal">
+					<li class = "list-group-item">Stone: </li>
+					<li class = "list-group-item"><span id = "stone"style="font-size:1rem;">0/15</span></li>
+					<li class = "list-group-item"><span id = "stoneInc"style="font-size:1rem;">0/2</span></li>
 				</ul>
 				</li>
 				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex "style="list-style-type:none">
-					<li>Wellbeing: </li>
-					<li><span id = "wellbeing"style="font-size:1rem;">0/15</span></li>
-					<li><span id = "wellbeingInc"style="font-size:1rem;">0/2</span></li>
+				<ul class="list-group list-group-horizontal d-flex">
+					<li class = "list-group-item">Food: </li>
+					<li class = "list-group-item"> <span id = "food"style="font-size:1rem;">0/500</span></li>
+					<li class = "list-group-item"><span id = "foodInc"style="font-size:1rem;">0/50</span></li>
+				</ul>
+				</li>
+				<li class="list-group-item">
+				<ul class="list-group list-group-horizontal d-flex">
+					<li class = "list-group-item">Population: </li>
+					<li class = "list-group-item"><span id = "pop"style="font-size:1rem;">0/15</span></li>
+					<li class = "list-group-item"><span id = "popInc"style="font-size:1rem;">0/2</span></li>
+				</ul>
+				</li>
+				<li class="list-group-item">
+				<ul class="list-group list-group-horizontal d-flex flex-fill">
+					<li class = "list-group-item">Wellbeing: </li>
+					<li class = "list-group-item"><span id = "wellbeing"style="font-size:1rem;">0/15</span></li>
+					<li class = "list-group-item"><span id = "wellbeingInc"style="font-size:1rem;">0/2</span></li>
 				</ul>
 				</li>
 			</ul>
