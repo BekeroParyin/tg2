@@ -143,7 +143,7 @@ function drawMap(newDir){
 }
 function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, where on the img sheet to start, tileX, tileY, drawposX, drawposY
 	if(type == 'w' || type == 'r' || type == 'a'){
-		[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].elevation > 0), (map[y][safeC(x+1)].elevation > 0), (map[safeC(y-1)][x].elevation > 0), (map[safeC(y+1)][x].elevation > 0)];
+		[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].elevation < 0), (map[y][safeC(x+1)].elevation < 0), (map[safeC(y-1)][x].elevation < 0), (map[safeC(y+1)][x].elevation < 0)];
 	}
 	else{
 		[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].type == type), (map[y][safeC(x+1)].type == type), (map[safeC(y-1)][x].type == type), (map[safeC(y+1)][x].type == type)];
@@ -172,9 +172,9 @@ function drawTile(y1, x1){
 		if(p.sprites){
 			dDraw = true;
 			switch(t.type){
-				case 'w': ctx.drawImage(sprites2, 80, 48, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//water
-				case 'a': ctx.drawImage(sprites2, 0, 48, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;//lAke
-				case 'r': ctx.drawImage(sprites2, 0, 48, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //river
+				case 'w':
+				case 'a':
+				case 'r': drawDynamic('w', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; //river
 				case 'i': let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.7){ctx.drawImage(sprites2, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.95){ctx.drawImage(sprites2, 112, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} else{ ctx.drawImage(sprites2, 64, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //grass
 				case 's': let tape1 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape1 < .33){ctx.drawImage(sprites2, 16, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape1 <.88){ctx.drawImage(sprites2, 32, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 48, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //steppe
 				case 'd': ctx.drawImage(sprites, 8, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //desert

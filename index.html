@@ -14,8 +14,8 @@
 <body>
   <div class="container-fluid h-100" id="main">
 	<div class="row h-100">
-	  <div class="col-md-2half" id="left">
-		<button type="button" id="actionChange"class="btn btn-info" style = "position:absolute; bottom:0; width:auto;">Action: <span id = "pact">Claiming</span></button>
+	  <div class="col-md-2half" id="left" style="position:relative;">
+		<button type="button" id="actionChange"class="btn btn-info" style = "position:absolute; bottom:0; width:100%;">Action: <span id = "pact">Claiming</span></button>
 		<ul class="nav nav-tabs" id="leftTab" role="tablist">
 		  <li class="nav-item">
 			<a class="nav-link active" id="resource-tab" data-toggle="tab" href="#resource" role="tab">Resources</a>
@@ -25,15 +25,13 @@
 		  </li>
 		  <li class="nav-item">
 			<a class="nav-link" id="cultech-tab" data-toggle="tab" href="#cultech" role="tab">Culture/Tech</a>
-		  </li>
+		  </li>	
 		</ul>
 		<div class="tab-content" id="leftTabContent">
 		  <div class="tab-pane fade show active" id="resource" role="tabpanel"> 
 			<input type="checkbox" checked data-toggle="toggle" id = "resgood" data-on="Resources" data-off="Goods" data-onstyle="info" data-offstyle="info" data-width="100%" >
 			<ul class = "list-group list-group-flush" id = "mangold">
-			<li class="list-group-item d-flex justify-content-around">
-				Gold: <span id = "gold" style="color:gold;">0</span>
-			</li>
+			
 			<li class="list-group-item d-flex justify-content-sm-around">
 				Manpower: <span id = "manpower"style="color:red;">0</span>
 			</li>
