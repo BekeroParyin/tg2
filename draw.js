@@ -172,9 +172,9 @@ function drawTile(y1, x1){
 		if(p.sprites){
 			dDraw = true;
 			switch(t.type){
-				case 'w':
-				case 'a':
-				case 'r': drawDynamic('w', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; //river
+				case 'w': ctx.fillStyle = "#005fc6"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('w', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break;//water
+				case 'a': ctx.fillStyle = "#006adc"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('w', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break;//lAke
+				case 'r': ctx.fillStyle = "#1978DF"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('w', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; //river
 				case 'i': let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.7){ctx.drawImage(sprites2, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.95){ctx.drawImage(sprites2, 112, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} else{ ctx.drawImage(sprites2, 64, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //grass
 				case 's': let tape1 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape1 < .33){ctx.drawImage(sprites2, 16, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape1 <.88){ctx.drawImage(sprites2, 32, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 48, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //steppe
 				case 'd': ctx.drawImage(sprites, 8, 16, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //desert
@@ -188,7 +188,7 @@ function drawTile(y1, x1){
 				case 'c':
 				case 'g': let tape2 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape2 < .33){ctx.drawImage(sprites2, 144, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape2 <.88){ctx.drawImage(sprites2, 160, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 176, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
 				case 'f': if(t.elevation < .175){ ctx.drawImage(sprites2, 128, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
-				else if(t.elevation < .6){ctx.drawImage(sprites2, 64, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);  }
+				else if(t.elevation < .5){ctx.drawImage(sprites2, 64, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);  }
 				else{ ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); }
 				drawDynamic('f', sprites2, 16, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 				break;
@@ -212,7 +212,7 @@ function drawTile(y1, x1){
 				case 'i': if(t.wetness > .1){ctx.fillStyle = "#36a165";} 
 				else{ctx.fillStyle = "#80dd9b"; }
 				break; //hIghland
-				case 'c': if(drawCoasts){ ctx.fillStyle = "tan";} else { ctx.fillStyle = "#3cb371";}  break; //coast
+				case 'c': ctx.fillStyle = "#3cb371";  break; //coast
 				case 'f': ctx.fillStyle = "#005000";
 				if(t.heat > .5 && t.heat < 2.5){
 					let autCols = ["#D45B12", "#C64E0F", "#B8410C", "#AA3409", "#9C2706"];
