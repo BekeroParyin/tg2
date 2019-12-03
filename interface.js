@@ -3,10 +3,19 @@ $("#resgood").change(function() {
 	$('#resource-list').fadeToggle();
 	$('#goods-list').fadeToggle();
 });});
+$("actionChange").click(function(){
+	if(p.action == "claiming"){
+		p.action = "clearing";
+	}
+	else if(p.action == "clearing"){ p.action = "planting"; }
+	else { p.action = "claiming"; }
+	$('#pact').html(cap(p.action));
+});
 function drawLeftBar(){
 	if($('a#resource-tab').hasClass('active')){
 		$('#manpower').html(Math.floor(p.manpower));
 		$('#gold').html(Math.floor(10*p.gold)/10);
+		$('#pact').html(cap(p.action));
 		if(tS.length > 0 && map[tS[0]][tS[1]].owner == p.turn && map[tS[0]][tS[1]].zone > -1 && map[tS[0]][tS[1]].manager == -1){
 			let z = p.zones[map[tS[0]][tS[1]].zone];
 			if(document.getElementById("resgood").checked){

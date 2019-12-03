@@ -382,6 +382,11 @@
 			return name;
 		}
 	}
+	function cap(string) { 
+	  return string[0].toUpperCase() +  
+		string.slice(1); 
+	} 
+	
 	function genCommander(){
 		var skills = [["Attacker", "Leader", "Tactician"],["Defender", "Organizer", "Strategist"]];
 		var level = 6;

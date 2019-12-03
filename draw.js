@@ -153,7 +153,17 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 			for(let k = 0; k < 2; k++){ //left
 				for(let l = 0; l < 2; l++){ //right
 					if(i == upT && j == downT && k == leftT && l == rightT){
-						ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
+						if(i*j*k*l == 1 && type == 'f'){
+							if(Math.round(rand(srand(y*62*157*y*11*x+941*y+1728*x+1921))) == 0){
+								ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
+							}
+							else{
+								ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1+16, 16, 16, dx, dy, p.zoom, p.zoom);
+							}
+						}
+						else{
+							ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
+						}
 						return;
 					}
 				}	
