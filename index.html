@@ -1,173 +1,144 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <title>Terrain Generator 2.0</title>
-  <link href="https://fonts.googleapis.com/css?family=Staatliches&display=swap" rel="stylesheet">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="/public/style.css">
-  
-</head>
-
-<body>
-  <div class="container-fluid h-100" id="main">
-	<div class="row h-100">
-	  <div class="col-md-2half" id="left" style="position:relative;">
-		<button type="button" id="actionChange"class="btn btn-info" style = "position:absolute; bottom:0; width:100%;">Action: <span id = "pact">Claiming</span></button>
-		<ul class="nav nav-tabs" id="leftTab" role="tablist">
-		  <li class="nav-item">
-			<a class="nav-link active" id="resource-tab" data-toggle="tab" href="#resource" role="tab">Resources</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" id="faction-tab" data-toggle="tab" href="#faction" role="tab">Factions</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" id="cultech-tab" data-toggle="tab" href="#cultech" role="tab">Culture/Tech</a>
-		  </li>	
-		</ul>
-		<div class="tab-content" id="leftTabContent">
-		  <div class="tab-pane fade show active" id="resource" role="tabpanel"> 
-			<input type="checkbox" checked data-toggle="toggle" id = "resgood" data-on="Resources" data-off="Goods" data-onstyle="info" data-offstyle="info" data-width="100%" >
-			<ul class = "list-group list-group-flush" id = "mangold">
-			<li class="list-group-item d-flex justify-content-sm-around">
-				Gold: <span id = "gold"style="color:gold;">0</span>
-			</li>
-			<li class="list-group-item d-flex justify-content-sm-around">
-				Manpower: <span id = "manpower"style="color:red;">0</span>
-			</li>
-			</ul>
-			  <ul class="list-group list-group-flush" id = "resource-list"style="display:none">
-				<li class="list-group-item">Size <span id = "size">0/600</span>
-					<div class = "progress" style="background-color:#CDCDCD">
-						<div id = "sizebar" class = "bar bg-info" style = "width:0%;"></div>
-					</div>
-				</li>
-				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex ">
-					<li class = "list-group-item">Wood: </li>
-					<li class = "list-group-item"><span id = "wood"style="font-size:1rem;">0/15</span></li>
-					<li class = "list-group-item"><span id = "woodInc"style="font-size:1rem;">0/2</span></li>
-				</ul>
-				</li>
-				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal">
-					<li class = "list-group-item">Stone: </li>
-					<li class = "list-group-item"><span id = "stone"style="font-size:1rem;">0/15</span></li>
-					<li class = "list-group-item"><span id = "stoneInc"style="font-size:1rem;">0/2</span></li>
-				</ul>
-				</li>
-				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex">
-					<li class = "list-group-item">Food: </li>
-					<li class = "list-group-item"> <span id = "food"style="font-size:1rem;">0/500</span></li>
-					<li class = "list-group-item"><span id = "foodInc"style="font-size:1rem;">0/50</span></li>
-				</ul>
-				</li>
-				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex">
-					<li class = "list-group-item">Population: </li>
-					<li class = "list-group-item"><span id = "pop"style="font-size:1rem;">0/15</span></li>
-					<li class = "list-group-item"><span id = "popInc"style="font-size:1rem;">0/2</span></li>
-				</ul>
-				</li>
-				<li class="list-group-item">
-				<ul class="list-group list-group-horizontal d-flex flex-fill">
-					<li class = "list-group-item">Wellbeing: </li>
-					<li class = "list-group-item"><span id = "wellbeing"style="font-size:1rem;">0/15</span></li>
-					<li class = "list-group-item"><span id = "wellbeingInc"style="font-size:1rem;">0/2</span></li>
-				</ul>
-				</li>
-			</ul>
-			  <ul class="list-group list-group-flush" id = "goods-list" style="background-color: #f1f9fb; display:none">
-				<li class="list-group-item d-flex justify-content-around">
-				  <span class="badge badge-dark">WOOD  <span class="badge badge-light">12/20</span></span>
-				  <span class="badge badge-dark">WOOD INCOME <span class="badge badge-light">12/20</span></span>
-				</li>
-				<li class="list-group-item d-flex justify-content-around">
-				  <span class="badge badge-dark">Wellbeing  <span class="badge badge-light">12/20</span></span>
-				  <span class="badge badge-dark">Wellbeing Income <span class="badge badge-light">12/20</span></span>
-				</li>
-				<li class="list-group-item d-flex justify-content-around">
-				  <span class="badge badge-dark">Stone  <span class="badge badge-light">12/20</span></span>
-				  <span class="badge badge-dark">Stone Income <span class="badge badge-light">12/20</span></span>
-				</li>
-				<li class="list-group-item d-flex justify-content-around">
-				  <span class="badge badge-dark">Food  <span class="badge badge-light">12/20</span></span>
-				  <span class="badge badge-dark">Food Income <span class="badge badge-light">12/20</span></span>
-				</li>
-				<li class="list-group-item d-flex justify-content-around">
-				  <span class="badge badge-dark">Population  <span class="badge badge-light">12/20</span></span>
-				  <span class="badge badge-dark">Population Income <span class="badge badge-light">12/20</span></span>
-				</li>
-			  </ul>
-		  </div>
-		  <div class="tab-pane fade" id="faction" role="tabpanel">
-		  </div>
-		  <div class="tab-pane fade" id="cultech" role="tabpanel">
-		  </div>
-		</div>
-	 </div>
-	  <div class="col-7" id="body">
-		<canvas id="map"></canvas>
-	  </div>
-
-	  <!--Right Bar--->
-	  <div class="col-md-2half" id="right">
-		<ul class="nav nav-tabs" id="rightTab" role="tablist">
-		  <li class="nav-item">
-			<a class="nav-link active" id="selected-tab" data-toggle="tab" href="#selected" role="tab">Selected</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" id="military-tab" data-toggle="tab" href="#military" role="tab">Army/Navy</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" id="character-tab" data-toggle="tab" href="#character" role="tab">Character</a>
-		  </li>
-		</ul>
-
-		<div class="tab-content" id="rightTabContent">
-		  <div class="tab-pane fade show active" id="selected" role="tabpanel">
-			<div id = "building-select">
-			<!-- BUILDING MENU IS HERE---->
-			<canvas id = "rightBar"></canvas>
-			</div> 
-			<div id = "building-upgrade">
-			 <h1> Appraise Building </h1>
-			</div>
-			<div id = "building-special">
-			 <h1> ie market offensive buildings, etc </h1>
-			</div>
-			<div id = "nothing">
-			 <h1> You can't build here </h1>
-			</div>
-		 </div>
-		 <div class="tab-pane fade" id="military" role="tabpanel">
-		  <h1> Armies and Navies </h1>
-		</div>
-		<div class="tab-pane fade" id="character" role="tabpanel">
-		  <h1> Descendant of: </h1>
-		</div>
-	  </div>
-
-	</div>
-
-  </div>
-</div>
-<!-- Bootstrap Scripts -->
-<script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="/public/classes.js"></script>
-<script type="text/javascript" src="/public/AI.js"></script>
-<script type="text/javascript" src="/public/canvas.js"></script>
-<script type="text/javascript" src="/public/draw.js"></script>
-<script type="text/javascript" src="/public/interface.js"></script>
-<script type="text/javascript" src="/public/handler.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-
-</body>
-
+   <head>
+      <title>Terrain Generator 2.0</title>
+      <link href="https://fonts.googleapis.com/css?family=Staatliches&display=swap" rel="stylesheet">
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="/public/style.css">
+   </head>
+   <body>
+      <div class="container-fluid h-100" id="main">
+         <div class="row h-100">
+            <div class="col-md-2half" id="left" style="position:relative;">
+               <button type="button" id="actionChange"class="btn btn-info" style = "position:absolute; bottom:0; width:100%;">Action: <span id = "pact">Claiming</span></button>
+               <ul class="nav nav-tabs" id="leftTab" role="tablist">
+                  <li class="nav-item">
+                     <a class="nav-link active" id="resource-tab" data-toggle="tab" href="#resource" role="tab">Resources</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" id="faction-tab" data-toggle="tab" href="#faction" role="tab">Factions</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" id="cultech-tab" data-toggle="tab" href="#cultech" role="tab">Culture/Tech</a>
+                  </li>
+               </ul>
+               <div class="tab-content" id="leftTabContent" >
+                  <div class="tab-pane fade show active" id="resource" role="tabpanel">
+                     <input type="checkbox" checked data-toggle="toggle" id = "resgood" data-on="Resources" data-off="Goods" data-onstyle="info" data-offstyle="info" data-width="100%" >
+                     <ul class = "list-group list-group-flush" id = "mangold">
+                        <li class="list-group-item d-flex justify-content-sm-around">
+                           Gold: <span id = "gold"style="color:gold;">0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-sm-around">
+                           Manpower: <span id = "manpower"style="color:red;">0</span>
+                        </li>
+                     </ul>
+                     <div id = "resource-list" style="display:none">
+                        <li class="list-group-item">
+                           Size <span id = "size">0/600</span>
+                           <div class = "progress" style="background-color:#CDCDCD">
+                              <div id = "sizebar" class = "bar bg-info" style = "width:0%;"></div>
+                           </div>
+                        </li>
+                        <table id="resTable">
+                           <tr>
+                              <th class = "resLabel">Resource</th>
+                              <th>Value</th>
+                              <th>Income</th>
+                           </tr>
+                           <tr>
+                              <td class="resLabel">Wood:</td>
+                              <td><span id = "wood">0/15</span></td>
+                              <td><span id = "woodInc">0/15</span></td>
+                           </tr>
+                           <tr>
+                              <td class="resLabel">Stone:</td>
+                              <td><span id = "stone">0/15</span></td>
+                              <td><span id = "stoneInc">0/15</span></td>
+                           </tr>
+                           <tr class = "blankRow"></tr>
+                           <tr>
+                              <td class="resLabel">Food:</td>
+                              <td><span id = "food">0/15</span></td>
+                              <td><span id = "foodInc">0/15</span></td>
+                           </tr>
+                           <tr class = "blankRow"></tr>
+                           <tr>
+                              <td class="resLabel">Population:</td>
+                              <td><span id = "pop">0/15</span></td>
+                              <td><span id = "popInc">0/15</span></td>
+                           </tr>
+                           <tr>
+                              <td class="resLabel">Wellbeing:</td>
+                              <td><span id = "wellbeing">0/15</span></td>
+                              <td><span id = "wellbeingInc">0/15</span></td>
+                           </tr>
+                        </table>
+                     </div>
+					 <div id = "goods-list" style="display:none">
+					 </div>
+                     <div class="tab-pane fade" id="faction" role="tabpanel">
+                     </div>
+                     <div class="tab-pane fade" id="cultech" role="tabpanel">
+					 </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-7" id="body">
+               <canvas id="map"></canvas>
+            </div>
+            <!--Right Bar--->
+            <div class="col-md-2half" id="right">
+               <ul class="nav nav-tabs" id="rightTab" role="tablist">
+                  <li class="nav-item">
+                     <a class="nav-link active" id="selected-tab" data-toggle="tab" href="#selected" role="tab">Selected</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" id="military-tab" data-toggle="tab" href="#military" role="tab">Army/Navy</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" id="character-tab" data-toggle="tab" href="#character" role="tab">Character</a>
+                  </li>
+               </ul>
+               <div class="tab-content" id="rightTabContent">
+                  <div class="tab-pane fade show active" id="selected" role="tabpanel">
+                     <div id = "building-select">
+                        <!-- BUILDING MENU IS HERE---->
+                        <canvas id = "rightBar"></canvas>
+                     </div>
+                     <div id = "building-upgrade">
+                        <h1> Appraise Building </h1>
+                     </div>
+                     <div id = "building-special">
+                        <h1> ie market offensive buildings, etc </h1>
+                     </div>
+                     <div id = "nothing">
+                        <h1> You can't build here </h1>
+                     </div>
+                  </div>
+                  <div class="tab-pane fade" id="military" role="tabpanel">
+                     <h1> Armies and Navies </h1>
+                  </div>
+                  <div class="tab-pane fade" id="character" role="tabpanel">
+                     <h1> Descendant of: </h1>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Bootstrap Scripts -->
+      <script src="/socket.io/socket.io.js"></script>
+      <script type="text/javascript" src="/public/classes.js"></script>
+      <script type="text/javascript" src="/public/AI.js"></script>
+      <script type="text/javascript" src="/public/canvas.js"></script>
+      <script type="text/javascript" src="/public/draw.js"></script>
+      <script type="text/javascript" src="/public/interface.js"></script>
+      <script type="text/javascript" src="/public/handler.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+   </body>
 </html>

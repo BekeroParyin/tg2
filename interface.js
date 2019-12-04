@@ -1,9 +1,9 @@
-$(function() {
+$(document).ready(function() {
 $("#resgood").change(function() {
 	$('#resource-list').fadeToggle();
 	$('#goods-list').fadeToggle();
 });});
-$("actionChange").click(function(){
+$(document).on("click", "#actionChange", function(){
 	if(p.action == "claiming"){
 		p.action = "clearing";
 	}

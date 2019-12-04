@@ -52,6 +52,14 @@ a{
 .ul {
 	list-style-type:none;
 }
+#left{
+   background-color: rgb(55,65,67);
+}
+#right{
+	padding:0px;
+	margin:0px;
+	background-color: rgb(55,65,67);
+}
 #resource-list > .list-group-item{
 	list-style-type:none;
 }
@@ -65,4 +73,44 @@ a{
 #resource-list > .list-group-item{
 	height:63px; 
 	font-size:1.1rem;
+}
+#resTable {
+  font-size: 1.15rem;
+  width: 100%;
+  text-align:center;
+  background-color: rgb(55,65,67);
+  color: #fff;
+}
+
+#resTable td {
+  padding: 4px;
+}
+.resLabel{
+	text-align:left;
+	padding-left:12px!important;
+	border-left: 0px !important;
+	border-right: 0px !important;
+}
+#resTable tr{
+  border-top: 1px solid transparent;
+  transition: all ease 150ms;
+}
+#resTable tr:not(:first-child):hover {
+    border: 1px white solid;
+}
+#resTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size:1.2rem;
+}
+.blankRow{
+	height:20px !important;
+}
+*{  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

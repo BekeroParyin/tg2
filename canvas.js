@@ -6,7 +6,7 @@
 			c.width = $("#body").width();
 			c.height = $("#body").height();
 			 r.width = $("#right").width();
-			 r.height = $("#right").height();
+			 r.height = $("#right").height() - 1.5*($("#rightTab").height());
 			// l.width = $("#left").width();
 			// l.height = $("#left").height();
 			var ctx = c.getContext("2d");
