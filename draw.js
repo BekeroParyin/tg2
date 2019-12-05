@@ -191,7 +191,7 @@ function drawTile(y1, x1){
 				case 'h':  ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				ctx.drawImage(sprites, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				break; //hill
-				case 'k': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break; //knoll
+				case 'k': ctx.fillStyle = "#6b8e23"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('k', sprites2, 96, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; //knoll
 				case 'm': ctx.drawImage(sprites, 16, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 					ctx.drawImage(sprites, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				break;
