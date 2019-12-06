@@ -196,7 +196,7 @@ var MAPSIZE = 1000;
 				if(p.zoom > 6 && event.ctrlKey){ p.yView = safeC(p.yView + 12); drawDir = -1;}
 			}
 			else if(event.keyCode == 90){ //Z
-				if(p.zoom < 48 ){
+				if(p.zoom < 200 ){
 					p.zoom++;
 					drawDelta = true;
 					drawDir = -1;
@@ -700,7 +700,7 @@ var MAPSIZE = 1000;
 					drawDir = -1;
 				}
 			}
-			else if(p.zoom < 48 ){
+			else if(p.zoom < 200 ){
 				p.zoom++;
 				drawDelta = true;
 				drawDir = -1;

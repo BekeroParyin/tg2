@@ -31,6 +31,56 @@ function drawLeftBar(){
 				$('#popInc').html(Math.round(z.income.population));
 				$('#wellbeing').html(Math.round(z.res.wellbeing));
 				$('#wellbeingInc').html(Math.round(100*z.income.wellbeing)/100);
+				let max = 0; let sMax = 0; let tMax = 0; let fMax = 0; let f = [-1, -1]; let s = [-1, -1]; let t = [-1, -1]; let fourth = [-1, -1];
+				for(let i = 0; i < z.buildingNums.length; i++){
+					for(let j = 0; j < z.buildingNums[i].length; j++){
+						if(i+j > 0){
+							let ape = z.buildingNums[i][j];
+							if(ape > max){
+								fMax = tMax; fourth = t;
+								tMax = sMax; t = s;
+								sMax = max; s = f;
+								max = ape; f = [i, j];
+							}
+							else if(ape > sMax){
+								fMax = tMax; fourth = t;
+								tMax = sMax; t = s;
+								sMax = ape; s = [i, j];
+							}
+							else if(ape > tMax){
+								fMax = tMax; fourth = t;
+								tMax = ape; t = [i, j];
+							}
+							else if(ape > fMax){
+								fMax = ape; fourth = [i, j];
+							}
+						}
+					}
+				}
+				$("#buildingsInZone").hide();
+				if(max > 0){
+					$("#2mostcom").html("");
+					$("#2most").html("");
+					$("#3mostcom").html("");
+					$("#3most").html("");
+					$("#4mostcom").html("");
+					$("#4most").html("");
+					$("#buildingsInZone").show();
+					$("#mostcom").html(max);
+					$("#most").html(buildings[f[0]][f[1]].name);
+					if(sMax > 0){
+						$("#2mostcom").html(sMax);
+						$("#2most").html(buildings[s[0]][s[1]].name);
+						if(tMax > 0){
+							$("#3mostcom").html(tMax);
+							$("#3most").html(buildings[t[0]][t[1]].name);
+							if(fMax > 0){
+								$("#4mostcom").html(fMax);
+								$("#4most").html(buildings[fourth[0]][fourth[1]].name);
+							}
+						}
+					}
+				}
 			}
 		}
 	}

@@ -81,9 +81,15 @@ a{
   background-color: rgb(55,65,67);
   color: #fff;
 }
-
-#resTable td {
-  padding: 4px;
+#buildingsInZone { 
+  font-size: 1.15rem;
+  width: 100%;
+  text-align:left;
+  background-color: rgb(55,65,67);
+  color: #fff;
+}
+#buildingsInZone td{
+	padding: 4px;
 }
 .resLabel{
 	text-align:left;

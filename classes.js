@@ -13,7 +13,7 @@
 	var buildings = [[], [], [], []];
 	var bNames = [["Road","Farm", "Orchard", "Lumber Mill","Granary","Warehouse","Mine","Metalworks","Market", "Bazaar", "Stable", "Spice Plantation", "Silk Orchard", "Ebony Orchard"],
 	
-	["Housing","Plaza","Tax Office","Dock","Temple","Town Office","Manor", "Woodworker's Shop", "Perfumery", "Leather Worker", "Tavern", "Winery", "Weavery", "Theatre", "Library"],
+	["House","Plaza","Tax Office","Dock","Temple","Town Office","Manor", "Woodworker's Shop", "Perfumery", "Leather Worker", "Tavern", "Winery", "Weavery", "Theatre", "Library"],
 	
 	["Palisade","Low Wall","High Wall","Gatehouse","Moat","Guard Tower","Small Keep","Castle"],
 	
@@ -682,6 +682,7 @@
 		this.taxes = [50, 50, 50, 50, 50, 50]; //Wood, Food, Gold, Copper, Bronze, Iron
 		this.size = 0;
 		this.maxSize = 600;
+		this.buildingNums = [[], [], [], []];
 		this.development = 0;
 		this.income = new Resources();
 		this.res = new Resources();
@@ -1850,9 +1851,7 @@
 									zStack[i].income.population	 += .01;
 									zStack[i].income.food += .01;
 									switch(t.type){
-										case 'f': zStack[i].income.wood+=.05;
-										case 'w':
-										case 'r': zStack[i].income.food++; break;
+										case 'f': zStack[i].income.wood+=.05; zStack[i].income.food+=2; break;
 										case 'k':
 										case 'h': zStack[i].income.stone += .009;
 										case 'c':
@@ -1860,6 +1859,8 @@
 										case 'g': zStack[i].income.manpower+=.01;zStack[i].income.population+=.01; break;
 									}
 									if(t.building[0] != -1){
+										zStack[i].buildingNums[t.building[0]][t.building[1]] = zStack[i].buildingNums[t.building[0]][t.building[1]] || 0;
+										zStack[i].buildingNums[t.building[0]][t.building[1]]++;
 										for(let r = 0; r < Math.min(4, t.building[2]); r++){
 											zStack[i].development++;
 											var ins = getValue(safeC(a+y), safeC(b+x), r, p); //getValue calculates building incomes
