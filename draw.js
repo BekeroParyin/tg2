@@ -151,8 +151,15 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 	}
 	else if(type == 'b'){
 		let b0 = map[y][x].building[0]; let b1 = map[y][x].building[1];
-		if(b0 == 0 && b1 == 0){
-			[leftT, rightT, upT, downT] = [((map[y][safeC(x-1)].building[0] == b0) && map[y][safeC(x-1)].building[1] == b1), ((map[y][safeC(x+1)].building[0] == b0) && map[y][safeC(x+1)].building[1] == b1), ((map[safeC(y-1)][x].building[0] == b0) && map[safeC(y-1)][x].building[1] == b1), ((map[safeC(y+1)][x].building[0] == b0) && map[safeC(y+1)][x].building[1] == b1)];
+		[leftT, rightT, upT, downT] = [((map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 0), ((map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 0), ((map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 0), ((map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 0)];
+		if(!(b0 == 0 && b1 == 0)){
+			upT = upT && !downT;
+			leftT = leftT && !(upT || downT);
+			rightT = rightT && !(upT || downT);
+			if(leftT && rightT){
+				leftT = (x+y) % 2 == 0;
+				rightT = !leftT;
+			}
 		}
 	}
 	else{
@@ -332,11 +339,11 @@ function drawTile(y1, x1){
 			var b0 = t.building[0];
 			var b1 = t.building[1];
 			var onestop = false;
-			if(b0 == 0 && b1 == 0){
+			if(b0 == 0 && b1 == 0){ //road
 				drawDynamic('b', sprites2, 160, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 			}
-			else if(b0 == 1 && b1 == 0){
-				ctx.drawImage(sprites2, 16, 176, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+			else if(b0 == 1 && b1 == 0){ //house
+				drawDynamic('b', sprites2, 192, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 			}
 			else if(((b0 == 2) && b1 <= 2*t.building[0]) || (b0 == 1 && b1 == 3)){
 				var girth = buildings[b0][b1].draw[1];
@@ -375,18 +382,10 @@ function drawTile(y1, x1){
 				}
 			}
 			else if(b0 == 0 && (b1 == 2 || b1 == 12 || b1 == 13)){ //Orchard
-				ctx.fillStyle = "#B7A99B";
-				if(b1 ==2){
-					ctx.fillStyle = "#005000";
-				}
-				else if(b1 == 13){
-					ctx.fillStyle = "#604E42";
-				}
-				for(let i = 0; i < 2; i++){
-					for(let j = 0; j < 2; j++){
-						ctx.fillRect((dX + .2*(2*i+1))*p.zoom, (dY+((2*j+1)*.2)) * p.zoom, p.zoom*.2, p.zoom*.2);
-					}
-				}
+				ctx.drawImage(sprites2, 0, 208, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+			}
+			else if(b0 == 0 && b1 == 4){//granary
+				ctx.drawImage(sprites2, 16, 208, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 			}
 			else if(b0 == 0 && b1 == 9){ //bazaar
 				var girth = buildings[b0][b1].draw[1];

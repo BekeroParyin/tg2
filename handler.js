@@ -200,6 +200,9 @@ var MAPSIZE = 1000;
 					p.zoom++;
 					drawDelta = true;
 					drawDir = -1;
+					if(p.zoom > 60){
+						p.zoom += 3;
+					}
 				}
 			}
 			else if(event.keyCode == 88){ //X
@@ -207,6 +210,9 @@ var MAPSIZE = 1000;
 					p.zoom--;
 					drawDelta = true; 
 					drawDir = -1;
+					if(p.zoom > 60){
+						p.zoom -= 3; 
+					}
 				}
 			}
 			else if(event.keyCode == 68){ //D

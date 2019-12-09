@@ -138,8 +138,8 @@
 	buildings[0][13].description ="Ebony Orchard";
 
 	//SOCIAL
-	buildings[1][0].cost = [1,0,0,2,[-1,0]];
-	buildings[1][0].description = "Housing";
+	buildings[1][0].cost = [0,0,0,0,[-1,0]];
+	buildings[1][0].description = "House";
 	buildings[1][1].cost = [4,0,0,5,[-1,0]];
 	buildings[1][1].description = "Place by Houses. Gives Wellbeing";
 	buildings[1][2].cost = [3,0,5,3,[-1,0]];
@@ -788,7 +788,7 @@
 	}
 	function getValue(y, x, r, playerParam){
 		let p = playerParam;
-		var vals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Wood, Food, 2-Manpower, Population, 4-Gold, Well Being, Stone, market cap // 8-culture, 9-tech, 10- horses
+		var vals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Wood, Food, 2-Manpower, Population, 4-Gold, 5-Well Being, Stone, market cap // 8-culture, 9-tech, 10- horses
 		var imVals = [0, 0, 0]; //Wood, Food, Manpower
 		var rmVals = [0, 0, 0, 0, 0, 0]; //Wood, Food, Population, size, market cap, horses
 		var luxVals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Copper Ore, Bronze Ore, 2Iron Ore, rHd, rLux, 5-rPerf, 6-Copper, Bronze, Iron, Hides, 10-Perf, Lux, 12-rSk, Sk, 14-Sp
@@ -964,15 +964,15 @@
 		}
 		else if(map[y][x].building[0] == 1){ 
 			switch(map[y][x].building[1]){
-				case 0:rmVals[2] += 6.5; //House
-				vals[3] += .25;	vals[4] += 1; vals[2] += .01; imVals[2]+=.3;
+				case 0:rmVals[2] += 6.5; //house
+				vals[3] += .25;	vals[4] += 1; vals[5] += .01; vals[2] += .01; imVals[2]+=.3;
 				var temp, temp1;
 				for(let t = -1; t < 2; t+=2){
 					for(let u = 0; u < 2; u++){
 						if(u == 0){ temp = safeC(y+t); temp1 = x;} else { temp = y; temp1 = safeC(x+t); }
 						switch(map[temp][temp1].building[0]){
-							case 0:vals[4]+=.2; break;
-							case 1:vals[5]+=.02; if(map[temp][temp1].building[1] == 0 || map[temp][temp1].building[1] == 2){ vals[5] -= .0125; vals[2]+=.01; }break;
+								case 0:vals[4]+=.2; break;
+							case 1:vals[5]+=.025; if(map[temp][temp1].building[1] == 0 || map[temp][temp1].building[1] == 2){ vals[5] -= (.045 + .01*map[temp][temp1].building[1]); vals[2]+=.01; }break;
 							case 2:vals[2]+=.05; vals[5] += .05; break;
 							case 3:vals[2]+=.05; break;
 						}

@@ -1,6 +1,7 @@
 body {
 	height: 100vh;
 	overflow-y:hidden;
+	background-color: rgb(55,65,67);
 }
 h1{
 	color: white;
@@ -16,7 +17,6 @@ a{
 .row div{
 	padding: 0px;
 	border: 0px black solid;
-	background-color: rgb(41,49,52);
 }
 #selected div{
 	display: none;
@@ -74,7 +74,7 @@ a{
 	height:63px; 
 	font-size:1.1rem;
 }
-#resTable {
+.resTable {
   font-size: 1.15rem;
   width: 100%;
   text-align:center;
@@ -97,14 +97,14 @@ a{
 	border-left: 0px !important;
 	border-right: 0px !important;
 }
-#resTable tr{
+.resTable tr{
   border-top: 1px solid transparent;
   transition: all ease 150ms;
 }
-#resTable tr:not(:first-child):hover {
+.resTable tr:not(:first-child):hover {
     border: 1px white solid;
 }
-#resTable th {
+.resTable th {
   padding-top: 12px;
   padding-bottom: 12px;
   font-size:1.2rem;

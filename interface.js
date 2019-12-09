@@ -1,7 +1,13 @@
 $(document).ready(function() {
 $("#resgood").change(function() {
-	$('#resource-list').fadeToggle();
-	$('#goods-list').fadeToggle();
+	if($(this).is(':checked')){
+		$('#goods-list').fadeToggle();
+		$('#resource-list').delay(500).fadeToggle();
+	}
+	else{
+		$('#resource-list').fadeToggle();
+		$('#goods-list').delay(500).fadeToggle();
+	}
 });});
 $(document).on("click", "#actionChange", function(){
 	if(p.action == "claiming"){
@@ -25,11 +31,37 @@ function drawLeftBar(){
 				$('#woodInc').html(Math.round(20*z.income.wood)/20+"/"+Math.floor(20*z.max.wood)/20);
 				$('#stone').html(Math.floor(10*z.res.stone)/10);
 				$('#stoneInc').html(Math.round(20*z.income.stone)/20);
+				if(Math.floor(z.res.food) <= 0){
+					$("#food").css({'color': 'red', 'font-size': '150%'});
+				}
+				else{ $("#food").css({'color': '#fff', 'font-size': '100%'}); }
 				$('#food').html(Math.floor(z.res.food)+"/"+Math.floor(z.rMax.food));
+				if(Math.round(z.income.food) <= 0 || Math.round(z.income.food) >= (z.max.food-1)){
+					$("#foodInc").css({'color': 'red', 'font-size': '150%'});
+				}
+				else{ $("#foodInc").css({'color': '#fff', 'font-size': '100%'}); }
 				$('#foodInc').html(Math.round(z.income.food)+"/"+Math.floor(z.max.food));
+				
+				if(Math.floor(z.res.population) >= z.rMax.population){
+					$("#pop").css({'color': 'red', 'font-size': '150%'});
+				}
+				else{ $("#pop").css({'color': '#fff', 'font-size': '100%'}); }
+				$('#pop').html(Math.floor(z.res.population)+"/"+Math.floor(z.rMax.population));
+				if(Math.round(z.income.population) < 0){
+					$("#popInc").css({'color': 'red', 'font-size': '150%'});
+				}
+				else{ $("#popInc").css({'color': '#fff', 'font-size': '100%'}); }
 				$('#pop').html(Math.floor(z.res.population)+"/"+Math.floor(z.rMax.population));
 				$('#popInc').html(Math.round(z.income.population));
+				if(Math.round(z.res.wellbeing) < 0){
+					$("#wellbeing").css({'color': 'red', 'font-size': '150%'});
+				}
+				else{ $("#wellbeing").css({'color': '#fff', 'font-size': '100%'}); }
 				$('#wellbeing').html(Math.round(z.res.wellbeing));
+				if(Math.round(z.income.wellbeing) < 0){
+					$("#wellbeingInc").css({'color': 'red', 'font-size': '150%'});
+				}
+				else{ $("#wellBeingInc").css({'color': '#fff', 'font-size': '100%'}); }
 				$('#wellbeingInc').html(Math.round(100*z.income.wellbeing)/100);
 				let max = 0; let sMax = 0; let tMax = 0; let fMax = 0; let f = [-1, -1]; let s = [-1, -1]; let t = [-1, -1]; let fourth = [-1, -1];
 				for(let i = 0; i < z.buildingNums.length; i++){
@@ -81,6 +113,30 @@ function drawLeftBar(){
 						}
 					}
 				}
+			}
+			else{
+				$("#mCap").html(Math.floor(z.res.marketCap)+"/"+Math.floor(z.rMax.marketCap));
+				$("#mCapInc").html(Math.floor(z.income.marketCap));
+				$("#hide").html(Math.floor(20*z.res.hides)/20);
+				$("#hideInc").html(Math.floor(20*z.income.hides)/20);
+				$("#lWood").html(Math.floor(20*z.res.woods)/20);
+				$("#lWoodInc").html(Math.floor(20*z.income.woods)/20);
+				$("#perf").html(Math.floor(20*z.res.perfs)/20);
+				$("#perfInc").html(Math.floor(20*z.income.perfs)/20);
+				$("#silk").html(Math.floor(20*z.res.silks)/20);
+				$("#silkInc").html(Math.floor(20*z.income.silks)/20);
+				$("#spice").html(Math.floor(20*z.res.spices)/20);
+				$("#spiceInc").html(Math.floor(20*z.income.spices)/20);
+				$("#pearl").html(Math.floor(20*z.res.pearls)/20);
+				$("#pearlInc").html(Math.floor(20*z.income.pearls)/20);
+				$("#copper").html(Math.floor(20*z.res.copper[0])/20);
+				$("#copperInc").html(Math.floor(20*z.income.copper[0])/20);
+				$("#bronze").html(Math.floor(20*z.res.bronze[0])/20);
+				$("#bronzeInc").html(Math.floor(20*z.income.bronze[0])/20);
+				$("#iron").html(Math.floor(20*z.res.iron[0])/20);
+				$("#ironInc").html(Math.floor(20*z.income.iron[0])/20);
+				$("#horse").html(z.res.horses+"/"+Math.floor(z.rMax.horses));
+				$("#horseInc").html(Math.floor(z.income.horses));
 			}
 		}
 	}
