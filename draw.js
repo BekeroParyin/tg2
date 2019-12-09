@@ -148,7 +148,7 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 	else if(type == 'h' || type == 'k'){
 		let elev = (type=='h')?.6 : .5;
 		[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].elevation >= elev), (map[y][safeC(x+1)].elevation >= elev), (map[safeC(y-1)][x].elevation >= elev), (map[safeC(y+1)][x].elevation >= elev)];
-		[bL, bR, tL, tR] = [(map[safeC(y+1)][safeC(x-1)].elevation >= elev), (map[safeC(y+1)][safeC(x+1)].elevation >= elev), (map[safeC(y-1)][safeC(x-1)].elevation >= elev), (map[safeC(y+1)][safeC(x+1)].elevation >= elev)]
+		[bL, bR, tL, tR] = [(map[safeC(y+1)][safeC(x-1)].elevation < elev), (map[safeC(y+1)][safeC(x+1)].elevation < elev), (map[safeC(y-1)][safeC(x-1)].elevation < elev), (map[safeC(y+1)][safeC(x+1)].elevation < elev)]
 	}
 	else if(type == 'b'){
 		let b0 = map[y][x].building[0]; let b1 = map[y][x].building[1];
@@ -182,11 +182,11 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 						else{
 							ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
 						}
-						if(type != 'h'){
+						if((type != 'h' && type != 'k') || (i+j+k+l) < 4){
 							return;
 						}
 						else{
-							i = h = k = l = 2;
+							i = j = k = l = 2;
 						}
 					}
 				}	
@@ -197,13 +197,7 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 		ctx.drawImage(img, 256, y1, 16, 16, dx, dy, p.zoom, p.zoom);
 	}
 	if(bR){
-		ctx.drawImage(img, 256, y1, 16, 16, dx, dy, p.zoom, p.zoom);
-	}
-	if(tL){
-		ctx.drawImage(img, 256, y1, 16, 16, dx, dy, p.zoom, p.zoom);
-	}
-	if(tR){
-		ctx.drawImage(img, 256, y1, 16, 16, dx, dy, p.zoom, p.zoom);
+		ctx.drawImage(img, 272, y1, 16, 16, dx, dy, p.zoom, p.zoom);
 	}
 }
 function drawTile(y1, x1){
@@ -224,9 +218,9 @@ function drawTile(y1, x1){
 				case 'd':
 				case 's': let tape1 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape1 < .33){ctx.drawImage(sprites2, 16, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape1 <.88){ctx.drawImage(sprites2, 32, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 48, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //steppe
 				case 'l':
-				case 'h': ctx.fillStyle = "rgb(130, 171, 35)"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('h', sprites2, 112, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				case 'h': ctx.fillStyle = "#82ab23"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('h', sprites2, 112, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				break; //hill
-				case 'k': ctx.fillStyle = "rgb(74,186,68)"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				case 'k': ctx.fillStyle = "#36a165"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				drawDynamic('k', sprites2, 96, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; //knoll
 				case 'm':  ctx.fillStyle = "#305615"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); ctx.drawImage(sprites2, 0, 128, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				break;
