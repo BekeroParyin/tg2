@@ -171,17 +171,7 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 			for(let k = 0; k < 2; k++){ //left
 				for(let l = 0; l < 2; l++){ //right
 					if(i == upT && j == downT && k == leftT && l == rightT){
-						if(i*j*k*l == 1 && type == 'f'){
-							if(Math.round(rand(srand(y*62*157*y*11*x+941*y+1728*x+1921))) == 0){
-								ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
-							}
-							else{
-								ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1+16, 16, 16, dx, dy, p.zoom, p.zoom);
-							}
-						}
-						else{
-							ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
-						}
+						ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
 						if((type != 'h' && type != 'k') || (i+j+k+l) < 4){
 							return;
 						}
@@ -395,10 +385,11 @@ function drawTile(y1, x1){
 				}
 			}
 			else if(b0 == 0 && (b1 == 2 || b1 == 12 || b1 == 13)){ //Orchard
-				ctx.drawImage(sprites2, 0, 208, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				let xSpot = Math.floor(day/100)*16;
+				ctx.drawImage(sprites2, xSpot, 224, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 			}
 			else if(b0 == 0 && b1 == 4){//granary
-				ctx.drawImage(sprites2, 16, 208, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				drawDynamic('b', sprites2, 208, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 			}
 			else if(b0 == 0 && b1 == 9){ //bazaar
 				var girth = buildings[b0][b1].draw[1];
@@ -409,8 +400,12 @@ function drawTile(y1, x1){
 				ctx.fillRect(dX*p.zoom, (.45 + dY) * p.zoom, p.zoom, p.zoom*.1);
 			}
 			else if(b0 == 0 && b1 == 1){//farm
-				var girth = buildings[b0][b1].draw[1];
-				ctx.drawImage(sprites, 48, 0, 8, 8,(dX + (1-girth)/2)*p.zoom, ((1-girth)/2 + dY) * p.zoom, p.zoom*girth, p.zoom*girth);
+				let xSpot = Math.floor(day/100)*16;
+				ctx.drawImage(sprites2, 0, 256, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				ctx.drawImage(sprites2, xSpot, 272, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+			}
+			else if(b0 == 1 && b1 == 10){ //tavern
+				drawDynamic('b', sprites2, 240, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 			}
 			else {
 				var girth = buildings[b0][b1].draw[1];
