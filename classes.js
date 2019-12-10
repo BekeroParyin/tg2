@@ -23,8 +23,8 @@
 			buildings[i][j] = new Building();
 			buildings[i][j].name = bNames[i][j];
 			buildings[i][j].type = i;
-			buildings[i][j].cost = [999,999,999,999,[-1,0]];
 			buildings[i][j].description = "Incomplete";
+			buildings[i][j].cost = [999,999,999,999,[-1,0]];
 		}
 	}
 	function Weapon(){
