@@ -55,9 +55,9 @@ var MAPSIZE = 1000;
 				t: r,
 			});
 		}
-		function startAI(numb){
+		function dayChange(d){
 			socket.emit('startAI', {
-				num: numb,
+				day: d,
 			});
 		}
 		socket.on('goldChange', function(data){

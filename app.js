@@ -127,8 +127,8 @@ var io = require('socket.io')(server,{});
 		socket.on('tHunt', function(data){
 			hunters[data.s] = data.n;
 		});
-		socket.on('startAI', function(data){
-			day = 0;
+		socket.on('dayChange', function(data){
+			day = data.day;
 		});
 		socket.on('retT', function(data){
 			treasures.push(data.t);

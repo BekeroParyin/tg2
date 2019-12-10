@@ -141,7 +141,9 @@ function drawMap(newDir){
 	drawNavyPath();
 	drawing = false;
 }
-function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, where on the img sheet to start, tileX, tileY, drawposX, drawposY
+function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img sheet, where on the img sheet to start, tileX, tileY, drawposX, drawposY
+	let x1 = x11 || 0;
+	var b0 = -1; var b1 = -1;
 	if(type == 'w' || type == 'r' || type == 'a'){
 		[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].elevation < 0), (map[y][safeC(x+1)].elevation < 0), (map[safeC(y-1)][x].elevation < 0), (map[safeC(y+1)][x].elevation < 0)];
 	}
@@ -149,21 +151,38 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 		let elev = (type=='h')?.6 : .5;
 		[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].elevation >= elev), (map[y][safeC(x+1)].elevation >= elev), (map[safeC(y-1)][x].elevation >= elev), (map[safeC(y+1)][x].elevation >= elev)];
 		[bL, bR, tL, tR] = [(map[safeC(y+1)][safeC(x-1)].elevation < elev), (map[safeC(y+1)][safeC(x+1)].elevation < elev), (map[safeC(y-1)][safeC(x-1)].elevation < elev), (map[safeC(y+1)][safeC(x+1)].elevation < elev)]
+		bL = bL && leftT && downT;
+		bR = bR && rightT && downT;
+		tL = tL && upT && leftT;
+		tR = tR && upT && rightT;
 	}
-	else if(type == 'b'){
-		let b0 = map[y][x].building[0]; let b1 = map[y][x].building[1];
-		[leftT, rightT, upT, downT] = [((map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 0), ((map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 0), ((map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 0), ((map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 0)];
-		if(!(b0 == 0 && b1 == 0)){
-			upT = upT && !downT;
-			leftT = leftT && !(upT || downT);
-			rightT = rightT && !(upT || downT);
-			if(leftT && rightT){
-				leftT = (x+y) % 2 == 0;
-				rightT = !leftT;
+	else if(type == 'b'){ //building
+		b0 = map[y][x].building[0]; b1 = map[y][x].building[1];
+		if(b0 == 0 && b1 == 1){
+			[leftT, rightT, upT, downT] = [((map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 1), ((map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 1), ((map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 1), ((map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 1)];
+			[bL, bR, tL, tR] = [!((map[safeC(y+1)][safeC(x-1)].building[0] == 0) && map[safeC(y+1)][safeC(x-1)].building[1] == 1), //bL
+			!((map[safeC(y+1)][safeC(x+1)].building[0] == 0) && map[safeC(y+1)][safeC(x+1)].building[1] == 1), //bR
+			!((map[safeC(y-1)][safeC(x-1)].building[0] == 0) && map[safeC(y-1)][safeC(x-1)].building[1] == 1), //tL
+			!((map[safeC(y-1)][safeC(x+1)].building[0] == 0) && map[safeC(y-1)][safeC(x+1)].building[1] == 1)]; //tR
+			bL = bL && leftT && downT;
+			bR = bR && rightT && downT;
+			tL = tL && upT && leftT;
+			tR = tR && upT && rightT;
+		}
+		else{
+			[leftT, rightT, upT, downT] = [((map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 0), ((map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 0), ((map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 0), ((map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 0)];
+			if(!(b0 == 0 && b1 == 0)){
+				upT = upT && !downT;
+				leftT = leftT && !(upT || downT);
+				rightT = rightT && !(upT || downT);
+				if(leftT && rightT){
+					leftT = (x+y) % 2 == 0;
+					rightT = !leftT;
+				}
 			}
 		}
 	}
-	else{
+	else{ //trees prob/ generic
 		[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].type == type), (map[y][safeC(x+1)].type == type), (map[safeC(y-1)][x].type == type), (map[safeC(y+1)][x].type == type)];
 	}
 	for(let i = 0; i < 2; i++){ //up
@@ -171,8 +190,8 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 			for(let k = 0; k < 2; k++){ //left
 				for(let l = 0; l < 2; l++){ //right
 					if(i == upT && j == downT && k == leftT && l == rightT){
-						ctx.drawImage(img, (l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
-						if((type != 'h' && type != 'k') || (i+j+k+l) < 4){
+						ctx.drawImage(img, x1+(l+2*k+4*j+8*i)*16, y1, 16, 16, dx, dy, p.zoom, p.zoom);
+						if((!(b0 == 0 && b1 == 1) && type != 'h' && type != 'k')){
 							return;
 						}
 						else{
@@ -188,6 +207,12 @@ function drawDynamic(type, img, y1, x, y, dx, dy){ //type of tile, img sheet, wh
 	}
 	if(bR){
 		ctx.drawImage(img, 272, y1, 16, 16, dx, dy, p.zoom, p.zoom);
+	}
+	if(tL){
+		ctx.drawImage(img, 288, y1, 16, 16, dx, dy, p.zoom, p.zoom);
+	}
+	if(tR){
+		ctx.drawImage(img, 304, y1, 16, 16, dx, dy, p.zoom, p.zoom);
 	}
 }
 function drawTile(y1, x1){
@@ -208,11 +233,11 @@ function drawTile(y1, x1){
 				case 'd':
 				case 's': let tape1 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape1 < .33){ctx.drawImage(sprites2, 16, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape1 <.88){ctx.drawImage(sprites2, 32, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 48, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //steppe
 				case 'l':
-				case 'h': ctx.fillStyle = "#82ab23"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('h', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				case 'h': ctx.fillStyle = "#82ab23"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('h', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 				break; //hill
 				case 'k': ctx.fillStyle = "#36a165"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				drawDynamic('k', sprites2, 64, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; //knoll
-				case 'm':  ctx.fillStyle = "#305615"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); ctx.drawImage(sprites2, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
+				case 'm':  ctx.fillStyle = "#305615"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); ctx.drawImage(sprites2, 192, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 				break;
 				case 'c':
 				case 'g': let tape2 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape2 < .33){ctx.drawImage(sprites2, 144, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape2 <.88){ctx.drawImage(sprites2, 160, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 176, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break;
@@ -340,10 +365,10 @@ function drawTile(y1, x1){
 			var b1 = t.building[1];
 			var onestop = false;
 			if(b0 == 0 && b1 == 0){ //road
-				drawDynamic('b', sprites2, 160, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+				drawDynamic('b', sprites2, 128, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 			}
 			else if(b0 == 1 && b1 == 0){ //house
-				drawDynamic('b', sprites2, 192, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+				drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 			}
 			else if(((b0 == 2) && b1 <= 2*t.building[0]) || (b0 == 1 && b1 == 3)){
 				var girth = buildings[b0][b1].draw[1];
@@ -381,12 +406,15 @@ function drawTile(y1, x1){
 					ctx.fillRect((dX + (1-girth)/2)*p.zoom, ((1-girth)/2 + dY) * p.zoom, p.zoom*girth, p.zoom*girth);
 				}
 			}
-			else if(b0 == 0 && (b1 == 2 || b1 == 12 || b1 == 13)){ //Orchard
-				let xSpot = Math.floor(day/100)*16;
-				ctx.drawImage(sprites2, xSpot, 224, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+			else if(b0 == 0 && (b1 == 2 || b1 == 11 || b1 == 12 || b1 == 13)){ //Orchard
+				let xSpot = 64 + Math.floor(day/100)*16;
+				if(b1 >= 11){
+					xSpot += (b1-10)*64;
+				}
+				ctx.drawImage(sprites2, xSpot, 144, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 			}
 			else if(b0 == 0 && b1 == 4){//granary
-				drawDynamic('b', sprites2, 208, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+				drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), 144);
 			}
 			else if(b0 == 0 && b1 == 9){ //bazaar
 				var girth = buildings[b0][b1].draw[1];
@@ -396,10 +424,17 @@ function drawTile(y1, x1){
 				ctx.fillRect((dX + .45)*p.zoom, dY * p.zoom, .1*p.zoom, p.zoom);
 				ctx.fillRect(dX*p.zoom, (.45 + dY) * p.zoom, p.zoom, p.zoom*.1);
 			}
+			else if(b0 == 0 && b1 == 3){ //lumber mill
+				ctx.drawImage(sprites2, 0, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+			}
+			else if(b0 == 1 && (b1 == 7 || b1 == 8 || b1 == 9 || b1 == 12)){
+				let xSpot = 16 + Math.min(3, b1-7)*16;
+				ctx.drawImage(sprites2, xSpot, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+			}
 			else if(b0 == 0 && b1 == 1){//farm
 				let xSpot = Math.floor(day/100)*16;
-				ctx.drawImage(sprites2, 0, 256, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
-				ctx.drawImage(sprites2, xSpot, 272, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				drawDynamic('b', sprites2, 160, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+				ctx.drawImage(sprites2, xSpot, 144, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 			}
 			else if(b0 == 1 && b1 == 10){ //tavern
 				drawDynamic('b', sprites2, 240, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
