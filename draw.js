@@ -416,6 +416,9 @@ function drawTile(y1, x1){
 			else if(b0 == 0 && b1 == 4){//granary
 				drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), 144);
 			}
+			else if(b0 == 1 && b1 == 1){
+				ctx.drawImage(sprites2, 80, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+			}
 			else if(b0 == 0 && b1 == 9){ //bazaar
 				var girth = buildings[b0][b1].draw[1];
 				ctx.fillStyle = buildings[b0][b1].draw[0];
