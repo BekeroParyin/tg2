@@ -333,114 +333,85 @@ function drawTile(y1, x1){
 		ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);
 	}
 	if(p.draw == "normal" || p.draw == "zones" || p.draw == "resources"){
-		if(t.owner > -1){
+		if(t.owner > -1){ //DRAW COUNTRY BORDERS
 			ctx.fillStyle = colors[Math.min(colors.length-1,t.owner)];
 			if(map[safeC(y + 1)][x].owner != t.owner){
-				ctx.fillRect((dX) * (p.zoom), (dY+(5/6)) * (p.zoom), (p.zoom), (p.zoom)/6);
+				ctx.fillRect((dX) * (p.zoom), (dY+(13/14)) * (p.zoom), (p.zoom), (p.zoom)/14);
 			}
 			if(map[safeC(y + 1)][safeC(x+1)].owner != t.owner){
-				ctx.fillRect((dX+(5/6)) * (p.zoom), (dY+(5/6)) * (p.zoom), (p.zoom)/6, (p.zoom)/6);
+				ctx.fillRect((dX+(13/14)) * (p.zoom), (dY+(13/14)) * (p.zoom), (p.zoom)/14, (p.zoom)/14);
 			}
 			if(map[safeC(y + 1)][safeC(x-1)].owner != t.owner){
-				ctx.fillRect((dX) * (p.zoom), (dY+(5/6)) * (p.zoom), (p.zoom)/6, (p.zoom)/6);
+				ctx.fillRect((dX) * (p.zoom), (dY+(13/14)) * (p.zoom), (p.zoom)/14, (p.zoom)/14);
 			}	
 			if(map[safeC(y - 1)][safeC(x+1)].owner != t.owner){
-				ctx.fillRect((dX+(5/6)) * (p.zoom), (dY) * (p.zoom), (p.zoom)/6, (p.zoom)/6);
+				ctx.fillRect((dX+(13/14)) * (p.zoom), (dY) * (p.zoom), (p.zoom)/14, (p.zoom)/14);
 			}
 			if(map[safeC(y - 1)][safeC(x-1)].owner != t.owner){
-				ctx.fillRect((dX) * (p.zoom), (dY) * (p.zoom), (p.zoom)/6, (p.zoom)/6);
+				ctx.fillRect((dX) * (p.zoom), (dY) * (p.zoom), (p.zoom)/14, (p.zoom)/14);
 			}
 			if(map[safeC(y - 1)][x].owner != t.owner){
-				ctx.fillRect(dX * (p.zoom), dY * (p.zoom), (p.zoom), (p.zoom)/6);
+				ctx.fillRect(dX * (p.zoom), dY * (p.zoom), (p.zoom), (p.zoom)/14);
 			}
 			if(map[y][safeC(x + 1)].owner != t.owner){
-				ctx.fillRect((dX+(5/6)) * (p.zoom), (dY) * (p.zoom), (p.zoom)/6, (p.zoom));
+				ctx.fillRect((dX+(13/14)) * (p.zoom), (dY) * (p.zoom), (p.zoom)/14, (p.zoom));
 			}
 			if(map[y][safeC(x - 1)].owner != t.owner){
-				ctx.fillRect(Math.floor(dX * (p.zoom)), Math.floor(dY * (p.zoom)), (p.zoom)/6, (p.zoom));
+				ctx.fillRect(Math.floor(dX * (p.zoom)), Math.floor(dY * (p.zoom)), (p.zoom)/14, (p.zoom));
 			}
 		}
 		if(t.building[0] != -1 && t.building[0] < 4){
 			var b0 = t.building[0];
 			var b1 = t.building[1];
-			var onestop = false;
-			if(b0 == 0 && b1 == 0){ //road
-				drawDynamic('b', sprites2, 128, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
-			}
-			else if(b0 == 1 && b1 == 0){ //house
-				drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
-			}
-			else if(((b0 == 2) && b1 <= 2*t.building[0]) || (b0 == 1 && b1 == 3)){
-				var girth = buildings[b0][b1].draw[1];
-				ctx.fillStyle = buildings[b0][b1].draw[0];
-				var none = true;
-				for(h = -1; h < 2; h+=2){
-					var h0 = map[y][safeC(h+x)].building[0];
-					var h1 = map[y][safeC(h+x)].building[1];
-					ctx.fillStyle = buildings[b0][b1].draw[0];
-					girth = buildings[b0][b1].draw[1];
-					if(!onestop && (h0 != -1 || (b0 == 2 && map[y][safeC(h+x)].elevation < 0) || (b0 == 1 && b1 == 3 && map[y][safeC(h+x)].elevation < 0))){
-						if((h0 == b0  && h1 <= 1.5*b0 && b1 != 4 && b0 !=1) || (b0 == 2 && map[y][safeC(h+x)].elevation < 0)|| (b0 == 1 && b1 == 3 && map[y][safeC(h+x)].elevation < 0) || (b0==0 && b1==0 && h0==2 && h1==3) || (b0==2 && ((b1==3 && h0==0 & h1==0) || (b1 == 4 && h0 == 2 && h1 == 4)))){ // l or r
-							if(b0 == 1 && b1 == 3){
-								onestop = true;
-							}
-							ctx.fillStyle = buildings[t.building[0]][t.building[1]].draw[0];
-							ctx.fillStyle = buildings[t.building[0]][t.building[1]].draw[1];
-							none = false;
-							ctx.fillRect((.5*(Math.ceil(h/2)) + dX) * p.zoom, (dY + (1-girth)/2)*p.zoom, p.zoom*.5, p.zoom*girth);
-						}
+			if(b0 == 0){ //DRAW ECONOMIC BUILDINGS
+				if(b1 == 0){ //ROAD
+					drawDynamic('b', sprites2, 128, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+				}
+				else if(b1 == 1){ //FARM
+					let xSpot = Math.floor(day/100)*16;
+					drawDynamic('b', sprites2, 160, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+					ctx.drawImage(sprites2, xSpot, 144, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				}
+				else if((b1 == 2 || b1 == 11 || b1 == 12 || b1 == 13)){ //ORCHARDS/SPICEPLANT
+					let xSpot = 64 + Math.floor(day/100)*16;
+					if(b1 >= 11){
+						xSpot += (b1-10)*64;
 					}
-					var h0 = map[safeC(y+h)][x].building[0];
-					var h1 = map[safeC(y+h)][x].building[1];
-					if(!onestop && (h0 != -1 || (b0 == 2 && map[safeC(y+h)][x].elevation < 0)|| (b0 == 1 && b1 == 3 && map[safeC(y+h)][x].elevation < 0))){
-						if((h0 == b0  && h1 <= 1.5*b0 && b1 != 4 && b0 != 1) || (b0 == 2 && map[safeC(y+h)][x].elevation < 0) || (b0 == 1 && b1 == 3 && map[safeC(y+h)][safeC(x)].elevation < 0)|| (b0==0 && b1==0 && h0==2 && h1==3) || (b0==2 && ((b1==3 && h0==0 & h1==0) || (b1 == 4 && h0 == 2 && h1 == 4)))){ // u or d
-							if(b0 == 1 && b1 == 3){
-								onestop = true;
-							}
-							none = false;
-							ctx.fillRect((dX + (1-girth)/2)*p.zoom, (.5*(Math.ceil(h/2)) + dY) * p.zoom, p.zoom*girth, p.zoom*.5);
-						}
-					}
+					ctx.drawImage(sprites2, xSpot, 144, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 				}
-				if(none){
-					ctx.fillRect((dX + (1-girth)/2)*p.zoom, ((1-girth)/2 + dY) * p.zoom, p.zoom*girth, p.zoom*girth);
+				else if(b1 == 3){ //LUMBER MILL
+					ctx.drawImage(sprites2, 0, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				}
+				else if(b1 == 4){ //GRANARY
+					drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), 144);
+				}
+				else if(b1 == 5){//WAREHOUSE
+					drawDynamic('b', sprites2, 192, x, y, Math.floor(dX*p.zoom), Math.floor(dY*p.zoom));
 				}
 			}
-			else if(b0 == 0 && (b1 == 2 || b1 == 11 || b1 == 12 || b1 == 13)){ //Orchard
-				let xSpot = 64 + Math.floor(day/100)*16;
-				if(b1 >= 11){
-					xSpot += (b1-10)*64;
+			else if(b0 == 1){ //DRAW SOCIAL BUILDINGS
+				if(b1 == 0){ //HOUSE
+					drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 				}
-				ctx.drawImage(sprites2, xSpot, 144, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
-			}
-			else if(b0 == 0 && b1 == 4){//granary
-				drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), 144);
-			}
-			else if(b0 == 1 && b1 == 1){
-				ctx.drawImage(sprites2, 80, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
-			}
-			else if(b0 == 0 && b1 == 9){ //bazaar
-				var girth = buildings[b0][b1].draw[1];
-				ctx.fillStyle = buildings[b0][b1].draw[0];
-				ctx.fillRect((dX + (1-girth)/2)*p.zoom, ((1-girth)/2 + dY) * p.zoom, p.zoom*girth, p.zoom*girth);
-				ctx.fillStyle = "tan";
-				ctx.fillRect((dX + .45)*p.zoom, dY * p.zoom, .1*p.zoom, p.zoom);
-				ctx.fillRect(dX*p.zoom, (.45 + dY) * p.zoom, p.zoom, p.zoom*.1);
-			}
-			else if(b0 == 0 && b1 == 3){ //lumber mill
-				ctx.drawImage(sprites2, 0, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
-			}
-			else if(b0 == 1 && (b1 == 7 || b1 == 8 || b1 == 9 || b1 == 12)){
-				let xSpot = 16 + Math.min(3, b1-7)*16;
-				ctx.drawImage(sprites2, xSpot, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
-			}
-			else if(b0 == 0 && b1 == 1){//farm
-				let xSpot = Math.floor(day/100)*16;
-				drawDynamic('b', sprites2, 160, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
-				ctx.drawImage(sprites2, xSpot, 144, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
-			}
-			else if(b0 == 1 && b1 == 10){ //tavern
-				drawDynamic('b', sprites2, 240, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+				else if(b1 == 1){ //PLAZA
+					ctx.drawImage(sprites2, 80, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				}
+				else if (b1 == 2){
+					
+				}
+				else if(b1 == 3){
+					
+				}
+				else if(b1 == 4){
+					
+				}
+				else if((b1 == 7 || b1 == 8 || b1 == 9 || b1 == 12)){
+					let xSpot = 16 + Math.min(3, b1-7)*16;
+					ctx.drawImage(sprites2, xSpot, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				}
+				else if(b1 == 10){ //TAVERN
+					drawDynamic('b', sprites2, 240, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
+				}
 			}
 			else {
 				var girth = buildings[b0][b1].draw[1];
