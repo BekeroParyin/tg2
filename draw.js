@@ -158,8 +158,13 @@ function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img shee
 	}
 	else if(type == 'b'){ //building
 		b0 = map[y][x].building[0]; b1 = map[y][x].building[1];
+		tu = map[y][x].owner;
 		if(b0 == 0 && b1 == 1){
-			[leftT, rightT, upT, downT] = [((map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 1), ((map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 1), ((map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 1), ((map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 1)];
+			[leftT, rightT, upT, downT] = [
+			(map[y][safeC(x-1)].owner == tu && (map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 1),
+			(map[y][safeC(x+1)].owner == tu && (map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 1),
+			(map[safeC(y-1)][x].owner == tu && (map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 1),
+			(map[safeC(y+1)][x].owner == tu && (map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 1)];
 			[bL, bR, tL, tR] = [!((map[safeC(y+1)][safeC(x-1)].building[0] == 0) && map[safeC(y+1)][safeC(x-1)].building[1] == 1), //bL
 			!((map[safeC(y+1)][safeC(x+1)].building[0] == 0) && map[safeC(y+1)][safeC(x+1)].building[1] == 1), //bR
 			!((map[safeC(y-1)][safeC(x-1)].building[0] == 0) && map[safeC(y-1)][safeC(x-1)].building[1] == 1), //tL
@@ -388,6 +393,12 @@ function drawTile(y1, x1){
 				else if(b1 == 5){//WAREHOUSE
 					drawDynamic('b', sprites2, 192, x, y, Math.floor(dX*p.zoom), Math.floor(dY*p.zoom));
 				}
+				else if(b1 == 6){ //MINE
+					drawDynamic('b', sprites2, 208, x, y, Math.floor(dX*p.zoom), Math.floor(dY*p.zoom));
+				}
+				else if(b1 == 7){ //METALWORKS
+					ctx.drawImage(sprites2, 0, 224, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				}
 			}
 			else if(b0 == 1){ //DRAW SOCIAL BUILDINGS
 				if(b1 == 0){ //HOUSE
@@ -396,15 +407,18 @@ function drawTile(y1, x1){
 				else if(b1 == 1){ //PLAZA
 					ctx.drawImage(sprites2, 80, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 				}
-				else if (b1 == 2){
+				else if (b1 == 2){ //TAX OFFICE
+					ctx.drawImage(sprites2, 96, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+				}
+				else if(b1 == 3){ //DOCK
 					
 				}
-				else if(b1 == 3){
-					
+				else if(b1 == 4){ //TEMPLE
+					ctx.drawImage(sprites2, 80, 304, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 				}
-				else if(b1 == 4){
-					
-				}
+				else if(b1 == 11){ //WINERY
+					drawDynamic('b', sprites2, 240, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), 144);
+				}	
 				else if((b1 == 7 || b1 == 8 || b1 == 9 || b1 == 12)){
 					let xSpot = 16 + Math.min(3, b1-7)*16;
 					ctx.drawImage(sprites2, xSpot, 176, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
