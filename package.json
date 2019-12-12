@@ -1,0 +1,25 @@
+{
+  "name": "tg2devbranch",
+  "version": "1.0.0",
+  "description": "tg2sprites",
+  "main": "AI.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BekeroParyin/tg2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BekeroParyin/tg2/issues"
+  },
+  "homepage": "https://github.com/BekeroParyin/tg2#readme"
+}
