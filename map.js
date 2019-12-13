@@ -63,15 +63,15 @@
 									seed = 10;
 								}
 							}
-							if(map[i][j].elevation > .85){
+							if(map[i][j].elevation > .875){
 								map[i][j].type = 'm';
 								map[i][j].resource = seed;
 							}
-							else if(map[i][j].elevation >= .8){
+							else if(map[i][j].elevation >= .69){
 								map[i][j].type = 'l';
 								map[i][j].resource = seed;
 							}
-							else if(map[i][j].elevation >= .6){
+							else if(map[i][j].elevation >= .565){
 								map[i][j].type = 'h';
 								map[i][j].resource = seed;
 							}
@@ -355,7 +355,7 @@
 				if(map[yC][xC].type != 'w'){
 					map[yC][xC].resource = seed;
 					if(Math.random() > .75){
-						map[yC][xC].elevation = .6;
+						map[yC][xC].elevation = .62;
 						map[yC][xC].type = 'h';
 						
 					}
@@ -391,16 +391,16 @@
 									if(add <= .0){ map[i][j].elevation/=2; }
 									else if(map[i][j].elevation < max || map[i][j].elevation < .6){
 										if(max > .9){
-											map[i][j].elevation = max * (.65 + .3*Math.random());
+											map[i][j].elevation = max * (.66 + .3*Math.random());
 										}
 										else if(max > .8){
-											map[i][j].elevation = max * (.9 + Math.random()/20);
+											map[i][j].elevation = max * (.8 + Math.random()/20);
 										}
 										else if(max > .7){
-											map[i][j].elevation = max * (.72 + Math.random()/10);
+											map[i][j].elevation = max * (.85 + Math.random()/10);
 										}
 										else if(max > .6){
-											map[i][j].elevation = max * (.52 + Math.random()/20);
+											map[i][j].elevation = max * (.9 + Math.random()/20);
 										}
 										else if(max > .5){
 											map[i][j].elevation = max * (.9 + Math.random()/20);
@@ -409,7 +409,7 @@
 											map[i][j].elevation = max * (.7 + Math.random()/40);
 										}
 										else if(max > .35){
-											map[i][j].elevation = max * (.5 + Math.random()/2);
+											map[i][j].elevation = max * (.7 + Math.random()/2);
 										}
 										else if(max > .3){
 											map[i][j].elevation = max * (.8 + Math.random()/5);
