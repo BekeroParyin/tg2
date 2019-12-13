@@ -414,7 +414,7 @@ function drawTile(y1, x1){
 					
 				}
 				else if(b1 == 4){ //TEMPLE
-					ctx.drawImage(sprites2, 80, 304, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
+					ctx.drawImage(sprites2, 48, 192, 16, 16, dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 				}
 				else if(b1 == 11){ //WINERY
 					drawDynamic('b', sprites2, 240, x, y,  Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), 144);
