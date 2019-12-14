@@ -638,8 +638,10 @@ var MAPSIZE = 1000;
 							if(t.zone == -1){
 								$('#resource-list').hide();
 								$('#goods-list').hide();
+								$('#switchContainer').hide();
 							}
 							else{
+								$("#switchContainer").css("display", "inline-block");
 								if(document.getElementById("resgood").checked){
 									$('#resource-list').show();
 								}
@@ -661,12 +663,14 @@ var MAPSIZE = 1000;
 							$('#nothing').show();
 							$('#resource-list').hide();
 							$('#goods-list').hide();
+							$('#switchContainer').hide();
 						}
 					}
 					else{
 						$('#nothing').show();
 						$('#resource-list').hide();
 						$('#goods-list').hide();
+						$('#switchContainer').hide();
 					}
 				}
 			}

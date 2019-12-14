@@ -74,6 +74,9 @@ a{
 	height:63px; 
 	font-size:1.1rem;
 }
+#switchContainer{
+	height:50px;
+}
 .resTable {
   font-size: 1.15rem;
   width: 100%;
@@ -90,6 +93,9 @@ a{
 }
 #buildingsInZone td{
 	padding: 4px;
+}
+#switchContainer { 
+	overflow:hidden;
 }
 .resLabel{
 	text-align:left;

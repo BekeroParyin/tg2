@@ -26,8 +26,10 @@
                </ul>
                <div class="tab-content" id="leftTabContent" >
                   <div class="tab-pane fade show active" id="resource" role="tabpanel">
-                     <input type="checkbox" checked data-toggle="toggle" id = "resgood" data-on="Resources" data-off="Goods" data-onstyle="info" data-offstyle="info" data-width="100%" >
-                     <ul class = "list-group list-group-flush" id = "mangold">
+				  <div id = "switchContainer" class = "container" style = "display:none; ">
+					<input id = "resgood" type="checkbox" checked data-toggle="toggle" data-on="Resources" data-off="Goods" data-onstyle="info" data-offstyle="info" data-width="100%" data-height="100%">
+				  </div>
+					<ul class = "list-group list-group-flush" id = "mangold">
                         <li class="list-group-item d-flex justify-content-sm-around">
                            Gold: <span id = "gold"style="color:gold;">0</span>
                         </li>

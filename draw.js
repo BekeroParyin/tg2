@@ -180,10 +180,13 @@ function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img shee
 			tR = tR && upT && rightT;
 		}
 		else{
-			if(!(b0 == 1 && b1 == 3)){
-				[leftT, rightT, upT, downT] = [((map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 0), ((map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 0), ((map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 0), ((map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 0)];
-			}
-			else{ //not dock
+			if(!(b0 == 1 && b1 == 3)){ //not dock - all buildings unless specified are dynamic to roads
+				[leftT, rightT, upT, downT] = [
+				(map[y][safeC(x-1)].owner == tu && (map[y][safeC(x-1)].building[0] == 0) && map[y][safeC(x-1)].building[1] == 0),
+				(map[y][safeC(x+1)].owner == tu && (map[y][safeC(x+1)].building[0] == 0) && map[y][safeC(x+1)].building[1] == 0),
+				(map[safeC(y-1)][x].owner == tu && (map[safeC(y-1)][x].building[0] == 0) && map[safeC(y-1)][x].building[1] == 0),
+				(map[safeC(y+1)][x].owner == tu && (map[safeC(y+1)][x].building[0] == 0) && map[safeC(y+1)][x].building[1] == 0)];}
+			else{ //dock
 				[leftT, rightT, upT, downT] = [(map[y][safeC(x-1)].elevation <= 0), (map[y][safeC(x+1)].elevation <= 0), (map[safeC(y-1)][x].elevation <= 0), (map[safeC(y+1)][x].elevation <= 0)];
 			}
 			if(!(b0 == 0 && b1 == 0)){ //if not road
@@ -629,15 +632,17 @@ function drawRightBar(e){
 		}
 		else if(x < rect.width-60 && y > p.menView[1][0] * rect.height/12 && y < (6+p.menView[1][0]) * rect.height/12){ //else a building is clicked
 			r.removeEventListener('mousemove', drawRightBar);
-			var yA = y; //Arbitrary Variables for simpler math, handles which building is selected
+			//Arbitrary Variables for simpler math, handles which building is selected
 			var tB = (5*rect.height/12 - 2)/7;
 			var tC = (p.menView[1][0]*rect.height/12)
-			p.menView[1][1] = safeC(Math.floor((yA-tC)/(tB))+Math.floor(p.menView[1][2]/buildings[p.menView[1][0]].length), buildings[p.menView[1][0]].length);
+			p.menView[1][1] = safeC(Math.floor((y-tC)/(tB))+Math.floor(p.menView[1][2]/buildings[p.menView[1][0]].length), buildings[p.menView[1][0]].length);
 		}
 		else if(p.menView[1][0] > -1 && p.menView[1][1] > -1 && x > 10 && y > 80+8*rect.height/12 && x < 70 && y <= 170+8*rect.height/12){//buy key
-			if(canBuy(yS, xS, p.menView[1][0], p.menView[1][1], p)){ //Buy a building
+			let b0 = p.menView[1][0];
+			let b1 = p.menView[1][1];
+			if(canBuy(yS, xS, b0, b1, p)){ //Buy a building
 				var canPlace = false;
-				if(p.menView[1][0] == 1 && p.menView[1][1] == 3){ //if Dock
+				if(b0 == 1 && b1 == 3){ //if Dock
 					for(let a = -1; a < 2; a++){
 						for(let b = -1; b < 2; b++){
 							if((a == 0 || b == 0) && a != b){
@@ -649,12 +654,12 @@ function drawRightBar(e){
 					}
 				}
 				else if(map[yS][xS].type == 'l'){
-					if(p.menView[1][0] == 2 && p.menView[1][1] <= 3){ //walls on hills
+					if(b0 == 2 && b1 <= 3){ //walls on hills
 						canPlace = true;
 					}
 				}
 				else{ canPlace = true; }
-				if(p.menView[1][0] == 2 && p.menView[1][1] == 3){ // no adjacent gatehouses
+				if(b0 == 2 && b1 == 3){ // no adjacent gatehouses
 					for(let a = -1; a < 2; a++){
 						for(let b = -1; b < 2; b++){
 							if((a == 0 || b == 0) && a != b){
@@ -666,7 +671,7 @@ function drawRightBar(e){
 						}
 					}
 				}
-				else if(p.menView[1][0] == 0 && p.menView[1][1] == 6){ // no adjacent mines
+				else if(b0 == 0 && b1 == 6){ // no adjacent mines
 					for(let a = -1; a < 2; a++){
 						for(let b = -1; b < 2; b++){
 							if((a == 0 || b == 0) && a != b){
@@ -678,28 +683,28 @@ function drawRightBar(e){
 						}
 					}
 				}
-				if(canPlace){
-					map[yS][xS].building = [p.menView[1][0], p.menView[1][1], 1, [false]];
-					if(p.menView[1][0] == 1 && p.menView[1][1] == 6){ // manor
+				if(canPlace){ //BUY BUILDING AND PLACE IT
+					map[yS][xS].building = [b0, b1, 1, [false]];
+					if(b0 == 1 && b1 == 6){ // manor
 						p.manors.push([yS,xS]);
 					}
-					if(buildings[p.menView[1][0]][p.menView[1][1]].cost[0] > 0){
-						p.zones[map[yS][xS].zone].res.wood -= buildings[p.menView[1][0]][p.menView[1][1]].cost[0];
+					if(buildings[b0][b1].cost[0] > 0){
+						p.zones[map[yS][xS].zone].res.wood -= buildings[b0][b1].cost[0];
 					}
-					if(buildings[p.menView[1][0]][p.menView[1][1]].cost[1] > 0){
-						p.zones[map[yS][xS].zone].res.stone -= buildings[p.menView[1][0]][p.menView[1][1]].cost[1];
+					if(buildings[b0][b1].cost[1] > 0){
+						p.zones[map[yS][xS].zone].res.stone -= buildings[b0][b1].cost[1];
 					}
-					if(buildings[p.menView[1][0]][p.menView[1][1]].cost[2] > 0){
-						p.zones[map[yS][xS].zone].res.gold -= buildings[p.menView[1][0]][p.menView[1][1]].cost[2];
+					if(buildings[b0][b1].cost[2] > 0){
+						p.zones[map[yS][xS].zone].res.gold -= buildings[b0][b1].cost[2];
 					}
-					p.gold -= buildings[p.menView[1][0]][p.menView[1][1]].cost[2];
-					p.manpower -= buildings[p.menView[1][0]][p.menView[1][1]].cost[3];
-					switch(buildings[p.menView[1][0]][p.menView[1][1]].cost[4][0]){
-						case 12: p.zones[map[yS][xS].zone].res.rWood-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1]; break;
-						case 15: p.zones[map[yS][xS].zone].res.rSilk-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1]; break;
-						case 16: p.zones[map[yS][xS].zone].res.spices-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1]; break;
+					p.gold -= buildings[b0][b1].cost[2];
+					p.manpower -= buildings[b0][b1].cost[3];
+					switch(buildings[b0][b1].cost[4][0]){
+						case 12: p.zones[map[yS][xS].zone].res.rWood-=buildings[b0][b1].cost[4][1]; break;
+						case 15: p.zones[map[yS][xS].zone].res.rSilk-=buildings[b0][b1].cost[4][1]; break;
+						case 16: p.zones[map[yS][xS].zone].res.spices-=buildings[b0][b1].cost[4][1]; break;
 					}
-					buildings[p.menView[1][0]][p.menView[1][1]].effect(0);
+					buildings[b0][b1].effect(0);
 					drawTile(yS, xS);
 					if(yS > 0){
 						drawTile(yS-1, xS);
@@ -713,9 +718,16 @@ function drawRightBar(e){
 					if(yS-p.yView < Math.floor(cHeight/p.zoom)){
 						drawTile(yS+1, xS);
 					}
+					if(b0 + b1 == 0){
+						$("#switchContainer").css("display", "inline-block");
+						if(document.getElementById("resgood").checked){
+							$('#resource-list').show();
+						}
+						else { $('#goods-list').show(); }
+					}
 					delta = true;
 					if(e.shiftKey){ p.action = "building";}
-					else { p.menView[1][1] = -1; }
+					else { b1 = -1; }
 					tileChange(yS,xS);
 					return;
 				}
