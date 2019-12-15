@@ -61,7 +61,7 @@ var io = require('socket.io')(server,{});
 			if(active){
 				active = false;
 				console.log("KEEPING ALIVE");
-				//http.get("http://terraingen2.herokuapp.com");
+				http.get("http://terraingen2.herokuapp.com");
 			}
 		}, 600 * 1000); // load every 10 minutes
 	}

@@ -99,28 +99,28 @@
 	buildings[3][4].draw[0] = "#83423b"; buildings[3][4].draw[1] = .8; //barracks
 	
 	//Economic
-	//buildings[0][0].cost = [0,0,0,1,[-1,0]];
+	buildings[0][0].cost = [0,0,0,1,[-1,0]];
 	buildings[0][0].description = "Road";
 	buildings[0][0].effect = function(m){ map[tS[0]][tS[1]].zone = -1; p = Roads(p); p = scanRoads(p, tS[0], tS[1]);}
-	//buildings[0][1].cost = [2,0,0,2,[-1,0]];
+	buildings[0][1].cost = [2,0,0,2,[-1,0]];
 	buildings[0][1].description = "Farm";
 	
-	//buildings[0][2].cost = [4,0,0,1,[-1,0]];
+	buildings[0][2].cost = [4,0,0,1,[-1,0]];
 	buildings[0][2].description = "Orchard";
 	
-	//buildings[0][3].cost = [5,0,0,5,[-1,0]];
+	buildings[0][3].cost = [5,0,0,5,[-1,0]];
 	buildings[0][3].description = "Lumber Mill";
 	
-	//buildings[0][4].cost = [6,0,0,6,[-1,0]];
+	buildings[0][4].cost = [6,0,0,6,[-1,0]];
 	buildings[0][4].description = "Granary";
 
-	//buildings[0][5].cost = [10,0,0,8,[-1,0]];
+	buildings[0][5].cost = [10,0,0,8,[-1,0]];
 	buildings[0][5].description = "Warehouse";
 	
-	//buildings[0][6].cost = [10,0,25,25,[-1,0]];
+	buildings[0][6].cost = [10,0,25,25,[-1,0]];
 	buildings[0][6].description = "Mine"
 	
-	//buildings[0][7].cost = [5,15,0,15,[-1,0]];
+	buildings[0][7].cost = [5,15,0,15,[-1,0]];
 	buildings[0][7].description = "Metalworks";
 	
 	buildings[0][8].cost = [3,0,100,20,[-1,0]];
@@ -130,42 +130,42 @@
 	buildings[0][9].description = "Bazaar"; 
 	buildings[0][10].cost = [18,0,0,15,[-1,0]];
 	buildings[0][10].description = "Stable";
-	//buildings[0][11].cost = [5,0,25,30,[16,10]];
+	buildings[0][11].cost = [5,0,25,30,[16,10]];
 	buildings[0][11].description = "Spice Plantation";
-	//buildings[0][12].cost = [5,0,10,7,[15,7.5]];
+	buildings[0][12].cost = [5,0,10,7,[15,7.5]];
 	buildings[0][12].description ="Silk Orchard";
-	//buildings[0][13].cost = [5,0,10,7,[12,7.5]];
+	buildings[0][13].cost = [5,0,10,7,[12,7.5]];
 	buildings[0][13].description ="Ebony Orchard";
 
 	//SOCIAL
 	buildings[1][0].cost = [0,0,0,0,[-1,0]];
 	buildings[1][0].description = "House";
-	//buildings[1][1].cost = [4,0,0,5,[-1,0]];
+	buildings[1][1].cost = [4,0,0,5,[-1,0]];
 	buildings[1][1].description = "Place by Houses. Gives Wellbeing";
-	//buildings[1][2].cost = [3,0,5,3,[-1,0]];
+	buildings[1][2].cost = [3,0,5,3,[-1,0]];
 	buildings[1][2].description = "Place by Houses. Gives Gold";
-	//buildings[1][3].cost = [5, 2, 10, 0, [-1,0]];
+	buildings[1][3].cost = [5, 2, 10, 0, [-1,0]];
 	buildings[1][3].cost = [0, 0, 0, 0, [-1,0]];
-	buildings[1][3].description = "Dock. Place by Water"; //dock
+	buildings[1][3].description = "Dock. Place by Water"; dock
 	buildings[1][4].cost = [12, 8, 75, 15,[-1,0]];
 	buildings[1][4].description = "Temple";
-	//buildings[1][5].cost = [5, 5, 50, 5,[-1,0]];
+	buildings[1][5].cost = [5, 5, 50, 5,[-1,0]];
 	buildings[1][5].description = "+15 Max Size";
 	buildings[1][6].cost = [100, 40, 600, 70,[-1,0]];
 	buildings[1][6].description = "Manor";
 	buildings[1][7].cost = [10, 2, 30, 7,[-1,0]];
 	buildings[1][7].description = "Refines Luxury Woods";
-	//buildings[1][8].cost = [5, 4, 50, 10,[-1,0]];
+	buildings[1][8].cost = [5, 4, 50, 10,[-1,0]];
 	buildings[1][8].description = "Refines Perfume";
-	//buildings[1][9].cost = [12, 2, 25, 10,[-1,0]];
+	buildings[1][9].cost = [12, 2, 25, 10,[-1,0]];
 	buildings[1][9].description = "Refines Hides";
-	//buildings[1][10].cost = [14, 8, 50, 12,[-1,0]]; //tavern
+	buildings[1][10].cost = [14, 8, 50, 12,[-1,0]]; tavern
 	buildings[1][10].description = "Visitor Housing and drinks";
-	//buildings[1][11].cost = [10, 4, 25, 10,[-1,0]];
+	buildings[1][11].cost = [10, 4, 25, 10,[-1,0]];
 	buildings[1][11].description = "Turns food into wine";
-	//buildings[1][12].cost = [8,4,65,10,[-1,0]];
+	buildings[1][12].cost = [8,4,65,10,[-1,0]];
 	buildings[1][12].description = "Weavery";
-	buildings[1][13].cost = [999, 999, 999, 999,[-1,0]]; //library
+	buildings[1][13].cost = [999, 999, 999, 999,[-1,0]]; library
 	buildings[1][13].description = "Library - Incomplete";
 	buildings[1][14].cost = [999, 999, 999, 999,[-1,0]];
 	buildings[1][14].description = "University - Incomplete";
