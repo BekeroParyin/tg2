@@ -146,7 +146,7 @@
 	buildings[1][2].description = "Place by Houses. Gives Gold";
 	buildings[1][3].cost = [5, 2, 10, 0, [-1,0]];
 	buildings[1][3].cost = [0, 0, 0, 0, [-1,0]];
-	buildings[1][3].description = "Dock. Place by Water"; dock
+	buildings[1][3].description = "Dock. Place by Water"; 
 	buildings[1][4].cost = [12, 8, 75, 15,[-1,0]];
 	buildings[1][4].description = "Temple";
 	buildings[1][5].cost = [5, 5, 50, 5,[-1,0]];
@@ -159,13 +159,13 @@
 	buildings[1][8].description = "Refines Perfume";
 	buildings[1][9].cost = [12, 2, 25, 10,[-1,0]];
 	buildings[1][9].description = "Refines Hides";
-	buildings[1][10].cost = [14, 8, 50, 12,[-1,0]]; tavern
+	buildings[1][10].cost = [14, 8, 50, 12,[-1,0]]; 
 	buildings[1][10].description = "Visitor Housing and drinks";
 	buildings[1][11].cost = [10, 4, 25, 10,[-1,0]];
 	buildings[1][11].description = "Turns food into wine";
 	buildings[1][12].cost = [8,4,65,10,[-1,0]];
 	buildings[1][12].description = "Weavery";
-	buildings[1][13].cost = [999, 999, 999, 999,[-1,0]]; library
+	buildings[1][13].cost = [999, 999, 999, 999,[-1,0]];
 	buildings[1][13].description = "Library - Incomplete";
 	buildings[1][14].cost = [999, 999, 999, 999,[-1,0]];
 	buildings[1][14].description = "University - Incomplete";
