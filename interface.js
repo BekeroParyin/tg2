@@ -8,6 +8,7 @@ $("#resgood").change(function() {
 		$('#resource-list').fadeToggle();
 		$('#goods-list').delay(500).fadeToggle();
 	}
+	drawLeftBar();
 });});
 $(document).on("click", "#actionChange", function(){
 	if(p.action == "claiming"){
@@ -114,7 +115,7 @@ function drawLeftBar(){
 					}
 				}
 			}
-			else{
+			else{ //GOODS TAB
 				$("#mCap").html(Math.floor(z.res.marketCap)+"/"+Math.floor(z.rMax.marketCap));
 				$("#mCapInc").html(Math.floor(z.income.marketCap));
 				$("#hide").html(Math.floor(20*z.res.hides)/20);
@@ -137,6 +138,13 @@ function drawLeftBar(){
 				$("#ironInc").html(Math.floor(20*z.income.iron[0])/20);
 				$("#horse").html(z.res.horses+"/"+Math.floor(z.rMax.horses));
 				$("#horseInc").html(Math.floor(z.income.horses));
+				$("#rhide").html(Math.floor(20*z.res.rHide)/20);
+				$("#rwood").html(Math.floor(20*z.res.rWood)/20);
+				$("#rsilk").html(Math.floor(20*z.res.rSilk)/20);
+				$("#rperf").html(Math.floor(20*z.res.rPerf)/20);
+				$("#rcopper").html(Math.floor(20*z.res.copper[1])/20);
+				$("#rbronze").html(Math.floor(20*z.res.bronze[1])/20);
+				$("#riron").html(Math.floor(20*z.res.iron[1])/20);
 			}
 		}
 	}

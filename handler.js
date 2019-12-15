@@ -498,7 +498,8 @@ var MAPSIZE = 1000;
 					}
 					tS = [y, x];
 					drawTile(y, x);
-					if(tY != y || tX != x){
+					drawTile(y+1, x);
+					if(tY != y || tX != x){	
 						drawTile(tY, tX);
 					}
 					if(e.ctrlKey){
@@ -690,7 +691,7 @@ var MAPSIZE = 1000;
 				}
 			}
 			rates = data.rates;
-			if(day %10 == 0){
+			if(day %10 == 0 && p.zoom > 5){
 				drawDelta = true;
 			}
 			if(tS.length > 0){

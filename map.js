@@ -7,7 +7,7 @@
 			genOceans(MAPSIZE*MAPSIZE, 2);
 			genOceans(30000 * MODI, 4);
 			console.log("genOceans");
-			slap(7000, 'g', 'w', -1, 0, 1400);
+			slap(5000, 'g', 'w', -1, 0, 1400);
 			slap(400, 'g', 'w', -1, -1);
 			console.log("Oceans Generated");
 			mountain(20, Math.round(20*MODI));
@@ -32,24 +32,31 @@
 			currents(false);
 			console.log("currents 2");
 			elevSpread();
-			forest(1500*MODI, Math.floor(5*MODI));
-			forest(850 * MODI, Math.round(10* MODI));
-			forest(900*MODI, Math.round(150* MODI));
-			forest(500*MODI, Math.round(1000* MODI));
-			forest(200*MODI, Math.round(500* MODI));
-			forest(35, Math.round(5000* MODI));
-			forest(20, Math.round(4000* MODI));
+			if(MODI > .5){
+				forest(9000*MODI, 30*MODI);
+				forest(7000*MODI, 30*MODI);
+				forest(4000*MODI, 30*MODI);
+				forest(3000*MODI, 30*MODI);
+				forest(900*MODI, Math.round(150* MODI));
+				forest(500*MODI, Math.round(1000* MODI));
+				forest(200*MODI, Math.round(500* MODI));
+				forest(35, Math.round(5000* MODI));
+				forest(20, Math.round(4000* MODI));
+			}
+			else{
+				forest(1500*MODI, Math.floor(5*MODI));
+				forest(850 * MODI, Math.round(10* MODI));
+				forest(900*MODI, Math.round(150* MODI));
+				forest(500*MODI, Math.round(1000* MODI));
+				forest(200*MODI, Math.round(500* MODI));
+				forest(35, Math.round(5000* MODI));
+				forest(20, Math.round(4000* MODI));
+			}
 			cleanForests();
 			console.log("Forests Generated");
 			for(let i=0; i < MAPSIZE; i++){
 				for(let j = 0; j < MAPSIZE; j++){
 					if(map[i][j].elevation > 0){
-						if(map[i][j].type == 'g' && map[i][j].elevation < .6 && map[i][j].wetness <= .01 && map[i][j].heat > (1.5 + Math.random())){
-							map[i][j].type = 'd';
-						}
-						else if(map[i][j].wetness < .05){
-							map[i][j].type = 's';
-						}
 						if(map[i][j].elevation > .5){
 							//0-6:stone, 7: copper, 8: bronze
 							var seed = map[i][j].resource;
@@ -125,7 +132,7 @@
 					if(map[i][j].type == 'f' && map[i][j].elevation <= 0){ map[i][j].type = 'w'; map[i][j].resource = 14; }
 				}
 			}
-			slap(50, 's', 'g', 2, 3);
+			slap(30, 'd', 'i', 2, 3);
 			console.log("Everything Else Completed");
 		}
 		function forest(treeCount, forestsNumber){
@@ -442,7 +449,7 @@
 				var lastlast = -1;
 				var bannedDir = -1
 				var dir = -1;
-				var water = 200;
+				var water = 20 * MODI;
 				var y = safeC(yC);
 				var x = safeC(xC);
 				var cS = 0;
@@ -452,7 +459,7 @@
 					x = safeC(x);
 					if(map[y][x].type == 'w'){
 						if(fir){
-							water+=30*MODI;
+							water+=5*MODI;
 							cS++;
 						}
 						else {
@@ -465,44 +472,32 @@
 						cS++;
 					}
 					else{
-						for(let a = 0; a < 9; a+=2){
-							let y1 = safeC(y-4+a);
-							let x1 = safeC(x+1);
+						for(let a = 0; a < 13; a+=2){
+							let y1 = safeC(y-6+a);
 							if(map[y1][x].elevation > 0){
-								map[y1][x].heat -= .004;
-								map[y1][x].wetness += .007;
+								map[y1][x].wetness += map[y][x].elevation/150;
+								map[y1][x].heat -= .008;
+								map[y1][x].wetness += .0014;
 								if(map[y1][x].wetness < .1){
-									map[y1][x].wetness += .04;
+									map[y1][x].wetness += .08;
 								}
-								map[y1][x].wetness -= map[y1][x].heat/350;
+								map[y1][x].wetness -= map[y1][x].heat/150;
 								if(map[y1][x].heat > 1){
-									map[y1][x].wetness += .001;
-									map[y1][x].heat += .003;
+									map[y1][x].wetness += .01;
+									water -= map[y1][x].heat/130;
+									map[y1][x].heat += .006;
 									if(map[y1][x].heat > 2){
-										map[y1][x].wetness += map[y1][x].heat/600;
-										map[y1][x].wetness += map[y][x].elevation/100;
-									}
-								}
-							}
-							if(map[y1][x1].elevation > 0){
-								map[y1][x1].heat -= .004;
-								map[y1][x1].wetness += .007;
-								if(map[y1][x1].wetness < .1){
-									map[y1][x1].wetness += .04;
-								}
-								map[y1][x1].wetness -= map[y1][x].heat/350;
-								if(map[y1][x1].heat > 1){
-									map[y1][x1].wetness += .001;
-									map[y1][x1].heat += .003;
-									if(map[y1][x1].heat > 2){
-										map[y1][x1].wetness += map[y1][x].heat/600;
-										map[y1][x1].wetness += map[y][x].elevation/100;
+										map[y1][x].wetness += map[y1][x].heat/300;
+										map[y1][x].wetness += map[y][x].elevation/50;
 									}
 								}
 							}
 						}
+						water += map[y][x].wetness/5;
 						water -= .1;
-						if(map[y][x].elevation > .6){ water -= map[y][x].elevation; }
+						if(map[y][x].elevation >= .5){
+							water -= map[y][x].elevation;
+						}
 						map[y][x].curred += .1;
 					}
 					do{
@@ -525,7 +520,8 @@
 					}
 					if((fir && map[i][j].type == 'w') || (!fir && (map[i][j].type == 'a' || map[i][j].type == 'r'))){
 						makeCurrent(i, j);
-						count++;
+						makeCurrent(i, j);
+						count+=2;
 					}
 				}
 				j = MAPSIZE;
