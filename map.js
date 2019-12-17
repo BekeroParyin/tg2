@@ -7,8 +7,8 @@
 			//genOceans(MAPSIZE*MAPSIZE, 2);
 			//genOceans(30000 * MODI, 4);
 			console.log("genOceans");
-			slap(5000, 'g', 'w', -1, 0, 1400);
-			slap(400, 'g', 'w', -1, -1);
+			//slap(5000, 'g', 'w', -1, 0, 1400);
+			//slap(400, 'g', 'w', -1, -1);
 			console.log("Oceans Generated");
 			mountain(20, Math.round(20*MODI));
 			mountain(40* MODI, Math.round(20*MODI));
@@ -57,6 +57,9 @@
 			for(let i=0; i < MAPSIZE; i++){
 				for(let j = 0; j < MAPSIZE; j++){
 					if(map[i][j].elevation > 0){
+						if(map[i][j].wetness < .05 && map[i][j].heat > 1.5){
+							map[i][j].type = 'd';
+						}
 						if(map[i][j].elevation > .5){
 							//0-6:stone, 7: copper, 8: bronze
 							var seed = map[i][j].resource;
@@ -275,7 +278,7 @@
 					}
 					yC = safeC(yC);
 					xC = safeC(xC);
-					if(map[yC][xC].type != 'w' && !(map[yC][xC].type == 'm' && map[yC][xC].resource > -1 && map[yC][xC].resource != seed)){
+					if(map[yC][xC].elevation > 0 && !(map[yC][xC].type == 'm' && map[yC][xC].resource > -1 && map[yC][xC].resource != seed)){
 						map[yC][xC].resource = seed;
 						for(let a = -1; a < 2; a++){
 							for(let b = -1; b < 2; b++){
@@ -359,7 +362,7 @@
 				}
 				yC = safeC(yC);
 				xC = safeC(xC);
-				if(map[yC][xC].type != 'w'){
+				if(map[yC][xC].elevation > 0){
 					map[yC][xC].resource = seed;
 					if(Math.random() > .75){
 						map[yC][xC].elevation = .62;

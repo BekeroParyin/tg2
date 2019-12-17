@@ -76,7 +76,7 @@ var io = require('socket.io')(server,{});
 	colors = shuffle(colors);
 	var day = 0;
 	var map = [];
-	
+	/*
 	const MAPSIZE = 250;
 	const MODI = MAPSIZE/1500;
 	var map = [];
@@ -90,7 +90,7 @@ var io = require('socket.io')(server,{});
 	}
 	
 	
-	/*
+	*/
 	var MODI = 0;
 	var MAPSIZE = 0;
 	fs.createReadStream('mapIn.png')
@@ -105,11 +105,11 @@ var io = require('socket.io')(server,{});
 				var idx = (this.width * y + x) << 2;
 				let col = fullColorHex(this.data[idx], this.data[idx+1], this.data[idx+2]);
 				map[y][x] = new Tile();
-				map[y][x].heat = (3.15 - Math.abs(MAPSIZE/2 - y)/(MAPSIZE/6)) + Math.random() * .155;
+				map[y][x].heat = (3.15 - Math.abs(MAPSIZE - y)/(MAPSIZE/3)) + Math.random() * .155;
 				map[y][x].wetness = .1 - map[y][x].heat/18;
 				if(col == "6aa3bd" || col == "4756d6"){
 					map[y][x].elevation = -1;
-					map[y][x].type == 'a';
+					map[y][x].type = 'r';
 					if(col == "4756d6"){ map[y][x].type = 'w'; }
 				}
 				else if(col == "000000"){
@@ -117,10 +117,10 @@ var io = require('socket.io')(server,{});
 				}
 			}
 		}
+		genWorld();
+	genArtifacts();
 	});
-	*/
-	genWorld();
-		genArtifacts();
+	
 	io.sockets.on('connection', function(socket){
 		socket.on('pConnected', function(data){
 			socketList.push(socket);
