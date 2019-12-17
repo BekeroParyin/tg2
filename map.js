@@ -4,8 +4,8 @@
 			console.log("Modifier: " + MODI);
 			console.log("Map Size: " + MAPSIZE);
 			console.log(map.length);
-			genOceans(MAPSIZE*MAPSIZE, 2);
-			genOceans(30000 * MODI, 4);
+			//genOceans(MAPSIZE*MAPSIZE, 2);
+			//genOceans(30000 * MODI, 4);
 			console.log("genOceans");
 			slap(5000, 'g', 'w', -1, 0, 1400);
 			slap(400, 'g', 'w', -1, -1);

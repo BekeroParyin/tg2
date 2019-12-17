@@ -56,8 +56,14 @@ var MAPSIZE = 1000;
 			});
 		}
 		function dayChange(d){
-			socket.emit('startAI', {
+			socket.emit('dayChange', {
 				day: d,
+			});
+		}
+		function marketAction(val, res){
+			socket.emit('marketAction', {
+				val: val,
+				res: res,
 			});
 		}
 		socket.on('goldChange', function(data){
@@ -199,7 +205,7 @@ var MAPSIZE = 1000;
 				if(p.zoom < 200 ){
 					p.zoom++;
 					drawDelta = true;
-					drawDir = -1;
+					drawDir = 6;
 					if(p.zoom > 60){
 						p.zoom += 3;
 					}
@@ -209,7 +215,7 @@ var MAPSIZE = 1000;
 				if(p.zoom > 1 && cWidth/(p.zoom-1) <= MAPSIZE){
 					p.zoom--;
 					drawDelta = true; 
-					drawDir = -1;
+					drawDir = 5;
 					if(p.zoom > 60){
 						p.zoom -= 3; 
 					}

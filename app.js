@@ -6,6 +6,7 @@
 const path = require('path');
 var fs = require('fs');
 const express = require('express');
+PNG = require('pngjs').PNG;
 const app = express();
 var server = require('http').Server(app);
 var url = require('url');
@@ -63,8 +64,7 @@ var io = require('socket.io')(server,{});
 			//ape
 			if(active){
 				active = false;
-				console.log("KEEPING ALIVE");
-				http.get("http://terraingen2.herokuapp.com");
+				//http.get("http://terraingen2.herokuapp.com");
 			}
 		}, 600 * 1000); // load every 10 minutes
 	}
@@ -74,20 +74,53 @@ var io = require('socket.io')(server,{});
 	var navies = [];
 	var colors = ["#5B6C44", "#d2f53c", "#46f0f0", "#f58231", "#C336D8", "#79CFF4", "#800000", "#ACAE3A", "#aa6e28", "#EBDF6C", "#aaffc3", "#980632", "#e6194b", "#ffe119", "#F2A2CB", "#fabebe", "#fffac8", "#ffd8b1", "#1E90FF","#1A3F6A", "#3BA073", "#f032e6", "#7C73A5", "#34D3C1", "#911eb4", "#0B0477"];
 	colors = shuffle(colors);
-	const MAPSIZE = 432;
-	const MODI = MAPSIZE/1500;
-	var map = new Array(MAPSIZE);
 	var day = 0;
+	var map = [];
+	
+	const MAPSIZE = 250;
+	const MODI = MAPSIZE/1500;
+	var map = [];
 	for(let i = 0; i < MAPSIZE; i++){
-		map[i] = new Array(MAPSIZE);
+		map.push(new Array(MAPSIZE));
 		for(let j = 0; j < MAPSIZE; j++){
 			map[i][j] = new Tile();
 			map[i][j].heat = (3.15 - Math.abs(MAPSIZE/2 - i)/(MAPSIZE/6)) + Math.random() * .155;
 			map[i][j].wetness = .1 - map[i][j].heat/18;
 		}
 	}
-	genWorld();
-	genArtifacts();
+	
+	
+	/*
+	var MODI = 0;
+	var MAPSIZE = 0;
+	fs.createReadStream('mapIn.png')
+	  .pipe(new PNG())
+	  .on('parsed', function() {
+		console.log('starting');
+		MAPSIZE = Math.min(this.height, this.width);
+		MODI = MAPSIZE/1500;
+		for(let y = 0; y < MAPSIZE; y++) {
+			map.push(new Array(MAPSIZE));
+			for(let x = 0; x < MAPSIZE; x++) {
+				var idx = (this.width * y + x) << 2;
+				let col = fullColorHex(this.data[idx], this.data[idx+1], this.data[idx+2]);
+				map[y][x] = new Tile();
+				map[y][x].heat = (3.15 - Math.abs(MAPSIZE/2 - y)/(MAPSIZE/6)) + Math.random() * .155;
+				map[y][x].wetness = .1 - map[y][x].heat/18;
+				if(col == "6aa3bd" || col == "4756d6"){
+					map[y][x].elevation = -1;
+					map[y][x].type == 'a';
+					if(col == "4756d6"){ map[y][x].type = 'w'; }
+				}
+				else if(col == "000000"){
+					map[y][x].elevation = .9; map[y][x].type = 'm';
+				}
+			}
+		}
+		genWorld();
+		genArtifacts();
+	});
+	*/
 	io.sockets.on('connection', function(socket){
 		socket.on('pConnected', function(data){
 			socketList.push(socket);
@@ -129,6 +162,9 @@ var io = require('socket.io')(server,{});
 		});
 		socket.on('dayChange', function(data){
 			day = data.day;
+		});
+		socket.on('marketAction', function(data) {
+			dRates[data.res] += data.val/(1000/rates[data.res]);
 		});
 		socket.on('retT', function(data){
 			treasures.push(data.t);

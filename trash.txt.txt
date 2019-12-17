@@ -1936,3 +1936,32 @@ function drawMenus(){
 	}
 	rtx.fillStyle = "white";
 }
+else if(newDir > 4){
+		if(newDir == 6){ //zoom in	oldZoom = 1;
+			let xDif = (cWidth/p.zoom - cWidth/(p.zoom-1));
+			let yDif = (cHeight/p.zoom - cHeight/(p.zoom-1));
+			ctx.drawImage(c, 0, 0, cWidth-p.zoom*xDif, cHeight-p.zoom*yDif);
+		}
+		let xEdg = (cWidth/p.zoom);
+		let yEdg = (cHeight/p.zoom);
+		if(newDir == 5){ //zoom out
+			let xDif = (cWidth/p.zoom - cWidth/(p.zoom+1));
+			let yDif = (cHeight/p.zoom - cHeight/(p.zoom+1));
+			ctx.drawImage(c, 0, 0, cWidth-p.zoom*xDif, cHeight-p.zoom*yDif);
+			for(let nD = 1; nD < 3; nD++){
+				let d = xEdg;
+				let b = 0;
+				let c1 = yEdg;
+				let a = 0;
+				switch(nD){	
+					case 1: b=Math.floor(xEdg-xDif);break; //right
+					case 2: a=Math.floor(yEdg-yDif);break; //down
+				}
+				for(let i = a; i <= c1; i++){
+					for(let j = b; j <= d; j++){	
+						drawTile(p.yView+i, p.xView+j);
+					}
+				}
+			}
+		}
+	}

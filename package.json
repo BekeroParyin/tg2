@@ -4,8 +4,11 @@
   "description": "tg2sprites",
   "main": "AI.js",
   "dependencies": {
+    "canvas": "^2.6.1",
     "express": "^4.17.1",
     "path": "^0.12.7",
+    "png-js": "^1.0.0",
+    "pngjs": "^3.4.0",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {},

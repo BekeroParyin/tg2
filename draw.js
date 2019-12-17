@@ -103,8 +103,9 @@ function drawNavyPath(){
 	}
 }
 function drawMap(newDir){
+	ctx.fillStyle = "red";
 	drawing = true;
-	if(typeof newDir == 'undefined' || newDir == -1 || p.zoom > 6){
+	if(typeof newDir == 'undefined' || newDir == -1 || newDir > 4 || p.zoom > 20){
 		ctx.clearRect(0, 0, cWidth, cHeight);
 		for(let i = 0; i < Math.ceil(cHeight/p.zoom); i++){
 			for(let j = 0; j < Math.ceil(cWidth/p.zoom); j++){
@@ -112,24 +113,18 @@ function drawMap(newDir){
 			}
 		}
 	}
-	else{
-		ctx.save();
+	else if(newDir > -1 && newDir < 4){
+		let xEdg = Math.floor(cWidth/p.zoom);
+		let yEdg = Math.floor(cHeight/p.zoom);
+		let d = xEdg;
+		let b = 0;
+		let c1 = yEdg;
+		let a = 0;
 		switch(newDir){
-			case 0: ctx.translate(0, p.zoom); break; //up
-			case 1: ctx.translate(-p.zoom, 0); break; //right
-			case 2: ctx.translate(0, 0 -p.zoom); break; //down
-			case 3: ctx.translate(p.zoom, 0); break; //left
-		}
-		ctx.drawImage(c, 0, 0, c.width/scale, c.height/scale);
-		ctx.restore();
-		let a = b = c1 = d = 0;
-		let xEdg = Math.min(MAPSIZE, Math.ceil(cWidth/p.zoom));
-		let yEdg = Math.min(MAPSIZE, Math.ceil(cHeight/p.zoom));
-		switch(newDir){ //draws from (a,b) to (c1, d)
-			case 0: a=0;b=0;c1=1;d=xEdg; break; //up
-			case 1: a=0;b=xEdg-2;c1=yEdg;d=xEdg; break; //right
-			case 2: a=yEdg-2;b=0;c1=yEdg;d=xEdg; break; //down
-			case 3: a=0;b=0;c1=yEdg;d=1; break; //left
+			case 0: ctx.drawImage(c, 0, 0, Math.ceil(cWidth/p.zoom)*p.zoom*scale, Math.ceil(cHeight/p.zoom)*p.zoom*scale, 0, p.zoom, Math.ceil(cWidth/p.zoom)*p.zoom, Math.ceil(cHeight/p.zoom)*p.zoom); c1=1;break; //up
+			case 1: ctx.drawImage(c, 0, 0, Math.ceil(cWidth/p.zoom)*p.zoom*scale, Math.ceil(cHeight/p.zoom)*p.zoom*scale, -p.zoom, 0, Math.ceil(cWidth/p.zoom)*p.zoom, Math.ceil(cHeight/p.zoom)*p.zoom); b=xEdg-1;break; //right
+			case 2: ctx.drawImage(c, 0, 0, Math.ceil(cWidth/p.zoom)*p.zoom*scale, Math.ceil(cHeight/p.zoom)*p.zoom*scale, 0, -p.zoom, Math.ceil(cWidth/p.zoom)*p.zoom, Math.ceil(cHeight/p.zoom)*p.zoom); a=yEdg-1;break; //down
+			case 3: ctx.drawImage(c, 0, 0, Math.ceil(cWidth/p.zoom)*p.zoom*scale, Math.ceil(cHeight/p.zoom)*p.zoom*scale, p.zoom, 0, Math.ceil(cWidth/p.zoom)*p.zoom, Math.ceil(cHeight/p.zoom)*p.zoom);d = 0;break; //left
 		}
 		for(let i = a; i <= c1; i++){
 			for(let j = b; j <= d; j++){
@@ -141,15 +136,32 @@ function drawMap(newDir){
 	drawNavyPath();
 	drawing = false;
 }
-function drawDynamic(type, img, y1, x, y, dx, dyt, x11){ //type of tile, img sheet, where on the img sheet to start, tileX, tileY, drawposX, drawposY
+function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img sheet, where on the img sheet to start, tileX, tileY, drawposX, drawposY
 	let x1 = x11 || 0;
 	var b0 = -1; var b1 = -1;
-	let dy = dyt;
 	let t = map[y][x];
-	[lT, rT, uT, dT] = [map[y][safeC(x-1)], map[y][safeC(x+1)], map[safeC(y-1)][x], map[safeC(y+1)][x]];
+	let lT = map[y][safeC(x-1)];
+	let rT = map[y][safeC(x+1)];
+	let uT = map[safeC(y-1)][x];
+	let dT = map[safeC(y+1)][x];
 	if(type == 'w' || type == 'r' || type == 'a'){
 		[leftT, rightT, upT, downT] = [(lT.elevation < 0), (rT.elevation < 0), (uT.elevation < 0), (dT.elevation < 0)];
 		[leftD, rightD, upD, downD] = [((lT.building[0] == 1) && lT.building[1] == 3), ((rT.building[0] == 1) && rT.building[1] == 3), ((uT.building[0] == 1) && uT.building[1] == 3), ((dT.building[0] == 1) && dT.building[1] == 3)];
+		if(leftT && rightT && upT && downT){
+			if(leftD){ //Redraw Adjacent Docks
+				drawDynamic('b', sprites2, 272, safeC(x-1), y,  dx-p.zoom, dy);
+			}
+			if(rightD){
+				drawDynamic('b', sprites2, 272, safeC(x+1), y,  dx+p.zoom, dy);
+			}
+			if(upD){
+				drawDynamic('b', sprites2, 272, x, safeC(y-1),  dx, dy-p.zoom);
+			}
+			if(downD){
+				drawDynamic('b', sprites2, 272, x, safeC(y+1),  dx, dy+p.zoom);
+			}
+			return;
+		}
 	}
 	else if(type == 'h' || type == 'k' || type == 'l'){
 		let elev = .5;
@@ -278,13 +290,13 @@ function drawBuilding(y1, x1){
 	var b0 = t.building[0];
 	var b1 = t.building[1];
 	let drawY = Math.floor(dY*p.zoom);
-	if(map[y][x].type == 'k'){
+	if(t.type == 'k'){
 		drawY -= 1*(p.zoom/16);
 	}
-	else if(map[y][x].type == 'h'){
+	else if(t.type == 'h'){
 		drawY -= 2*(p.zoom/16);
 	}
-	else if(map[y][x].type == 'l'){
+	else if(t.type == 'l'){
 		drawY -= 3*(p.zoom/16);
 	}
 	if(b0 == 0){ //DRAW ECONOMIC BUILDINGS
@@ -596,280 +608,13 @@ function drawTile(y1, x1){
 			ctx.stroke();
 			ctx.lineWidth = 1;
 		}
+		if(map[safeC(y+1)][x].building[0] != -1){
+			drawBuilding(y+1, x);
+		}
 		if(y == tS[0] && x == tS[1] && p.zoom > 4){ 
 			ctx.strokeStyle = "gold"; 
 			ctx.strokeRect(Math.floor(dX * p.zoom)+1, Math.floor(dY * p.zoom)+1, p.zoom-2, p.zoom-2);
 		}
-		if(map[safeC(y+1)][x].building[0] != -1){
-			drawBuilding(y+1, x);
-		}
 	}
 }
-function drawRightBar(e){
-	var rect = r.getBoundingClientRect();
-	rtx.clearRect(0, 0, rect.width, rect.height);
-	rtx.fillStyle =  "#293134";
-	rtx.fillRect(0,0, rect.width,rect.height);
-	var yS = -1;
-	var xS = -1;
-	if(tS.length == 2){
-		yS = tS[0];
-		xS = tS[1];
-	}
-	if(e.type == 'mouseup'){
-		r.removeEventListener('mousemove', drawRightBar);
-		e = 0;
-	}
-	if(e!=0 && e.type == 'mousedown' || e.type == 'mousemove'){
-		var y = e.clientY - rect.top;
-		var x = e.clientX - rect.left;
-		if(e.type == 'mousemove' && x < rect.width-60){
-			r.removeEventListener('mousemove', drawRightBar);
-			e = 0;
-		}
-	}
-	if(e != 0 && y > 0 && y < rect.height && x > 0 && x < rect.width){ //Handle Clicks in this If
-		if(p.menView[1][0] == -1 && e.type == 'mousedown'){ //Which Building Type is Selected
-			if(y < 4*rect.height/12){
-				p.menView[1][0] = Math.floor((y)/(rect.height/12));
-				p.menView[1][2] = 0;
-			}
-		}
-		else if(x > rect.width - 60){ //If Collapse Arrows are clicked or scrollbar
-			var topOf = p.menView[1][0]*rect.height/12;
-			var botOf = p.menView[1][0]*rect.height/12+5*rect.height/12;
-			if(e.type == 'mousedown' && y > (20 + (p.menView[1][0]) * (rect.height/12) + 5*rect.height/12) && y < ((p.menView[1][0]) * (rect.height/12) + 5*rect.height/12)){
-				p.menView[1] = [-1, -1, 0]
-			}
-			else if(y < p.menView[1][0]*(rect.height/12) || y > ((p.menView[1][0]) * (rect.height/12) + 5*rect.height/12)){ //If a separate expand arrow is clicked, switch to that building type
-				if(y<topOf){
-					p.menView[1][0] = Math.floor((y)/(rect.height/12)); p.menView[1][2] = 0;
-				}
-				else if(y>botOf && y < 8*rect.height/12){
-					p.menView[1][0] += 1+Math.floor((y-(botOf))/(rect.height/12)); p.menView[1][2] = 0;
-				}
-			}
-			else if(y < botOf && y > topOf && x > rect.width - 60){
-				if(e.type == 'mousedown'){
-					r.addEventListener('mousemove', drawRightBar);
-					r.addEventListener('mouseup', drawRightBar);
-				}
-				else if(e.type == 'mousemove'){
-					p.menView[1][2] = Math.min((y-topOf), 240);
-				}
-			}
-		}
-		else if(x < rect.width-60 && y > p.menView[1][0] * rect.height/12 && y < (6+p.menView[1][0]) * rect.height/12){ //else a building is clicked
-			r.removeEventListener('mousemove', drawRightBar);
-			//Arbitrary Variables for simpler math, handles which building is selected
-			var tB = (5*rect.height/12 - 2)/7;
-			var tC = (p.menView[1][0]*rect.height/12)
-			p.menView[1][1] = safeC(Math.floor((y-tC)/(tB))+Math.floor(p.menView[1][2]/buildings[p.menView[1][0]].length), buildings[p.menView[1][0]].length);
-		}
-		else if(p.menView[1][0] > -1 && p.menView[1][1] > -1 && x > 10 && y > 80+8*rect.height/12 && x < 70 && y <= 170+8*rect.height/12){//buy key
-			let b0 = p.menView[1][0];
-			let b1 = p.menView[1][1];
-			if(canBuy(yS, xS, b0, b1, p)){ //Buy a building
-				var canPlace = false;
-				if(b0 == 1 && b1 == 3){ //if Dock
-					for(let a = -1; a < 2; a++){
-						for(let b = -1; b < 2; b++){
-							if((a == 0 || b == 0) && a != b){
-								if(map[safeC(yS+a)][safeC(xS+b)].elevation < 0){
-									canPlace = true; a = 2; b = 2;
-								}
-							}
-						}
-					}
-				}
-				else if(map[yS][xS].type == 'l'){
-					if(b0 == 2 && b1 <= 3){ //walls on hills
-						canPlace = true;
-					}
-				}
-				else{ canPlace = true; }
-				if(b0 == 2 && b1 == 3){ // no adjacent gatehouses
-					for(let a = -1; a < 2; a++){
-						for(let b = -1; b < 2; b++){
-							if((a == 0 || b == 0) && a != b){
-								if(map[safeC(yS+a)][safeC(xS+b)].building[0] == 2 && map[safeC(yS+a)][safeC(xS+b)].building[1] == 3){
-									canPlace = false;
-									alert("No adjacent gatehouses u ape");
-								}
-							}
-						}
-					}
-				}
-				else if(b0 == 0 && b1 == 6){ // no adjacent mines
-					for(let a = -1; a < 2; a++){
-						for(let b = -1; b < 2; b++){
-							if((a == 0 || b == 0) && a != b){
-								if(map[safeC(yS+a)][safeC(xS+b)].building[0] == 0 && map[safeC(yS+a)][safeC(xS+b)].building[1] == 6){
-									canPlace = false;
-									alert("No adjacent mines u ape");
-								}
-							}
-						}
-					}
-				}
-				if(canPlace){ //BUY BUILDING AND PLACE IT
-					map[yS][xS].building = [b0, b1, 1, [false]];
-					if(b0 == 1 && b1 == 6){ // manor
-						p.manors.push([yS,xS]);
-					}
-					if(buildings[b0][b1].cost[0] > 0){
-						p.zones[map[yS][xS].zone].res.wood -= buildings[b0][b1].cost[0];
-					}
-					if(buildings[b0][b1].cost[1] > 0){
-						p.zones[map[yS][xS].zone].res.stone -= buildings[b0][b1].cost[1];
-					}
-					if(buildings[b0][b1].cost[2] > 0){
-						p.zones[map[yS][xS].zone].res.gold -= buildings[b0][b1].cost[2];
-					}
-					p.gold -= buildings[b0][b1].cost[2];
-					p.manpower -= buildings[b0][b1].cost[3];
-					switch(buildings[b0][b1].cost[4][0]){
-						case 12: p.zones[map[yS][xS].zone].res.rWood-=buildings[b0][b1].cost[4][1]; break;
-						case 15: p.zones[map[yS][xS].zone].res.rSilk-=buildings[b0][b1].cost[4][1]; break;
-						case 16: p.zones[map[yS][xS].zone].res.spices-=buildings[b0][b1].cost[4][1]; break;
-					}
-					buildings[b0][b1].effect(0);
-					drawTile(yS, xS);
-					if(yS > 0){
-						drawTile(yS-1, xS);
-					}
-					if(xS > 0){
-						drawTile(yS, xS-1);
-					}
-					if(xS-p.xView < Math.floor(cWidth/p.zoom)){
-						drawTile(yS, xS+1);
-					}
-					if(yS-p.yView < Math.floor(cHeight/p.zoom)){
-						drawTile(yS+1, xS);
-					}
-					if(b0 + b1 == 0){
-						$("#switchContainer").css("display", "inline-block");
-						if(document.getElementById("resgood").checked){
-							$('#resource-list').show();
-						}
-						else { $('#goods-list').show(); }
-					}
-					delta = true;
-					if(e.shiftKey){ p.action = "building";}
-					else { b1 = -1; }
-					tileChange(yS,xS);
-					return;
-				}
-			}
-		}
-	}
-	var cCols = ["#BAEFC8", "#E5EFBA", "#BAEAEF", "#EFD4BA"];
-	if(p.menView[1][0] == -1){ //No selected building
-		for(let i = 0; i < 4; i++){
-			rtx.font = "32px Bookman";
-			rtx.fillStyle = cCols[i];
-			rtx.fillRect(0, i*rect.height/12, rect.width, rect.height/12);
-			rtx.fillStyle = "black";
-			switch(i){
-				case 0:rtx.fillText("Economic", 10, 45);  break;
-				case 1:rtx.fillText("Social", 10, 45 + rect.height/12); break;
-				case 2:rtx.fillText("Defense", 10, 45 + 2*rect.height/12 );  break;
-				case 3:rtx.fillText("Offense", 10, 45 + 3*rect.height/12);  break;
-			}
-			rtx.beginPath();
-			rtx.moveTo(rect.width-35, 40 + i*rect.height/12);
-			rtx.lineTo(rect.width-25, 30 + i*rect.height/12);
-			rtx.lineTo(rect.width-45, 30 + i*rect.height/12);
-			rtx.fill()
-		}
-		rtx.fillStyle = "#526165";
-		rtx.fillRect(0, 4*rect.height/12, rect.width, (rect.height)-(4*rect.height/12));
-		rtx.fillStyle = "white";
-		rtx.font = "18px Bookman";
-		rtx.fillText("No building selected", 15, 4*rect.height/12+40);
-	}
-	else {
-		var yCur = 0;
-		for(i = 0; i < 4; i++){
-			rtx.fillStyle = cCols[i];
-			if(i == p.menView[1][0]){
-				rtx.fillRect(0, yCur, rect.width, 5*rect.height/12);
-				rtx.fillStyle = "black";
-				rtx.strokeRect(0, 1+yCur, rect.width-1, 5*rect.height/12-2);
-				for(let j = 0; j < Math.min(7, buildings[p.menView[1][0]].length); j++){ //this loop draws the selected building types
-					let bInd = safeC(j + Math.floor(p.menView[1][2]/buildings[p.menView[1][0]].length), buildings[p.menView[1][0]].length);
-					var gir = buildings[p.menView[1][0]][bInd].draw[1];
-					rtx.fillStyle = buildings[p.menView[1][0]][bInd].draw[0];
-					rtx.fillRect(10 + (1-gir)*18, yCur + (1-gir)*18+ 2+(5*rect.height/12)/7*j , 36*gir, 36*gir);
-					rtx.fillStyle = "black"; rtx.font = "26px Bookman";
-					rtx.fillText(buildings[p.menView[1][0]][bInd].name, 50, yCur+30+(5*rect.height/12)/7*j, rect.width-60);
-					rtx.lineWidth = 2;
-					if(p.menView[1][1] == bInd){rtx.strokeStyle = "gold";} else { rtx.strokeStyle = "black"; }
-					rtx.strokeRect(2, 1+yCur+(5*rect.height/12-2)/7*j, rect.width-60, (5*rect.height/12 - 2)/7);
-					rtx.strokeStyle = "black";
-				}
-				rtx.strokeRect(rect.width-58, yCur, 58, 6*(5*rect.height/12 - 1)/7); 
-				rtx.fillStyle = "grey";
-				rtx.fillRect(rect.width-57, yCur+Math.max(2, p.menView[1][2]), 55, 20);
-				yCur += 5*rect.height/12;
-				rtx.fillStyle = "black";
-				rtx.beginPath();
-				rtx.moveTo(rect.width-30, yCur - 30);
-				rtx.lineTo(rect.width-20, yCur - 20);
-				rtx.lineTo(rect.width-40, yCur - 20);
-				rtx.fill();
-			}
-			else{ //this draws the unselected tabs
-				rtx.fillRect(0, yCur, rect.width, rect.height/12);
-				rtx.fillStyle = "black"; rtx.font = "32px Bookman";
-				switch(i){
-					case 0:rtx.fillText("Economic", 10, 45+yCur);  break;
-					case 1:rtx.fillText("Social", 10, 45+yCur); break;
-					case 2:rtx.fillText("Defense", 10, 45+yCur);  break;
-					case 3:rtx.fillText("Offense", 10, 45+yCur);  break;
-				}
-				yCur += rect.height/12;
-				rtx.beginPath();
-				rtx.moveTo(rect.width-30, yCur - 20);
-				rtx.lineTo(rect.width-20, yCur - 30);
-				rtx.lineTo(rect.width-40, yCur - 30);
-				rtx.fill()
-			}
-		}
-		if(p.menView[1][1] > -1 && buildings.length > p.menView[1][0] && buildings[p.menView[1][0]].length > p.menView[1][1]){ //Draw Pricing & Buy key
-			rtx.fillStyle = "rgb(53, 65, 68)";
-			rtx.font = "20px Bookman";
-			rtx.fillRect(0, 8*rect.height/12, rect.width, (rect.height - (120+8*rect.height/12)));
-			var trig = 0;
-			var a = buildings[p.menView[1][0]][p.menView[1][1]].cost;
-			var b = map[yS][xS].zone;
-			let cR;
-			if( b > -1){
-				cR = p.zones[b].res;
-			}
-			rtx.fillStyle = "white";
-			rtx.fillText(buildings[p.menView[1][0]][p.menView[1][1]].description, 15, 8*rect.height/12 + 70);
-			if(b > -1 && a[0] <= cR.wood){ rtx.fillStyle = "white"; trig++; } else { rtx.fillStyle = "grey" }
-			rtx.fillText("W Cost:  " + a[0], 15, 8*rect.height/12 + 20);
-			if(a[4][0] == -1){
-				if(b > -1 && a[1] <= cR.stone){ rtx.fillStyle = "white"; trig++; } else { rtx.fillStyle = "grey" }
-				rtx.fillText("S Cost:  " + a[1], 15 + rect.width/2, 8*rect.height/12 + 20);
-			}
-			else{ //In case there is a special cost, like for plantations or silk orchards
-				rtx.fillStyle = "grey";
-				switch(a[4][0]){
-					case 12: if(cR.rWood >= a[4][1]){rtx.fillStyle = "white"; }rtx.fillText("LW Cost: " + a[4][1], 15 + rect.width/2, 8*rect.height/12+20); break;
-					case 15: if(cR.rSilk >= a[4][1]){rtx.fillStyle = "white"; }rtx.fillText("Si Cost: " + a[4][1], 15 + rect.width/2, 8*rect.height/12+20); break;
-					case 16: if(cR.spices >= a[4][1]){rtx.fillStyle = "white"; }rtx.fillText("Sp Cost: " + a[4][1], 15 + rect.width/2, 8*rect.height/12+20); break;
-				}
-			}
-			if(a[3] <= p.manpower){ rtx.fillStyle = "white"; trig++; } else { rtx.fillStyle = "grey" }
-			rtx.fillText("M Cost:  " + a[3], 15, 8*rect.height/12 + 45);
-			if(b > -1 && a[2] <= p.gold){ rtx.fillStyle = "white"; trig++; } else { rtx.fillStyle = "grey" }
-			rtx.fillText("G Cost:  " + a[2], 15 + rect.width/2, 8*rect.height/12 + 45);
-			if(trig == 0){ rtx.fillStyle = "white"; } else { rtx.fillStyle = "grey"; }
-			rtx.strokeRect(10, 8*rect.height/12 + 80, 60, 30);
-			rtx.fillText("Build!", 15, 8*rect.height/12 + 100);
-		}
-	}
-}
+
