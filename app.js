@@ -117,10 +117,10 @@ var io = require('socket.io')(server,{});
 				}
 			}
 		}
-		genWorld();
-		genArtifacts();
 	});
 	*/
+	genWorld();
+		genArtifacts();
 	io.sockets.on('connection', function(socket){
 		socket.on('pConnected', function(data){
 			socketList.push(socket);
