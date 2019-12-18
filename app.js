@@ -113,7 +113,10 @@ var io = require('socket.io')(server,{});
 					if(col == "4756d6"){ map[y][x].type = 'w'; }
 				}
 				else if(col == "000000"){
-					map[y][x].elevation = .9; map[y][x].type = 'm';
+					map[y][x].elevation = .7 + (Math.random()/5);
+				}
+				else if(col === "1b4500"){
+					map[y][x].wetness = .6; map[y][x].type = 'f';
 				}
 			}
 		}

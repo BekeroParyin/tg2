@@ -10,10 +10,10 @@
 			//slap(5000, 'g', 'w', -1, 0, 1400);
 			//slap(400, 'g', 'w', -1, -1);
 			console.log("Oceans Generated");
-			mountain(20, Math.round(20*MODI));
-			mountain(40* MODI, Math.round(20*MODI));
-			mountain(320 * MODI, Math.round(20*MODI));
-			mountain(400*MODI, Math.round(35*MODI));
+			// mountain(20, Math.round(20*MODI));
+			// mountain(40* MODI, Math.round(20*MODI));
+			// mountain(320 * MODI, Math.round(20*MODI));
+			// mountain(400*MODI, Math.round(35*MODI));
 			console.log("mountains");
 			hill(200, Math.round(20*MODI));
 			hill(100, Math.round(150* MODI));
@@ -58,7 +58,7 @@
 				for(let j = 0; j < MAPSIZE; j++){
 					if(map[i][j].elevation > 0){
 						if(map[i][j].wetness < .05 && map[i][j].heat > 1.5){
-							map[i][j].type = 'd';
+							// map[i][j].type = 'd';
 						}
 						if(map[i][j].elevation > .5){
 							//0-6:stone, 7: copper, 8: bronze
