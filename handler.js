@@ -175,73 +175,75 @@ var MAPSIZE = 1000;
 			});
 		}
 		var drawDir = -1;
+		var timeout = false;
 		function mapV(event){ //left
-			if(!drawing){
-			if(event.keyCode == 37){
-				p.xView = safeC(--p.xView);
-				drawDelta = true;
-				drawDir = 3;
-				if(p.zoom > 6 && event.ctrlKey){ p.xView = safeC(p.xView - 12); drawDir = -1;}
-			}
-			else if(event.keyCode == 38){ //up
-				p.yView = safeC(--p.yView);
-				drawDelta = true;
-				drawDir = 0;
-				if(p.zoom > 6 && event.ctrlKey){ p.yView = safeC(p.yView - 12); drawDir = -1;}
-			}
-			else if(event.keyCode == 39){ //right
-				p.xView = safeC(++p.xView);
-				drawDelta = true;
-				drawDir = 1;
-				if(p.zoom > 6 && event.ctrlKey){ p.xView = safeC(p.xView + 12); drawDir = -1; }
-			}
-			else if(event.keyCode == 40){ //down
-				p.yView = safeC(++p.yView);
-				drawDelta = true;
-				drawDir = 2;
-				if(p.zoom > 6 && event.ctrlKey){ p.yView = safeC(p.yView + 12); drawDir = -1;}
-			}
-			else if(event.keyCode == 90){ //Z
-				if(p.zoom < 200 ){
-					p.zoom++;
+			if(!drawing && !timeout){
+				if(event.keyCode == 37){
+					p.xView = safeC(--p.xView);
 					drawDelta = true;
-					drawDir = 6;
-					if(p.zoom > 60){
-						p.zoom += 3;
+					drawDir = 3;
+					if(p.zoom > 6 && event.ctrlKey){ p.xView = safeC(p.xView - 12); drawDir = -1;}
+				}
+				else if(event.keyCode == 38){ //up
+					p.yView = safeC(--p.yView);
+					drawDelta = true;
+					drawDir = 0;
+					if(p.zoom > 6 && event.ctrlKey){ p.yView = safeC(p.yView - 12); drawDir = -1;}
+				}
+				else if(event.keyCode == 39){ //right
+					p.xView = safeC(++p.xView);
+					drawDelta = true;
+					drawDir = 1;
+					if(p.zoom > 6 && event.ctrlKey){ p.xView = safeC(p.xView + 12); drawDir = -1; }
+				}
+				else if(event.keyCode == 40){ //down
+					p.yView = safeC(++p.yView);
+					drawDelta = true;
+					drawDir = 2;
+					if(p.zoom > 6 && event.ctrlKey){ p.yView = safeC(p.yView + 12); drawDir = -1;}
+				}
+				else if(event.keyCode == 90){ //Z
+					if(p.zoom < 200 ){
+						p.zoom++;
+						drawDelta = true;
+						drawDir = 6;
+						if(p.zoom > 60){
+							p.zoom += 3;
+						}
 					}
 				}
-			}
-			else if(event.keyCode == 88){ //X
-				if(p.zoom > 1 && cWidth/(p.zoom-1) <= MAPSIZE){
-					p.zoom--;
-					drawDelta = true; 
-					drawDir = 5;
-					if(p.zoom > 60){
-						p.zoom -= 3; 
+				else if(event.keyCode == 88){ //X
+					if(p.zoom > 1 && cWidth/(p.zoom-1) <= MAPSIZE){
+						p.zoom--;
+						drawDelta = true; 
+						drawDir = 5;
+						if(p.zoom > 60){
+							p.zoom -= 3; 
+						}
 					}
 				}
-			}
-			else if(event.keyCode == 68){ //D
-				if(p.draw == "normal"){
-					p.draw = "resources";
+				else if(event.keyCode == 68){ //D
+					if(p.draw == "normal"){
+						p.draw = "resources";
+					}
+					else if(p.draw == "resources"){
+						p.draw = "zones";
+					}
+					else { p.draw = "normal"; }
+					drawDelta = true;
+					delta = true;
+					drawDir = -1;
 				}
-				else if(p.draw == "resources"){
-					p.draw = "zones";
+				else if(event.keyCode == 65){
+					if(p.action == "claiming"){
+						p.action = "clearing";
+					}
+					else if(p.action == "clearing"){ p.action = "planting"; }
+					else { p.action = "claiming"; }
+					delta = true;
 				}
-				else { p.draw = "normal"; }
-				drawDelta = true;
-				delta = true;
-				drawDir = -1;
-			}
-			else if(event.keyCode == 65){
-				if(p.action == "claiming"){
-					p.action = "clearing";
-				}
-				else if(p.action == "clearing"){ p.action = "planting"; }
-				else { p.action = "claiming"; }
-				delta = true;
-			}
-			else { drawDelta = false; }
+				else { drawDelta = false; }
+				timeout = true;
 			}
 		}
 		function clear(e, y1, x1){
@@ -659,13 +661,13 @@ var MAPSIZE = 1000;
 							}
 							else if(t.building[0] != 3){
 								if(t.building[0] == 2 || specialIDs.indexOf(buildings[t.building[0]][t.building[1]].name) != -1){
-									$('#building-special').show();
+									$('#building-special').fadeIn();
 									if(t.building[0] == 1 && t.building[1] == 3){
 										$('#dock').show();
 									}
 								}
 								else{
-									$('#building-upgrade').show();
+									$('#building-upgrade').fadeIn();
 								}
 							}
 						}
@@ -712,21 +714,6 @@ var MAPSIZE = 1000;
 			}
 //			drawMenus();
 		});
-		c.addEventListener("scroll", function(){
-			if(this.oldScroll > this.scrollY){
-				if(p.zoom > 1 && cWidth/(p.zoom-1) <= MAPSIZE){
-					p.zoom--;
-					drawDelta = true; 
-					drawDir = -1;
-				}
-			}
-			else if(p.zoom < 200 ){
-				p.zoom++;
-				drawDelta = true;
-				drawDir = -1;
-			}
-			this.oldScroll = this.scrollY;
-		});
 		document.addEventListener('keydown', mapV);
 		c.addEventListener('mousedown', handleMapClick);
 		r.addEventListener('mousedown', drawRightBar);
@@ -734,6 +721,7 @@ var MAPSIZE = 1000;
 		setInterval(function(){
 			if(start){
 				t++;
+				$('#tickbar').css('width', (Math.min(100, 100*(t/1000)))+"%");
 			}
 			if(t%1==0 && p.vassals.length > 0){
 				p = manageAI(t%10==0, p.vassals, p);
@@ -742,32 +730,35 @@ var MAPSIZE = 1000;
 				}
 				drawDelta = true;
 			}
-			if(t%250==0){
+			if(t%250==0 && p.manors.length > 0){
 				tHunt();
 			}
 			if(t==100){
 				p = rebelCheck(p);
 			}
-			if(t==300){
+			else if(t==300){
 				p = Roads(p);
 				p = scanRoads(p);
 			}
-			if(t==350){
+			else if(t==900){
+				p = armyPay(p);
+				p = navyPay(p);
+				delta = true;
+			}
+			else if(t >= 1000){
 				if(p.manpower < 25){
 					p.manpower+=2;
 				}
 				p = rIncome(p);
-			}
-			if(t>=1000){
-				p = armyPay(p);
-				p = navyPay(p);
-				t = -1;
 				delta = true;
+				t = -1;
 			}
 			if(drawDelta && mapLoaded){
 				drawMap(drawDir);
 				drawDir = -1;
 				drawDelta = false;
+				t+=4;
+				if(t%250==4||t==104||t==304||t==904){t-=4;}
 			}
 			if(delta){
 				if(!p.appraising){
@@ -776,4 +767,5 @@ var MAPSIZE = 1000;
 				drawLeftBar();
 				delta = false;
 			}
+			timeout = false;
 		}, 8);

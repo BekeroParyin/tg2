@@ -36,18 +36,36 @@ a{
 .incr{
    border:none;
    outline:none;
-   background-color: green;
+   background-color: #3D9970;
    height:30px;
-   width:30px
+   width:30px;
 }
 .decr{
    border:none;
    outline:none;
-   background-color: red;
+   background-color: #FF4136;
    height:30px;
-   width:30px
+   width:30px;
 }
-*:focus {
+.incr:active, .decr:active, .incr:focus, .decr:focus {
+	box-shadow:none!important;
+	outline: none!important;
+	border:none!important;
+}
+#beginSC {
+	border:none;
+    outline:none;
+	color: #fff;
+	box-shadow: 0px 0px 4px 2px #35819c;
+	background-color:#449fc0;
+	transition: background-color linear 750ms;
+	padding:4px;
+	font-size:1.2rem;
+}
+#beginSC:hover{
+	background-color:#35819c;
+}
+decr:focus, incr:focus{
     outline: none!important;
 	box-shadow: none!important;
 }

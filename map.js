@@ -4,8 +4,8 @@
 			console.log("Modifier: " + MODI);
 			console.log("Map Size: " + MAPSIZE);
 			console.log(map.length);
-			//genOceans(MAPSIZE*MAPSIZE, 2);
-			//genOceans(30000 * MODI, 4);
+			genOceans(MAPSIZE*MAPSIZE, 2);
+			genOceans(30000 * MODI, 4);
 			console.log("genOceans");
 			//slap(5000, 'g', 'w', -1, 0, 1400);
 			//slap(400, 'g', 'w', -1, -1);
@@ -33,10 +33,10 @@
 			console.log("currents 2");
 			elevSpread();
 			if(MODI > .5){
-				forest(9000*MODI, 30*MODI);
-				forest(7000*MODI, 30*MODI);
-				forest(4000*MODI, 30*MODI);
-				forest(3000*MODI, 30*MODI);
+				forest(9000*MODI, 60*MODI);
+				forest(7000*MODI, 60*MODI);
+				forest(4000*MODI, 60*MODI);
+				forest(3000*MODI, 60*MODI);
 				forest(900*MODI, Math.round(150* MODI));
 				forest(500*MODI, Math.round(1000* MODI));
 				forest(200*MODI, Math.round(500* MODI));

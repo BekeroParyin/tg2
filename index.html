@@ -15,7 +15,10 @@
         <div class="row h-100">
             <div class="col-md-2half" id="left" style="position:relative;">
                 <button type="button" id="actionChange" class="btn btn-info" style="position:absolute; bottom:0; width:100%;">Action: <span id="pact">Claiming</span></button>
-                <ul class="nav nav-tabs d-flex justify-content-sm-center" id="leftTab" role="tablist">
+                <div class="progress" style="background-color:#CDCDCD; position:absolute; bottom:50px; width:100%;">
+					<div id="tickbar" class="bar bg-info" style="width:0%;"></div>
+				</div>
+				<ul class="nav nav-tabs d-flex justify-content-sm-center" id="leftTab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="resource-tab" data-toggle="tab" href="#resource" role="tab">Resources</a>
                     </li>
@@ -210,57 +213,58 @@
                         <div id="building-special">
 							<div id = "dock">
 							<li class="list-group-item d-flex justify-content-sm-around" style = "font-size: 1.2rem;">
-                                Points Remaining: <span id = "pts" style = "font-size: 1.15rem;">50</span>
+                                Points Remaining: <span id = "dockPts" style = "font-size: 1.15rem;">50</span>
                             </li>
 							<table class="resTable" id = "dockTable">
-                            <tr>
+                            <tr id = "dockAtk">
 								<td class="resLabel">Attack:</td>
 								<td><button class = "decr"></button></td>
 								<td><span id="atkpts">0</span></td>
 								<td><button class = "incr"></button></td>
 								
 							</tr>
-							<tr>
+							<tr id = "dockStr">
 								<td class="resLabel">Strength:</td>
 								<td><button class = "decr"></button></td>
 								<td><span id="strPts">0</span></td>
 								<td><button class = "incr"></button></td>
 							</tr>
-							<tr>
+							<tr id = "dockSto">
 								<td class="resLabel">Storage:</td>
 								<td><button class = "decr"></button></td>
 								<td><span id="stoPts">0</span></td>
 								<td><button class = "incr"></button></td>
 							</tr>
-							<tr>
+							<tr id = "dockTra">
 								<td class="resLabel">Transport:</td>
 								<td><button class = "decr"></button></td>
 								<td><span id="traPts">0</span></td>
 								<td><button class = "incr"></button></td>
 							</tr>
-							<tr>
+							<tr id = "dockFis">
 								<td class="resLabel">Fishing:</td>
 								<td><button class = "decr"></button></td>
 								<td><span id="fisPts">0</span></td>
 								<td><button class = "incr"></button></td>
 							</tr>
-							<tr>
+							<tr id = "dockSpd">
 								<td class="resLabel">Ship Speed:</td>
 								<td><button class = "decr"></button></td>
 								<td><span id="spdPts">0</span></td>
 								<td><button class = "incr"></button></td>
 							</tr>
                             </table>
-							<table class = "resTable" style = "text-align:left">
+							<table class = "resTable">
 								<tr>
-									<th> Costs: </th>
+									<th class = "resLabel"> Costs: </th>
 								</tr>
-								<tr><td>Manpower: <span id="mSC">0</span></td></tr>
-								<tr><td>Wood: <span id = "wSC">0</span></td></tr>
-								<tr><td>Gold: <span id = "gSC">0</span></td></tr>
+								<tr><td class = "resLabel">Manpower: <span id="mSC" class = "resLabel">5</span></td></tr>
+								<tr><td class = "resLabel">Wood: <span id = "wSC" class = "resLabel">12</span></td></tr>
+								<tr><td class = "resLabel">Gold: <span id = "gSC" class = "resLabel">25</span></td></tr>
+								<tr class = "blankRow"></tr>
 							</table>
 							<li class="list-group-item d-flex justify-content-center" style = "font-size: 1.2rem;">
-                                <button> Begin Construction </button>
+                                <button id = "beginSC"> Begin Construction </button>
                             </li>
 							</div>
                         </div>

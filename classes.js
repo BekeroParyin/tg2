@@ -606,6 +606,7 @@
 		this.pts = 50;
 		this.stats = [0, 0, 0, 0, 0, 0]; //Att, Def, Cargo, Transp, Fishing, Speed
 		this.cargo =  new Resources();
+		this.costs = [0, 0, 0];
 		this.carrying = 0;
 		this.unloading = false;
 		this.fighting = false;

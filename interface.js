@@ -1,3 +1,12 @@
+var curShip = new Ship();
+var retUnit = new Unit(); retUnit.stats[4] = 4;
+var infUnit = new Unit();
+var archUnit = new Unit();
+var cavUnit = new Unit();
+var sInfUnit = new Unit();
+var sArchUnit = new Unit();
+var sCavUnit = new Unit();
+curUnit = [infUnit, archUnit, cavUnit];
 $(document).ready(function() {
 $("#resgood").change(function() {
 	if($(this).is(':checked')){
@@ -10,6 +19,102 @@ $("#resgood").change(function() {
 	}
 	drawLeftBar();
 });});
+
+function ement(e){
+	let chng = 1;
+	if($(this).hasClass('decr')){
+		chng = -1;
+	}
+	let p = $(this).parent().parent().attr('id');
+	let temp = curShip.pts;
+	let spot = 0;
+	let numRun = 1;
+	if(e.shiftKey){
+		numRun = 5;
+	}
+	for(let i = 0; i < numRun; i++){
+		switch(p){
+			case "dockAtk": if((chng==-1&&curShip.stats[0]>0) ||(chng==1&&curShip.pts>0)){ curShip.pts-=chng; curShip.stats[0]+=chng;}break
+			case "dockStr": if((chng==-1&&curShip.stats[1]>0) ||(chng==1&&curShip.pts>0)){ spot = 1;curShip.pts-=chng; curShip.stats[1]+=chng;}break
+			case "dockSto": if((chng==-1&&curShip.stats[2]>0) ||(chng==1&&curShip.pts>0)){ spot = 2;curShip.pts-=chng; curShip.stats[2]+=chng;}break
+			case "dockTra": if((chng==-1&&curShip.stats[3]>0) ||(chng==1&&curShip.pts>0)){ spot = 3;curShip.pts-=chng; curShip.stats[3]+=chng;}break
+			case "dockFis": if((chng==-1&&curShip.stats[4]>0) ||(chng==1&&curShip.pts>0)){ spot = 4;curShip.pts-=chng; curShip.stats[4]+=chng;}break
+			case "dockSpd": if((chng==-1&&curShip.stats[5]>0) ||(chng==1&&curShip.pts>0)){ spot = 5;curShip.pts-=chng; curShip.stats[5]+=chng;}break
+		}
+	}
+	curShip.costs = [5, 7, 0] //manpower, wood, gold curShip.costs -- - - - 
+	curShip.costs[0] += (50-curShip.pts) + curShip.stats[0] + curShip.stats[3] + curShip.stats[4] + curShip.stats[5];
+	curShip.costs[1] += 1.5*(curShip.costs[0]/1.5 + curShip.stats[1]*2 +curShip.stats[2]);
+	curShip.costs[2] += (Math.floor(curShip.costs[1]) - curShip.stats[4])*5 -40 + curShip.stats[1]*1.5 +curShip.stats[2];
+	if(curShip.pts != temp){
+		$("#"+p + "> td > span").html(curShip.stats[spot])
+		$('#dockPts').html(curShip.pts);
+	}
+	$('#mSC').html(Math.floor(curShip.costs[0]*20)/20);
+	$('#wSC').html(Math.floor(curShip.costs[1]*20)/20);
+	$('#gSC').html(Math.floor(curShip.costs[2]*20)/20);
+}
+$(".decr, .incr").click(ement);
+$('#beginSC').click(function(){
+	curShip.costs = [5, 7, 0] //manpower, wood, gold curShip.costs -- - - - 
+	curShip.costs[0] += (50-curShip.pts) + curShip.stats[0] + curShip.stats[3] + curShip.stats[4] + curShip.stats[5];
+	curShip.costs[1] += 1.5*(curShip.costs[0]/1.5 + curShip.stats[1]*2 +curShip.stats[2]);
+	curShip.costs[2] += (Math.floor(curShip.costs[1]) - curShip.stats[4])*5 -40 + curShip.stats[1]*1.5 +curShip.stats[2];
+	let yS = tS[0];
+	let xS = tS[1];
+	if(p.gold >= curShip.costs[2] && p.manpower >= curShip.costs[0] && p.zones[map[yS][xS].zone].res.wood >= curShip.costs[1]){
+		let canBuy = false;
+		for(let i = -1; i < 2; i++){
+			for(let j = -1; j < 2; j++){
+				if(i==0||j==0&&i!=j){
+					if(map[safeC(i+yS)][safeC(j+xS)].elevation < 0){
+						if(map[safeC(i+yS)][safeC(j+xS)].navy == -1){
+							canBuy = true;
+							curShip.y = safeC(i+yS);
+							curShip.x = safeC(j+xS);
+							curShip.lastDir = 3;
+							if(i==-1){
+								curShip.lastDir = 2;
+							}
+							else if(i==1){
+								curShip.lastDir = 0;
+							}
+							else if(j==-1){
+								curShip.lastDir = 1;
+							}
+							j = 2; i = 2;
+						}
+					}
+				}
+			}
+		}
+		if(canBuy){
+			p.gold -= curShip.costs[2];
+			p.manpower -= curShip.costs[0];
+			p.zones[map[yS][xS].zone].res.wood-=curShip.costs[1];
+			for(let i = 0; i < p.navies.length; i++){
+				if(p.navies[i] == -1){
+					curShip.num = i;
+					i = p.navies.length;
+				}
+			}
+			if(curShip.num == -1){
+				curShip.num = p.navies.length;
+			}
+			curShip.owner = p.turn;
+			curShip.health[1] = .25 + .075 * curShip.stats[1];
+			curShip.health[0] = .05 + .025 * curShip.stats[1];
+			p.navies[curShip.num] = curShip;
+			curShip = JSON.parse(JSON.stringify(curShip));
+			map[curShip.y][curShip.x].navy = p.navies[curShip.num];
+			navyChange(p.navies[curShip.num], true);
+			curShip.num = -1;
+			drawTile(curShip.y,curShip.x);
+			tileChange(curShip.y, curShip.x);
+		}
+	}
+delta = true;
+});
 $(document).on("click", "#actionChange", function(){
 	if(p.action == "claiming"){
 		p.action = "clearing";

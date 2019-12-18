@@ -1,15 +1,7 @@
 var newTaxes = [50, 50, 50, 50, 50, 50]; var taxSelected = -1; var justclicked = false;
 var curUnit = [];
 var tShift = 0; var tSel = -1;
-var curShip = new Ship();
-var retUnit = new Unit(); retUnit.stats[4] = 4;
-var infUnit = new Unit();
-var archUnit = new Unit();
-var cavUnit = new Unit();
-var sInfUnit = new Unit();
-var sArchUnit = new Unit();
-var sCavUnit = new Unit();
-curUnit = [infUnit, archUnit, cavUnit];
+
 function drawRightBar(e){ //Handles Right Menus. Menu interfacing is handled by p.menView[]. p.menView[0] -> what tab to view; other spots store subdata for the tab
 	if(typeof drawRightBar.mVS == 'undefined'){ drawRightBar.mVS = [[0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0, 0, 0, 0, 0, 0], [-1,-1], 0]; }
 	var rect = r.getBoundingClientRect();
