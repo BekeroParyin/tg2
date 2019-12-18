@@ -32,9 +32,37 @@ a{
 	margin:0;
 	padding:0;
     box-sizing: border-box
-} 
+}
+.incr{
+   border:none;
+   outline:none;
+   background-color: green;
+   height:30px;
+   width:30px
+}
+.decr{
+   border:none;
+   outline:none;
+   background-color: red;
+   height:30px;
+   width:30px
+}
+*:focus {
+    outline: none!important;
+	box-shadow: none!important;
+}
 #resource-list{
 	font-size:1.1rem;
+}
+#dockTable td{
+	padding: 6px;
+	text-align:center;
+}
+#dockTable span{
+	font-size:1.4rem;
+}
+#dockTable .resLabel{
+	font-size:1.3rem;
 }
 .list-group-item{
 	background-color: rgb(55,65,67);
@@ -105,13 +133,12 @@ a{
   overflow:hidden;
 }
 .resLabel{
-  text-align:left;
+  text-align:left!important;
   padding-left:12px!important;
-  border-left: 0px !important;
-  border-right: 0px !important;
 }
 .resTable tr{
   border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
   transition: all ease 150ms;
 }
 .resTable tr:not(:first-child):hover {

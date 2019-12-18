@@ -208,7 +208,61 @@
                             <h1> Appraise Building </h1>
                         </div>
                         <div id="building-special">
-                            <h1> ie market offensive buildings, etc </h1>
+							<div id = "dock">
+							<li class="list-group-item d-flex justify-content-sm-around" style = "font-size: 1.2rem;">
+                                Points Remaining: <span id = "pts" style = "font-size: 1.15rem;">50</span>
+                            </li>
+							<table class="resTable" id = "dockTable">
+                            <tr>
+								<td class="resLabel">Attack:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="atkpts">0</span></td>
+								<td><button class = "incr"></button></td>
+								
+							</tr>
+							<tr>
+								<td class="resLabel">Strength:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="strPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr>
+								<td class="resLabel">Storage:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="stoPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr>
+								<td class="resLabel">Transport:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="traPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr>
+								<td class="resLabel">Fishing:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="fisPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr>
+								<td class="resLabel">Ship Speed:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="spdPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+                            </table>
+							<table class = "resTable" style = "text-align:left">
+								<tr>
+									<th> Costs: </th>
+								</tr>
+								<tr><td>Manpower: <span id="mSC">0</span></td></tr>
+								<tr><td>Wood: <span id = "wSC">0</span></td></tr>
+								<tr><td>Gold: <span id = "gSC">0</span></td></tr>
+							</table>
+							<li class="list-group-item d-flex justify-content-center" style = "font-size: 1.2rem;">
+                                <button> Begin Construction </button>
+                            </li>
+							</div>
                         </div>
                         <div id="nothing">
                             <h1> You can't build here </h1>

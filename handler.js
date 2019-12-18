@@ -660,6 +660,9 @@ var MAPSIZE = 1000;
 							else if(t.building[0] != 3){
 								if(t.building[0] == 2 || specialIDs.indexOf(buildings[t.building[0]][t.building[1]].name) != -1){
 									$('#building-special').show();
+									if(t.building[0] == 1 && t.building[1] == 3){
+										$('#dock').show();
+									}
 								}
 								else{
 									$('#building-upgrade').show();
