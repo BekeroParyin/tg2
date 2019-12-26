@@ -537,7 +537,13 @@ function drawRightBar(e){
 	}
 	else if($('a#building-special').hasClass('active')){ //ie Dock, Market, Military Building
 		if(t.building[0] == 1 && t.building[1] == 3){ //DOCK
-			
+			curShip.costs = [5, 7, 0] //manpower, wood, gold curShip.costs -- - - - 
+			curShip.costs[0] += (50-curShip.pts) + curShip.stats[0] + curShip.stats[3] + curShip.stats[4] + curShip.stats[5];
+			curShip.costs[1] += 1.5*(curShip.costs[0]/1.5 + curShip.stats[1]*2 +curShip.stats[2]);
+			curShip.costs[2] += (Math.floor(curShip.costs[1]) - curShip.stats[4])*5 -40 + curShip.stats[1]*1.5 +curShip.stats[2];
+			$('#mSC').html(Math.floor(curShip.costs[0]*20)/20);
+			$('#wSC').html(Math.floor(curShip.costs[1]*20)/20);
+			$('#gSC').html(Math.floor(curShip.costs[2]*20)/20);
 		}
 	}
 	else if($('a#building-upgrade').hasClass('active')){

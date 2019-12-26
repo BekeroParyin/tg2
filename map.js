@@ -4,16 +4,16 @@
 			console.log("Modifier: " + MODI);
 			console.log("Map Size: " + MAPSIZE);
 			console.log(map.length);
-			// genOceans(MAPSIZE*MAPSIZE, 2);
-			// genOceans(30000 * MODI, 4);
-			// console.log("genOceans");
+			//genOceans(MAPSIZE*MAPSIZE, 2);
+			//genOceans(30000 * MODI, 4);
+			console.log("genOceans");
 			//slap(5000, 'g', 'w', -1, 0, 1400);
 			//slap(400, 'g', 'w', -1, -1);
 			console.log("Oceans Generated");
-			// mountain(20, Math.round(20*MODI));
-			// mountain(40* MODI, Math.round(20*MODI));
-			// mountain(320 * MODI, Math.round(20*MODI));
-			// mountain(400*MODI, Math.round(35*MODI));
+			mountain(20, Math.round(20*MODI));
+			mountain(40* MODI, Math.round(20*MODI));
+			mountain(320 * MODI, Math.round(20*MODI));
+			mountain(400*MODI, Math.round(35*MODI));
 			console.log("mountains");
 			hill(200, Math.round(20*MODI));
 			hill(100, Math.round(150* MODI));
@@ -56,14 +56,15 @@
 			console.log("Forests Generated");
 			for(let i=0; i < MAPSIZE; i++){
 				for(let j = 0; j < MAPSIZE; j++){
-					if(map[i][j].elevation > 0){
-						if(map[i][j].wetness < .05 && map[i][j].heat > 1.5){
-							// map[i][j].type = 'd';
+					let t = map[i][j];
+					if(t.elevation > 0){
+						if(t.wetness < .2 && t.heat > 2){
+							 t.type = 'd';
 						}
-						if(map[i][j].elevation > .5){
+						if(t.elevation > .5){
 							//0-6:stone, 7: copper, 8: bronze
-							var seed = map[i][j].resource;
-							if(seed == -1 || map[i][j].type == 'f'){
+							var seed = t.resource;
+							if(seed == -1 || t.type == 'f'){
 								seed = Math.floor(Math.random()*9);
 								let t = Math.random();
 								if(t > .99){
@@ -73,69 +74,69 @@
 									seed = 10;
 								}
 							}
-							if(map[i][j].elevation > .875){
-								map[i][j].type = 'm';
-								map[i][j].resource = seed;
+							if(t.elevation > .875){
+								t.type = 'm';
+								t.resource = seed;
 							}
-							else if(map[i][j].elevation >= .69){
-								map[i][j].type = 'l';
-								map[i][j].resource = seed;
+							else if(t.elevation >= .69){
+								t.type = 'l';
+								t.resource = seed;
 							}
-							else if(map[i][j].elevation >= .565){
-								map[i][j].type = 'h';
-								map[i][j].resource = seed;
+							else if(t.elevation >= .565){
+								t.type = 'h';
+								t.resource = seed;
 							}
-							else if(map[i][j].elevation > .5){
-								map[i][j].type = 'k'
-								map[i][j].resource = seed;
-							}
-						}
-						else if(map[i][j].elevation < .05){
-							map[i][j].type = 'c';
-							if(map[i][j].wetness == 0){
-								map[i][j].wetness += Math.random()/10;
+							else if(t.elevation > .5){
+								t.type = 'k'
+								t.resource = seed;
 							}
 						}
-						if(map[i][j].type == 'g' && map[i][j].elevation > .15){
-							map[i][j].type = 'i';
+						else if(t.elevation < .05){
+							t.type = 'c';
+							if(t.wetness == 0){
+								t.wetness += Math.random()/10;
+							}
+						}
+						if(t.type == 'g' && t.elevation > .15){
+							t.type = 'i';
 						}
 						var chance = .05;
 						var dNum = 0;
-						if(map[i][j].type == 'd' || map[i][j].type == 'm'){ chance = 0; }
+						if(t.type == 'd' || t.type == 'm'){ chance = 0; }
 						for(a = -1; a < 2; a++){
 							for(b = -1; b < 2; b++){
 								if(map[safeC(i+a)][safeC(j+b)].type == 'd'){
 									dNum++;
 								}
-								if(map[i][j].type == 'g' || map[i][j].type == 'k' || map[i][j].type == 'i' || (map[i][j].type == 'h' && map[i][j].wetness > .1)){
+								if(t.type == 'g' || t.type == 'k' || t.type == 'i' || (t.type == 'h' && t.wetness > .1)){
 									if(map[safeC(i+a)][safeC(j+b)].type == 'r' || map[safeC(i+a)][safeC(j+b)].type == 'a'){
 										chance += .1;
 									}
 								}
 							}
 						}
-						chance += map[i][j].wetness/4 - .15;
-						if(chance > Math.random() && map[i][j].elevation < .7 && map[i][j].elevation > 0)
+						chance += Math.min(.8, t.wetness/4 - .1);
+						if(chance > Math.random() && t.elevation < .7 && t.elevation > 0)
 						{
-							map[i][j].type = 'f';
+							t.type = 'f';
 						}
-						if(dNum >= 4 && (map[i][j].type == 's' || map[i][j].type == 'f')){
-							map[i][j].heat += .2;
-							map[i][j].type = 'd';
+						if(dNum >= 7 && t.elevation > 0 && t.wetness < .5){
+							t.heat += .2;
+							t.type = 'd';
 						}
 					}
 					else{ 
-						map[i][j].elevation = -.5;
-						if(map[i][j].type == 'a' || map[i][j].type == 'r'){
+						t.elevation = -.5;
+						if(t.type == 'a' || t.type == 'r'){
 							if(Math.random()>.99){
-								map[i][j].resource = 14;
+								t.resource = 14;
 							}
 						}
 					}
-					if(map[i][j].type == 'f' && map[i][j].elevation <= 0){ map[i][j].type = 'w'; map[i][j].resource = 14; }
+					if(t.type == 'f' && t.elevation <= 0){ t.type = 'w'; t.resource = 14; }
 				}
 			}
-			slap(30, 'd', 'i', 2, 3);
+			slap(10, 'd', 'i', 2, 3);
 			console.log("Everything Else Completed");
 		}
 		function forest(treeCount, forestsNumber){
@@ -174,7 +175,7 @@
 						seed = 13;
 						if(tom > .96){
 							seed = 15;
-							if(map[ranY][ranX].heat > 2.5){
+							if(map[ranY][ranX].heat > 2){
 								seed = 16;
 							}
 						}
@@ -452,51 +453,58 @@
 				var lastlast = -1;
 				var bannedDir = -1
 				var dir = -1;
-				var water = 20 * MODI;
+				var water = 30 * MODI;
 				var y = safeC(yC);
 				var x = safeC(xC);
 				var cS = 0;
-				var limit = 15;
+				var limit = 16;
+				if(map[yC][xC].elevation > 0){ water *= 2; }
 				while(cS < limit && water > 0){
 					y = safeC(y);
 					x = safeC(x);
 					if(map[y][x].type == 'w'){
 						if(fir){
-							water+=5*MODI;
-							cS++;
+							water+=15*MODI;
+							cS+=.5;
 						}
 						else {
 							bannedDir = lastDir;
-							cS+=2;
+							cS+=1.75;
 						}
 					}
 					else if(!fir && (map[y][x].type == 'r' || map[y][x].type == 'a')){
-						water+=10*MODI;
-						cS++;
+						water+=15*MODI;
+						cS+=.5;
 					}
 					else{
 						for(let a = 0; a < 13; a+=2){
 							let y1 = safeC(y-6+a);
-							if(map[y1][x].elevation > 0){
-								map[y1][x].wetness += map[y][x].elevation/150;
-								map[y1][x].heat -= .008;
-								map[y1][x].wetness += .0014;
-								if(map[y1][x].wetness < .1){
-									map[y1][x].wetness += .08;
+							let t = map[y1][x];
+							t.curred += .1/13;
+							if(t.elevation > 0){
+								t.heat -= .0025;
+								t.wetness += .002;
+								if(t.wetness < .01 && t.heat > .5){
+									t.wetness += .01;
 								}
-								map[y1][x].wetness -= map[y1][x].heat/150;
-								if(map[y1][x].heat > 1){
-									map[y1][x].wetness += .01;
-									water -= map[y1][x].heat/130;
-									map[y1][x].heat += .006;
-									if(map[y1][x].heat > 2){
-										map[y1][x].wetness += map[y1][x].heat/300;
-										map[y1][x].wetness += map[y][x].elevation/50;
+								t.wetness += map[y][x].elevation/300;
+								if(t.heat > 2){
+									t.wetness += .0025;
+									t.wetness += water/20000;
+									water += t.wetness/5000;
+									if(t.heat > 2.5){
+										t.wetness += .005;
+										t.wetness += water/5000;
+										t.wetness += .02;
+										water -= (t.heat/2.9) * MODI/.4;
+										t.wetness += t.elevation/50;
+										water += t.elevation/50;	
 									}
 								}
 							}
+							map[y1][x] = t;
 						}
-						water += map[y][x].wetness/5;
+						water += map[y][x].wetness/6;
 						water -= .1;
 						if(map[y][x].elevation >= .5){
 							water -= map[y][x].elevation;
@@ -518,13 +526,15 @@
 			while(--i > 1){
 				if(fir){ i--;}
 				while(--j > 1){
+					let t= map[i][j];
 					if(fir){
 						--j;
 					}
-					if((fir && map[i][j].type == 'w') || (!fir && (map[i][j].type == 'a' || map[i][j].type == 'r'))){
+					if((fir && t.type == 'w') || (!fir && (t.type == 'a' || t.type == 'r')) || (t.heat > 2 && t.wetness > 1.5)){
 						makeCurrent(i, j);
 						makeCurrent(i, j);
-						count+=2;
+						if(t.elevation>0){count++; }
+						//count+=2;
 					}
 				}
 				j = MAPSIZE;

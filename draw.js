@@ -144,9 +144,22 @@ function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img shee
 	let rT = map[y][safeC(x+1)];
 	let uT = map[safeC(y-1)][x];
 	let dT = map[safeC(y+1)][x];
+	let blT = map[safeC(y+1)][safeC(x-1)];
+	let brT = map[safeC(y+1)][safeC(x+1)];
+	let tlT = map[safeC(y-1)][safeC(x-1)];
+	let trT = map[safeC(y-1)][safeC(x+1)];
+	[bL, bR, tL, tR] = [false,false,false,false];
 	if(type == 'w' || type == 'r' || type == 'a'){
 		[leftT, rightT, upT, downT] = [(lT.elevation < 0), (rT.elevation < 0), (uT.elevation < 0), (dT.elevation < 0)];
 		[leftD, rightD, upD, downD] = [((lT.building[0] == 1) && lT.building[1] == 3), ((rT.building[0] == 1) && rT.building[1] == 3), ((uT.building[0] == 1) && uT.building[1] == 3), ((dT.building[0] == 1) && dT.building[1] == 3)];
+		[bL, bR, tL, tR] = [(blT.elevation > 0), 
+		(brT.elevation > 0), 
+		(tlT.elevation > 0),
+		(trT.elevation > 0)]
+		bL = bL && leftT && downT;
+		bR = bR && rightT && downT;
+		tL = tL && upT && leftT;
+		tR = tR && upT && rightT;
 		if(leftT && rightT && upT && downT){
 			if(leftD){ //Redraw Adjacent Docks
 				drawDynamic('b', sprites2, 272, safeC(x-1), y,  dx-p.zoom, dy);
@@ -160,17 +173,19 @@ function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img shee
 			if(downD){
 				drawDynamic('b', sprites2, 272, x, safeC(y+1),  dx, dy+p.zoom);
 			}
-			return;
+			if(!(bL||bR||tL||tR)){
+				return;
+			}
 		}
 	}
 	else if(type == 'h' || type == 'k' || type == 'l'){
 		let elev = .5;
 		if(type == 'h'){ elev = .565; } else if(type == 'l'){ elev = .69; }
 		[leftT, rightT, upT, downT] = [(lT.elevation >= elev), (rT.elevation >= elev), (uT.elevation >= elev), (dT.elevation >= elev)];
-		[bL, bR, tL, tR] = [(map[safeC(y+1)][safeC(x-1)].elevation < elev), 
-		(map[safeC(y+1)][safeC(x+1)].elevation < elev), 
-		(map[safeC(y-1)][safeC(x-1)].elevation < elev),
-		(map[safeC(y-1)][safeC(x+1)].elevation < elev)]
+		[bL, bR, tL, tR] = [(blT.elevation < elev), 
+		(brT.elevation < elev), 
+		(tlT.elevation < elev),
+		(trT.elevation < elev)]
 		bL = bL && leftT && downT;
 		bR = bR && rightT && downT;
 		tL = tL && upT && leftT;
@@ -185,10 +200,10 @@ function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img shee
 			(rT.owner == tu && rT.building[0] == 0 && rT.building[1] == 1),
 			(uT.owner == tu && uT.building[0] == 0 && uT.building[1] == 1),
 			(dT.owner == tu && dT.building[0] == 0 && dT.building[1] == 1)];
-			[bL, bR, tL, tR] = [!((map[safeC(y+1)][safeC(x-1)].building[0] == 0) && map[safeC(y+1)][safeC(x-1)].building[1] == 1), //bL
-			!((map[safeC(y+1)][safeC(x+1)].building[0] == 0) && map[safeC(y+1)][safeC(x+1)].building[1] == 1), //bR
-			!((map[safeC(y-1)][safeC(x-1)].building[0] == 0) && map[safeC(y-1)][safeC(x-1)].building[1] == 1), //tL
-			!((map[safeC(y-1)][safeC(x+1)].building[0] == 0) && map[safeC(y-1)][safeC(x+1)].building[1] == 1)]; //tR
+			[bL, bR, tL, tR] = [!((blT.building[0] == 0) && blT.building[1] == 1), //bL
+			!((brT.building[0] == 0) && brT.building[1] == 1), //bR
+			!((tlT.building[0] == 0) && tlT.building[1] == 1), //tL
+			!((trT.building[0] == 0) && trT.building[1] == 1)]; //tR
 			let badTypes = ['h', 'k', 'l'];
 			leftT = leftT && (lT.type == t.type || (badTypes.indexOf(lT.type)==-1||badTypes.indexOf(t.type)==1));
 			rightT = rightT && (rT.type == t.type || (badTypes.indexOf(rT.type)==-1||badTypes.indexOf(t.type)==1));
@@ -257,7 +272,7 @@ function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img shee
 								ctx.drawImage(img, x1+(l+2*k+4*j+8*i)*16, y1+16, 16, 16, dx, dy+p.zoom, p.zoom, p.zoom);
 							}
 						}
-						if((!(b0 == 0 && b1 == 1) && type != 'h' && type != 'k' && type != 'l')){
+						if(!(bL||tR||tL||bR)){
 							return;
 						}
 						else{
@@ -381,8 +396,7 @@ function drawTile(y1, x1){
 				case 'r': ctx.fillStyle = "#1978DF"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); drawDynamic('w', sprites2, 112, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; //river
 				case 'i': let tape = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape < .5){ctx.drawImage(sprites2, 80, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.7){ctx.drawImage(sprites2, 96, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape <.95){ctx.drawImage(sprites2, 112, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} else{ ctx.drawImage(sprites2, 64, 0, 8, 8, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //grass
 				case 'd':
-				case 's': let tape1 = rand(srand(y*62*157*y*11*x+941*y+1728*x+1921)); if(tape1 < .33){ctx.drawImage(sprites2, 16, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else if(tape1 <.88){ctx.drawImage(sprites2, 32, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);}else{ctx.drawImage(sprites2, 48, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom);} break; //steppe
-				
+				case 's': ctx.fillStyle = "#d7c698"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
 				case 'l': ctx.fillStyle = "#167042"; ctx.fillRect(Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); 
 				drawDynamic('h', sprites2, 80, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom));
 				drawDynamic('l', sprites2, 96, x, y, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom)); break; 
@@ -445,6 +459,98 @@ function drawTile(y1, x1){
 			case 15:ctx.fillStyle = "#B7A99B"; break; //Silk	
 			case 16:ctx.fillStyle = "#B35D51"; break; //Spices
 			default: if(t.elevation <= 0){ ctx.fillStyle = "white"; } else{ctx.fillStyle = "Gainsboro";} break; //nothing
+		}
+	}
+	else if(p.draw == "heat"){
+		if(t.heat <= 0.5){
+			ctx.fillStyle = "white";
+		}
+		else if(t.heat <= .75){
+			ctx.fillStyle = "tan";
+		}
+		else if(t.heat <= 1){
+			ctx.fillStyle = "olive";
+		}
+		else if(t.heat <= 1.5){
+			ctx.fillStyle = "yellow";
+		}
+		else if(t.heat <= 2){
+			ctx.fillStyle = "orange";
+		}
+		else if(t.heat <= 3){
+			ctx.fillStyle = "red";
+		}
+		else{
+			ctx.fillStyle = "blue";
+		}
+	}
+	else if(p.draw == "elevation"){
+		if(t.elevation <= 0.1){
+			ctx.fillStyle = "white";
+		}
+		else if(t.elevation <= .2){
+			ctx.fillStyle = "tan";
+		}
+		else if(t.elevation <= .3){
+			ctx.fillStyle = "olive";
+		}
+		else if(t.elevation <= .5){
+			ctx.fillStyle = "yellow";
+		}
+		else if(t.elevation <= .7){
+			ctx.fillStyle = "orange";
+		}
+		else if(t.elevation <= .9){
+			ctx.fillStyle = "red";
+		}
+		else{
+			ctx.fillStyle = "blue";
+		}
+	}
+	else if(p.draw == "currents"){
+		if(t.curred <= 1){
+			ctx.fillStyle = "white";
+		}
+		else if(t.curred <= 2){
+			ctx.fillStyle = "tan";
+		}
+		else if(t.curred <= 3){
+			ctx.fillStyle = "olive";
+		}
+		else if(t.curred <= 4){
+			ctx.fillStyle = "yellow";
+		}
+		else if(t.curred <= 5){
+			ctx.fillStyle = "orange";
+		}
+		else if(t.curred <= 6){
+			ctx.fillStyle = "red";
+		}
+		else{
+			ctx.fillStyle = "blue";
+		}
+	}
+	else if(p.draw == "wetness"){
+		if(t.wetness <= 0.1){
+			ctx.fillStyle = "white";
+		}
+		else if(t.wetness <= .05){
+			ctx.fillStyle = "tan";
+		}
+		else if(t.wetness <= .1){
+			ctx.fillStyle = "olive";
+		}
+		else if(t.wetness <= .5){
+			ctx.fillStyle = "yellow";
+		}
+		else if(t.wetness <= 1){
+			ctx.fillStyle = "orange";
+		}
+		else if(t.wetness <= 2){
+			ctx.fillStyle = "red";
+		}
+		else{
+			ctx.fillStyle = "blue";
 		}
 	}
 	else if(p.draw == "zones"){

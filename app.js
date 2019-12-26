@@ -77,23 +77,25 @@ var io = require('socket.io')(server,{});
 	var day = 0;
 	var map = [];
 	/*
-	const MAPSIZE = 250;
+	const MAPSIZE = 450;
 	const MODI = MAPSIZE/1500;
 	var map = [];
 	for(let i = 0; i < MAPSIZE; i++){
 		map.push(new Array(MAPSIZE));
 		for(let j = 0; j < MAPSIZE; j++){
-			map[i][j] = new Tile();
-			map[i][j].heat = (3.15 - Math.abs(MAPSIZE/2 - i)/(MAPSIZE/6)) + Math.random() * .155;
-			map[i][j].wetness = .1 - map[i][j].heat/18;
+			let t = new Tile();
+			t.heat = Math.pow((3.2 - Math.abs(MAPSIZE/2 - i)/(MAPSIZE/6)) + Math.random() * .155, 3)/10;
+			t.wetness = Math.min(.1, .4 - 1.5*Math.min(.35, t.heat/10));
+			map[i][j] = t;
 		}
 	}
 	genWorld();
 	genArtifacts();
 	*/
+	
 	var MODI = 0;
 	var MAPSIZE = 0;
-	fs.createReadStream('mapIn.png')
+	fs.createReadStream('europe2.png')
 	  .pipe(new PNG())
 	  .on('parsed', function() {
 		console.log('starting');
@@ -104,25 +106,29 @@ var io = require('socket.io')(server,{});
 			for(let x = 0; x < MAPSIZE; x++) {
 				var idx = (this.width * y + x) << 2;
 				let col = fullColorHex(this.data[idx], this.data[idx+1], this.data[idx+2]);
-				map[y][x] = new Tile();
-				map[y][x].heat = (3.15 - Math.abs(MAPSIZE - y)/(MAPSIZE/3)) + Math.random() * .155;
-				map[y][x].wetness = .2 - map[y][x].heat/18;
+				let t = new Tile();
+				t = new Tile();
+				t.heat = Math.pow((3.2 - Math.abs(MAPSIZE/2 - y)/(MAPSIZE/6)) + Math.random() * .155, 3)/10;
+				t.wetness = Math.min(.1, .4 - 1.5*Math.min(.35, t.heat/10));
 				if(col == "6aa3bd" || col == "4756d6"){
-					map[y][x].elevation = -1;
-					map[y][x].type = 'r';
-					if(col == "4756d6"){ map[y][x].type = 'w'; }
+					t.wetness = 0;
+					t.elevation = -1;
+					t.type = 'r';
+					if(col == "4756d6"){ t.type = 'w'; }
 				}
 				else if(col == "000000"){
-					map[y][x].elevation = .7 + (Math.random()*.3);
+					t.elevation = .7 + (Math.random()*.3);
 				}
 				else if(col === "1b4500"){
-					map[y][x].wetness = .6; map[y][x].type = 'f';
+					t.wetness = .6; t.type = 'f';
 				}
+				map[y][x] = t;
 			}
 		}
 		genWorld();
 	genArtifacts();
 	});
+	
 	io.sockets.on('connection', function(socket){
 		socket.on('pConnected', function(data){
 			socketList.push(socket);

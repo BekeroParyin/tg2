@@ -1,0 +1,57 @@
+<div id = "barracks">
+							<li class="list-group-item d-flex justify-content-sm-around" style = "font-size: 1.2rem;">
+                                Points Remaining: <span id = "barracksPts" style = "font-size: 1.15rem;">50</span>
+                            </li>
+							<table class="resTable" id = "barracksTable">
+                            <tr id = "barracksAtk">
+								<td class="resLabel">Attack:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="atkpts">0</span></td>
+								<td><button class = "incr"></button></td>
+								
+							</tr>
+							<tr id = "barracksDef">
+								<td class="resLabel">Strength:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="strPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr id = "barracksSkr">
+								<td class="resLabel">Storage:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="stoPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr id = "barracksMob">
+								<td class="resLabel">Transport:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="traPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr id = "barracksFor">
+								<td class="resLabel">Fishing:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="fisPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr id = "barracksSpd">
+								<td class="resLabel">Ship Speed:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="spdPts">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+                            </table>
+							<table class = "resTable">
+								<tr>
+									<th class = "resLabel"> Costs: </th>
+								</tr>
+								<tr><td class = "resLabel">Manpower: <span id="mSC" class = "resLabel">5</span></td></tr>
+								<tr><td class = "resLabel">Wood: <span id = "wSC" class = "resLabel">12</span></td></tr>
+								<tr><td class = "resLabel">Gold: <span id = "gSC" class = "resLabel">25</span></td></tr>
+								<tr class = "blankRow"></tr>
+							</table>
+							<li class="list-group-item d-flex justify-content-center" style = "font-size: 1.2rem;">
+                                <button id = "beginSC"> Begin Construction </button>
+                            </li>
+							</div>
+                        </div>
