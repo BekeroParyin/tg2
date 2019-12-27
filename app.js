@@ -95,7 +95,7 @@ var io = require('socket.io')(server,{});
 	
 	var MODI = 0;
 	var MAPSIZE = 0;
-	fs.createReadStream('europe2.png')
+	fs.createReadStream('mapIn.png')
 	  .pipe(new PNG())
 	  .on('parsed', function() {
 		console.log('starting');

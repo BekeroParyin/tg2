@@ -316,11 +316,25 @@ var MAPSIZE = 1000;
 			drawTile(y, x);
 			if(e.type == "mousemove" || e == 0){
 				if(canBuy(y, x, p.menView[1][0], p.menView[1][1], p)){
-					let canPlace = map[y][x].building[0] == -1 && map[y][x].elevation > 0 && map[y][x].owner == p.turn;
-					if(p.menView[1][0] == 0 && p.menView[1][1] == 6){ // no adjacent mines
-						for(let a = -1; a < 2; a++){
-							for(let b = -1; b < 2; b++){
-								if((a == 0 || b == 0) && a != b){
+					let t = map[y][x];
+					let b0 = p.menView[1][0];
+					let b1 = p.menView[1][1];
+					let canPlace = t.building[0] == -1 && t.elevation > 0 && t.owner == p.turn;
+					for(let a = -1; a < 2; a++){
+						for(let b = -1; b < 2; b++){
+							if((a == 0 || b == 0) && a != b){
+								if(b0 == 1 && b1 == 3){ //if Dock
+									if(map[safeC(y+a)][safeC(x+b)].elevation < 0){
+										canPlace = true; a = 2; b = 2;
+									}
+								}
+								else if(b0 == 2 && b1 == 3){
+									if(map[safeC(y+a)][safeC(x+b)].building[0] == 2 && map[safeC(y+a)][safeC(x+b)].building[1] == 3){
+										canPlace = false;
+										alert("No adjacent gatehouses u ape");
+									}
+								}
+								else if(b0 == 0 && b1 == 6){ // no adjacent mines
 									if(map[safeC(y+a)][safeC(x+b)].building[0] == 0 && map[safeC(y+a)][safeC(x+b)].building[1] == 6){
 										canPlace = false;
 										alert("No adjacent mines u ape");
@@ -329,22 +343,27 @@ var MAPSIZE = 1000;
 							}
 						}
 					}
-					if(canPlace && (map[y][x].type == 'k' || map[y][x].type == 'h' || map[y][x].type == 'g' || map[y][x].type == 'i' || map[y][x].type == 'c')){
-						map[y][x].building = [p.menView[1][0], p.menView[1][1], 1, [false]];
+					if(t.type == 'l'){
+						if(b0 == 2 && b1 <= 3){ //walls on hills
+							canPlace = canPlace && true;
+						}
+					}
+					if(canPlace && (t.type == 'k' || t.type == 'h' || t.type == 'g' || t.type == 'i' || t.type == 'c' || (t.type == 'd' && p.culture.desert>0))){
+						t.building = [p.menView[1][0], p.menView[1][1], 1, [false]];
 						if(buildings[p.menView[1][0]][p.menView[1][1]].cost[0] > 0){
-							p.zones[map[y][x].zone].res.wood -= buildings[p.menView[1][0]][p.menView[1][1]].cost[0];
+							p.zones[t.zone].res.wood -= buildings[p.menView[1][0]][p.menView[1][1]].cost[0];
 						}
 						if(buildings[p.menView[1][0]][p.menView[1][1]].cost[1] > 0){
-							p.zones[map[y][x].zone].res.stone -= buildings[p.menView[1][0]][p.menView[1][1]].cost[1];
+							p.zones[t.zone].res.stone -= buildings[p.menView[1][0]][p.menView[1][1]].cost[1];
 						}
 						if(buildings[p.menView[1][0]][p.menView[1][1]].cost[2] > 0){
-							p.zones[map[y][x].zone].res.gold -= buildings[p.menView[1][0]][p.menView[1][1]].cost[2];
+							p.zones[t.zone].res.gold -= buildings[p.menView[1][0]][p.menView[1][1]].cost[2];
 						}
 						p.manpower -= buildings[p.menView[1][0]][p.menView[1][1]].cost[3];
 						switch(buildings[p.menView[1][0]][p.menView[1][1]].cost[4][0]){
-							case 12: p.zones[map[y][x].zone].res.rWood-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1];break;
-							case 15: p.zones[map[y][x].zone].res.rSilk-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1]; break;
-							case 16: p.zones[map[y][x].zone].res.spices-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1]; break;
+							case 12: p.zones[t.zone].res.rWood-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1];break;
+							case 15: p.zones[t.zone].res.rSilk-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1]; break;
+							case 16: p.zones[t.zone].res.spices-=buildings[p.menView[1][0]][p.menView[1][1]].cost[4][1]; break;
 						}
 						buildings[p.menView[1][0]][p.menView[1][1]].effect(0);
 						drawTile(y, x);
@@ -359,6 +378,13 @@ var MAPSIZE = 1000;
 						}
 						if(y-p.yView < Math.floor(cHeight/p.zoom)){
 							drawTile(y+1, x);
+						}
+						if(b0 + b1 == 0){
+							$("#switchContainer").css("display", "inline-block");
+							if(document.getElementById("resgood").checked){
+								$('#resource-list').show();
+							}
+							else { $('#goods-list').show(); }
 						}
 						tileChange(y,x);
 						delta = true;
@@ -460,6 +486,11 @@ var MAPSIZE = 1000;
 							map[y][x].type = 'i';
 						}
 						else { map[y][x].type = 'g'; }
+					}
+					if(map[y][x].type == 'd'){
+						if(Math.random() > .95){
+							map[y][x].type = 'o';
+						}
 					}
 					map[y][x].owner = p.turn;
 					if(p.vassals.length > 0){

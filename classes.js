@@ -9,6 +9,7 @@
 	}
 	function Culture(){
 		this.womensRights = 0;
+		this.desert = 10;
 	}
 	var buildings = [[], [], [], []];
 	var bNames = [["Road","Farm", "Orchard", "Lumber Mill","Granary","Warehouse","Mine","Metalworks","Market", "Bazaar", "Stable", "Spice Plantation", "Silk Orchard", "Ebony Orchard"],
@@ -751,7 +752,6 @@
 		this.zones = [];
 		this.territory = [];
 		this.manors = [];
-		this.curredTwo = 0;
 		this.roads = [];	
 		this.menView = [0, [-1, -1, 0], -1];
 		this.appraising = false;
@@ -1871,6 +1871,7 @@
 										case 'c':
 										case 'i':
 										case 'g': zStack[i].income.manpower+=.01;zStack[i].income.population+=.01; break;
+										case 'o': zStack[i].income.food+=3; zStack[i].income.wood+=.75; zStack[i].income.gold+=.1; zStack[i].income.manpower += .1; zStack[i].income.population+=.2; break;
 									}
 									if(t.building[0] != -1){
 										zStack[i].buildingNums[t.building[0]][t.building[1]] = zStack[i].buildingNums[t.building[0]][t.building[1]] || 0;
