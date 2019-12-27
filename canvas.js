@@ -46,7 +46,7 @@
 				ctx.scale(scale, scale);
 			}
 			
-		var sprites = new Image();
 		var sprites2 = new Image();
 		sprites2.src = "/public/ericsprites.png";
 		ctx.imageSmoothingEnabled = false;
+		rtx.imageSmoothingEnabled = false;

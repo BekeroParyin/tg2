@@ -319,9 +319,15 @@ function drawBuilding(y1, x1){
 			drawDynamic('b', sprites2, 128, x, y,  Math.floor(dX * p.zoom), drawY);
 		}
 		else if(b1 == 1){ //FARM
+			let ySpot = 160;
+			let pSpot = 144;
+			if(t.type == 'd'){
+				ySpot = 400;
+				pSpot = 336;
+			}
 			let xSpot = Math.floor(day/100)*16;
-			drawDynamic('b', sprites2, 160, x, y,  Math.floor(dX * p.zoom), drawY);
-			ctx.drawImage(sprites2, xSpot, 144, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+			drawDynamic('b', sprites2, ySpot, x, y,  Math.floor(dX * p.zoom), drawY);
+			ctx.drawImage(sprites2, xSpot, pSpot, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 		}
 		else if((b1 == 2 || b1 == 11 || b1 == 12 || b1 == 13)){ //ORCHARDS/SPICEPLANT
 			let xSpot = 64 + Math.floor(day/100)*16;
@@ -348,7 +354,11 @@ function drawBuilding(y1, x1){
 	}
 	else if(b0 == 1){ //DRAW SOCIAL BUILDINGS
 		if(b1 == 0){ //HOUSE
-			drawDynamic('b', sprites2, 256, x, y,  Math.floor(dX * p.zoom), drawY);
+			let yLoc = 256;
+			if(t.type == 'd'){
+				yLoc = 384;
+			}
+			drawDynamic('b', sprites2, yLoc, x, y,  Math.floor(dX * p.zoom), drawY);
 		}
 		else if(b1 == 1){ //PLAZA
 			ctx.drawImage(sprites2, 80, 176, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);

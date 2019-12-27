@@ -6,6 +6,7 @@
 		this.effect = function(){};
 		this.cost;		
 		this.description;
+		this.imgSrc = [-1, -1];
 	}
 	function Culture(){
 		this.womensRights = 0;
@@ -55,34 +56,34 @@
 		this.value = 0;
 		this.effect = -1;
 	}
-	buildings[0][0].draw[0] = "tan"; buildings[0][0].draw[1] = .4; //Road
-	buildings[0][1].draw[0] = "#767600"; buildings[0][1].draw[1] = .7; //Farm
-	buildings[0][2].draw[0] = "rgb(0, 80, 0)"; buildings[0][2].draw[1] = .6; //Orchard
-	buildings[0][3].draw[0] = "#6F4827"; buildings[0][3].draw[1] = .4; //Lumber Mill
-	buildings[0][4].draw[0] = "#767600"; buildings[0][4].draw[1] = .4; //Granary
-	buildings[0][5].draw[0] = "#64561E"; buildings[0][5].draw[1] = .8; //Warehouse
-	buildings[0][6].draw[0] = "#400000"; buildings[0][6].draw[1] = .8; //Mine
-	buildings[0][7].draw[0] = "#543c49"; buildings[0][7].draw[1] = .6; //Metalworks
+	buildings[0][0].draw[0] = "tan"; buildings[0][0].draw[1] = .4; buildings[0][0].imgSrc = [0, 128];//Road 
+	buildings[0][1].draw[0] = "#767600"; buildings[0][1].draw[1] = .7; buildings[0][1].imgSrc = [0, 304];//Farm
+	buildings[0][2].draw[0] = "rgb(0, 80, 0)"; buildings[0][2].draw[1] = .6; buildings[0][2].imgSrc = [80, 144];//Orchard
+	buildings[0][3].draw[0] = "#6F4827"; buildings[0][3].draw[1] = .4; buildings[0][3].imgSrc = [0, 176];//Lumber Mill
+	buildings[0][4].draw[0] = "#767600"; buildings[0][4].draw[1] = .4; buildings[0][4].imgSrc = [144, 256];//Granary
+	buildings[0][5].draw[0] = "#64561E"; buildings[0][5].draw[1] = .8; buildings[0][5].imgSrc = [0, 192];//Warehouse
+	buildings[0][6].draw[0] = "#400000"; buildings[0][6].draw[1] = .8; buildings[0][6].imgSrc = [0, 208];//Mine
+	buildings[0][7].draw[0] = "#543c49"; buildings[0][7].draw[1] = .6; buildings[0][7].imgSrc = [0, 224];//Metalworks
 	buildings[0][8].draw[0] = "#2e496a"; buildings[0][8].draw[1] = .75; //Market
 	buildings[0][9].draw[0] = "#948b7f"; buildings[0][9].draw[1] = .9; //Bazaar
 	buildings[0][10].draw[0] = "#83423b"; buildings[0][10].draw[1] = .6; //stable
-	buildings[0][11].draw[0] = "#B35D51"; buildings[0][11].draw[1] = .6; //spice
-	buildings[0][12].draw[0] = "#B7A99B"; buildings[0][12].draw[1] = .6; //silk orchard
-	buildings[0][13].draw[0] = "#604E42"; buildings[0][13].draw[1] = .6; //luxury orchard
+	buildings[0][11].draw[0] = "#B35D51"; buildings[0][11].draw[1] = .6; buildings[0][11].imgSrc = [128, 144];//spice
+	buildings[0][12].draw[0] = "#B7A99B"; buildings[0][12].draw[1] = .6; buildings[0][12].imgSrc = [208, 144];//silk orchard
+	buildings[0][13].draw[0] = "#604E42"; buildings[0][13].draw[1] = .6; buildings[0][13].imgSrc = [272, 144];//luxury orchard
 	
-	buildings[1][0].draw[0] = "#463800"; buildings[1][0].draw[1] = .4; //House
-	buildings[1][1].draw[0] = "#77BE98"; buildings[1][1].draw[1] = .4; //Plaza
-	buildings[1][2].draw[0] = "#FCF092"; buildings[1][2].draw[1] = .4; //Tax Office
-	buildings[1][3].draw[0] = "#855d19"; buildings[1][3].draw[1] = .7; //Dock
-	buildings[1][4].draw[0] = "#e0fffe"; buildings[1][4].draw[1] = .5; //Temple
-	buildings[1][5].draw[0] = "#88b4bd"; buildings[1][5].draw[1] = .45; //admin office
+	buildings[1][0].draw[0] = "#463800"; buildings[1][0].draw[1] = .4; buildings[1][0].imgSrc = [0, 256];//House
+	buildings[1][1].draw[0] = "#77BE98"; buildings[1][1].draw[1] = .4; buildings[1][1].imgSrc = [80, 176];//Plaza
+	buildings[1][2].draw[0] = "#FCF092"; buildings[1][2].draw[1] = .4; buildings[1][2].imgSrc = [96, 176];//Tax Office
+	buildings[1][3].draw[0] = "#855d19"; buildings[1][3].draw[1] = .7; buildings[1][3].imgSrc = [0, 272];//Dock
+	buildings[1][4].draw[0] = "#e0fffe"; buildings[1][4].draw[1] = .5; buildings[1][4].imgSrc = [48, 192];//Temple
+	buildings[1][5].draw[0] = "#88b4bd"; buildings[1][5].draw[1] = .45; buildings[1][5].imgSrc = [208, 304];//admin office
 	buildings[1][6].draw[0] = "#bd8888"; buildings[1][6].draw[1] = .85; //manor
-	buildings[1][7].draw[0] = "#604E42"; buildings[1][7].draw[1] = .6; //woodworker
-	buildings[1][8].draw[0] = "#bd7194"; buildings[1][8].draw[1] = .5; //perfumery
-	buildings[1][9].draw[0] = "#a07b60"; buildings[1][9].draw[1] = .55; //Tanner
-	buildings[1][10].draw[0] = "#261806"; buildings[1][10].draw[1] = .7; //Tavern
-	buildings[1][11].draw[0] = "#496456"; buildings[1][11].draw[1] = .45; //Winery
-	buildings[1][12].draw[0] = "brown"; buildings[1][12].draw[1] = .6; //weavery
+	buildings[1][7].draw[0] = "#604E42"; buildings[1][7].draw[1] = .6; buildings[1][7].imgSrc = [16, 176]; //woodworker
+	buildings[1][8].draw[0] = "#bd7194"; buildings[1][8].draw[1] = .5; buildings[1][8].imgSrc = [48, 176]; //perfumery
+	buildings[1][9].draw[0] = "#a07b60"; buildings[1][9].draw[1] = .55; buildings[1][9].imgSrc = [32, 176]; //Tanner
+	buildings[1][10].draw[0] = "#261806"; buildings[1][10].draw[1] = .7; buildings[1][10].imgSrc = [0, 272]; //Tavern
+	buildings[1][11].draw[0] = "#496456"; buildings[1][11].draw[1] = .45; buildings[1][11].imgSrc = [0, 240]; //Winery
+	buildings[1][12].draw[0] = "brown"; buildings[1][12].draw[1] = .6; buildings[1][12].imgSrc = [64, 176]; //weavery
 	buildings[1][13].draw[0] = "#92bf8a"; buildings[1][13].draw[1] = .7; //theatre
 	buildings[1][14].draw[0] = "#948b7f"; buildings[1][14].draw[1] = .55; //Library
 	

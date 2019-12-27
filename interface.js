@@ -369,16 +369,22 @@ function drawRightBar(e){
 				if(i == p.menView[1][0]){
 					rtx.fillRect(0, yCur, rect.width, 5*rect.height/12);
 					rtx.fillStyle = "black";
+					let b0 = p.menView[1][0];
 					rtx.strokeRect(0, 1+yCur, rect.width-1, 5*rect.height/12-2);
-					for(let j = 0; j < Math.min(7, buildings[p.menView[1][0]].length); j++){ //this loop draws the selected building types
-						let bInd = safeC(j + Math.floor(p.menView[1][2]/buildings[p.menView[1][0]].length), buildings[p.menView[1][0]].length);
-						var gir = buildings[p.menView[1][0]][bInd].draw[1];
-						rtx.fillStyle = buildings[p.menView[1][0]][bInd].draw[0];
-						rtx.fillRect(10 + (1-gir)*18, yCur + (1-gir)*18+ 2+(5*rect.height/12)/7*j , 36*gir, 36*gir);
+					for(let j = 0; j < Math.min(7, buildings[b0].length); j++){ //this loop draws the selected building types
+						let b1 = safeC(j + Math.floor(p.menView[1][2]/buildings[b0].length), buildings[b0].length);
+						if(buildings[b0][b1].imgSrc[0] == -1){
+							var gir = buildings[b0][b1].draw[1];
+							rtx.fillStyle = buildings[b0][b1].draw[0];
+							rtx.fillRect(10 + (1-gir)*18, yCur + (1-gir)*18+ 2+(5*rect.height/12)/7*j , 36*gir, 36*gir);
+						}
+						else{
+							rtx.drawImage(sprites2,  buildings[b0][b1].imgSrc[0], buildings[b0][b1].imgSrc[1], 16, 16, 10, yCur + 2+(5*rect.height/12)/7*j, 36, 36);
+						}
 						rtx.fillStyle = "black"; rtx.font = "26px Bookman";
-						rtx.fillText(buildings[p.menView[1][0]][bInd].name, 50, yCur+30+(5*rect.height/12)/7*j, rect.width-60);
+						rtx.fillText(buildings[b0][b1].name, 50, yCur+30+(5*rect.height/12)/7*j, rect.width-60);
 						rtx.lineWidth = 2;
-						if(p.menView[1][1] == bInd){rtx.strokeStyle = "gold";} else { rtx.strokeStyle = "black"; }
+						if(p.menView[1][1] == b1){rtx.strokeStyle = "gold";} else { rtx.strokeStyle = "black"; }
 						rtx.strokeRect(2, 1+yCur+(5*rect.height/12-2)/7*j, rect.width-60, (5*rect.height/12 - 2)/7);
 						rtx.strokeStyle = "black";
 					}
