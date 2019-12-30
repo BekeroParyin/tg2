@@ -484,9 +484,9 @@
 							if(t.elevation > 0){
 								t.heat -= .0025;
 								t.wetness += .002;
-								if(t.wetness < .01 && t.heat > .5){
+								if(t.wetness < .005 && t.heat > .5){
 									water -= .01;
-									t.wetness += .01;
+									t.wetness += .005;
 								}
 								t.wetness += map[y][x].elevation/300;
 								if(t.heat > 2){
@@ -497,7 +497,7 @@
 										t.wetness += .005;
 										t.wetness += water/5500;
 										t.wetness += .02;
-										water -= (t.heat/2.8) * MODI/.4;
+										water -= (t.heat/2.9) * MODI/.4;
 										t.wetness += t.elevation/50;
 										water += t.elevation/50;	
 									}
