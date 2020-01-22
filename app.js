@@ -46,8 +46,14 @@ app.get("/public/interface.js", function (req, res) {
 app.get("/public/sheet.png", function (req, res) {
 	res.sendFile(__dirname + "/sheet.png");
 });
-app.get("/public/ericsprites.png", function (req, res) {
-	res.sendFile(__dirname + "/ericsprites.png");
+app.get("/public/sprites/terrain.png", function (req, res) {
+	res.sendFile(__dirname + "/sprites/terrain.png");
+});
+app.get("/public/sprites/buildings.png", function (req, res) {
+	res.sendFile(__dirname + "/sprites/buildings.png");
+});
+app.get("/public/sprites/desert.png", function (req, res) {
+	res.sendFile(__dirname + "/sprites/desert.png");
 });
 app.get("/public/jquery.js", function (req, res) {
 	res.sendFile(__dirname + "/jquery.js");
@@ -76,7 +82,7 @@ var io = require('socket.io')(server,{});
 	colors = shuffle(colors);
 	var day = 0;
 	var map = [];
-	/*
+
 	const MAPSIZE = 450;
 	const MODI = MAPSIZE/1500;
 	var map = [];
@@ -91,8 +97,8 @@ var io = require('socket.io')(server,{});
 	}
 	genWorld();
 	genArtifacts();
-	*/
 	
+	/*
 	var MODI = 0;
 	var MAPSIZE = 0;
 	fs.createReadStream('mapIn.png')
@@ -128,7 +134,7 @@ var io = require('socket.io')(server,{});
 		genWorld();
 	genArtifacts();
 	});
-	
+	*/
 	io.sockets.on('connection', function(socket){
 		socket.on('pConnected', function(data){
 			socketList.push(socket);

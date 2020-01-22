@@ -19,19 +19,68 @@ $("#resgood").change(function() {
 	}
 	drawLeftBar();
 });});
-
+function updateArmyPrice(){
+	let t = map[tS[0]][tS[1]];
+	let b0 = t.building[0]; let b1 = t.building[1];
+	let type = -1;
+	if(b0 == 3 && b1 < 4){
+		type = t.building[1]-1;
+	}
+	if(type == -1){ return; }
+	curUnit[type].size = 10 + parseInt($('#UnitSize').val());
+	var costs = [(curUnit[type].size), 3*(curUnit[type].size), 0, 0, (curUnit[type].size)*.85]; //Calc Unit costs: manpower, food, wood, material, gold
+	costs[4] += curUnit[type].material * .15 * costs[0];
+	if(type == 1){
+		costs[4] -= curUnit[type].stats[4] * .75;
+	}
+	if(type == 2){
+		costs[1] += (costs[0]);
+		costs[4] += .4 * costs[0];
+	}
+	else if(type == 1){
+		costs[4] += .1 * costs[0];
+	}
+	costs[1] -= 30 * curUnit[type].stats[4]; costs[1] = Math.max(0, costs[1]);
+	costs[2] += weapons[curUnit[type].type][curUnit[type].weapons[0]].cost[0] * costs[0];
+	costs[4] += costs[0]*weapons[curUnit[type].type][curUnit[type].weapons[0]].upkeep*5;
+	costs[3] += 1.5*weapons[curUnit[type].type][curUnit[type].weapons[0]].cost[1] * costs[0];
+	if(weapons[curUnit[type].type][curUnit[type].weapons[0]].hands < 2){
+		costs[2] += weapons[curUnit[type].type][curUnit[type].weapons[1]].cost[0] * costs[0];
+		costs[3] += 1.5*weapons[curUnit[type].type][curUnit[type].weapons[1]].cost[1] * costs[0];
+		costs[4] += costs[0]*weapons[curUnit[type].type][curUnit[type].weapons[1]].upkeep*5;
+	}
+	$('#cMC').html(Math.floor(costs[0]*20)/20); //manpower cost
+	$('#cWC').html(Math.floor(costs[1]*20)/20); //wood cost
+	$('#cGC').html(Math.floor(costs[2]*20)/20); //gold cost
+	$('#cSC').html(Math.floor(costs[2]*20)/20); //special material cost
+	if(t.building[1] == 3){
+		$('#horses').html(Math.floor(costs[0]*20)/20);
+	}
+	else{
+		$('#horses').html(0);
+	}
+}
 function ement(e){
 	let chng = 1;
 	if($(this).hasClass('decr')){
 		chng = -1;
 	}
-	let p = $(this).parent().parent().attr('id');
+	let t = map[tS[0]][tS[1]];
+	let b0 = t.building[0]; let b1 = t.building[1];
+	let type = -1;
 	let temp = curShip.pts;
+	if(b0 == 3 && b1 < 4){
+		type = t.building[1]-1;
+		temp = curUnit[type].pts;
+	}
+	let p = $(this).parent().parent().attr('id');
+	
 	let spot = 0;
 	let numRun = 1;
 	if(e.shiftKey){
 		numRun = 5;
 	}
+	let cUn = curUnit[type];
 	for(let i = 0; i < numRun; i++){
 		switch(p){
 			case "dockAtk": if((chng==-1&&curShip.stats[0]>0) ||(chng==1&&curShip.pts>0)){ curShip.pts-=chng; curShip.stats[0]+=chng;}break
@@ -40,21 +89,45 @@ function ement(e){
 			case "dockTra": if((chng==-1&&curShip.stats[3]>0) ||(chng==1&&curShip.pts>0)){ spot = 3;curShip.pts-=chng; curShip.stats[3]+=chng;}break
 			case "dockFis": if((chng==-1&&curShip.stats[4]>0) ||(chng==1&&curShip.pts>0)){ spot = 4;curShip.pts-=chng; curShip.stats[4]+=chng;}break
 			case "dockSpd": if((chng==-1&&curShip.stats[5]>0) ||(chng==1&&curShip.pts>0)){ spot = 5;curShip.pts-=chng; curShip.stats[5]+=chng;}break
+			case "cAtk": if((chng==-1&&cUn.stats[0]>0) ||(chng==1&&cUn.pts>0)){cUn.pts-=chng; cUn.stats[0]+=chng; } break;
+			case "cDef": if((chng==-1&&cUn.stats[1]>0) ||(chng==1&&cUn.pts>0)){spot = 1;cUn.pts-=chng; cUn.stats[1]+=chng; } break;
+			case "cSkirm": if((chng==-1&&cUn.stats[2]>0) ||(chng==1&&cUn.pts>0)){spot = 2;cUn.pts-=chng; cUn.stats[2]+=chng; } break;
+			case "cMob": if((chng==-1&&cUn.stats[3]>0) ||(chng==1&&cUn.pts>0)){spot = 3;cUn.pts-=chng; cUn.stats[3]+=chng; } break;
+			case "cFor": if((chng==-1&&cUn.stats[4]>0) ||(chng==1&&cUn.pts>0)){spot = 4;cUn.pts-=chng; cUn.stats[4]+=chng; } break;
 		}
 	}
-	curShip.costs = [5, 7, 0] //manpower, wood, gold curShip.costs -- - - - 
-	curShip.costs[0] += (50-curShip.pts) + curShip.stats[0] + curShip.stats[3] + curShip.stats[4] + curShip.stats[5];
-	curShip.costs[1] += 1.5*(curShip.costs[0]/1.5 + curShip.stats[1]*2 +curShip.stats[2]);
-	curShip.costs[2] += (Math.floor(curShip.costs[1]) - curShip.stats[4])*5 -40 + curShip.stats[1]*1.5 +curShip.stats[2];
-	if(curShip.pts != temp){
-		$("#"+p + "> td > span").html(curShip.stats[spot])
-		$('#dockPts').html(curShip.pts);
+	curUnit[type] = cUn;
+	if(b0 == 1 && b1 == 3){
+		curShip.costs = [5, 7, 0] //manpower, wood, gold curShip.costs -- - - - 
+		curShip.costs[0] += (50-curShip.pts) + curShip.stats[0] + curShip.stats[3] + curShip.stats[4] + curShip.stats[5];
+		curShip.costs[1] += 1.5*(curShip.costs[0]/1.5 + curShip.stats[1]*2 +curShip.stats[2]);
+		curShip.costs[2] += (Math.floor(curShip.costs[1]) - curShip.stats[4])*5 -40 + curShip.stats[1]*1.5 +curShip.stats[2];
+		if(curShip.pts != temp){
+			$("#"+p + "> td > span").html(curShip.stats[spot])
+			$('#dockPts').html(curShip.pts);
+		}
+		$('#mSC').html(Math.floor(curShip.costs[0]*20)/20);
+		$('#wSC').html(Math.floor(curShip.costs[1]*20)/20);
+		$('#gSC').html(Math.floor(curShip.costs[2]*20)/20);
 	}
-	$('#mSC').html(Math.floor(curShip.costs[0]*20)/20);
-	$('#wSC').html(Math.floor(curShip.costs[1]*20)/20);
-	$('#gSC').html(Math.floor(curShip.costs[2]*20)/20);
+	else if(b0 == 3){
+		if(curUnit[type].pts != temp){
+			$("#"+p + "> td > span").html(curUnit[type].stats[spot])
+			$('#curPts').html(curUnit[type].pts);
+		}
+		updateArmyPrice();
+	}
 }
+$('#cSType').click(function(){
+	var type = map[tS[0]][tS[1]].building[1]-1;
+	let mats = ["Wood", "Stone", "Copper", "Bronze", "Iron"];
+	curUnit[type].material = (curUnit[type].material+1)%mats.length;
+	$('#cSType').html(mats[curUnit[type].material]);
+});
 $(".decr, .incr").click(ement);
+$('#UnitSize').change(function(){
+	updateArmyPrice();
+});
 $('#beginSC').click(function(){
 	curShip.costs = [5, 7, 0] //manpower, wood, gold curShip.costs -- - - - 
 	curShip.costs[0] += (50-curShip.pts) + curShip.stats[0] + curShip.stats[3] + curShip.stats[4] + curShip.stats[5];
@@ -114,6 +187,124 @@ $('#beginSC').click(function(){
 		}
 	}
 delta = true;
+});
+$('#createUnit').click(function(){
+	var type = -1;
+	let yS = safeC(tS[0]);
+	let xS = safeC(tS[1]);
+	let t = map[yS][xS];
+	if(t.building[1] < 4){
+		type = t.building[1]-1;
+	}
+	if(type > -1 && t.owner == p.turn){
+		let word = "";
+		let mats = ["Wood", "Stone", "Copper", "Bronze", "Iron"];
+		if(type == 0){ word = "Infantry"; }
+		else if(type == 1){ word = "Archer"; }
+		else{ word = "Cavalry"; }
+		curUnit[type].size = 10 + parseInt($('#UnitSize').val());
+		var costs = [(curUnit[type].size + 10), 3*(curUnit[type].size+10), 0, 0, (curUnit[type].size + 10)*.85]; //Calc Unit costs: manpower, food, wood, material, gold
+		costs[4] += curUnit[type].material * .15 * costs[0];
+		if(type == 1){
+			costs[4] -= curUnit[type].stats[4] * .75;
+		}
+		if(type == 2){
+			costs[1] += (costs[0]);
+			costs[4] += .4 * costs[0];
+		}
+		else if(type == 1){
+			costs[4] += .1 * costs[0];
+		}
+		costs[1] -= 30 * curUnit[type].stats[4]; costs[1] = Math.max(0, costs[1]);
+		costs[2] += weapons[curUnit[type].type][curUnit[type].weapons[0]].cost[0] * costs[0];
+		costs[4] += costs[0]*weapons[curUnit[type].type][curUnit[type].weapons[0]].upkeep*5;
+		costs[3] += 1.5*weapons[curUnit[type].type][curUnit[type].weapons[0]].cost[1] * costs[0];
+		if(weapons[curUnit[type].type][curUnit[type].weapons[0]].hands < 2){
+			costs[2] += weapons[curUnit[type].type][curUnit[type].weapons[1]].cost[0] * costs[0];
+			costs[3] += 1.5*weapons[curUnit[type].type][curUnit[type].weapons[1]].cost[1] * costs[0];
+			costs[4] += costs[0]*weapons[curUnit[type].type][curUnit[type].weapons[1]].upkeep*5;
+		}
+		var canBuyA = false;
+		if(p.manpower >= costs[0]){
+			if(p.zones[t.zone].res.horses >= costs[0] || type != 2){
+				if(p.zones[t.zone].res.food >= costs[1]){
+					if(p.zones[t.zone].res.wood >= costs[2]){
+						switch(curUnit[type].material){
+							case 0: if(p.zones[t.zone].res.wood >= costs[3]+costs[2]){ canBuyA = true; } break;
+							case 1: if(p.zones[t.zone].res.stone >= costs[3]){ canBuyA = true; } break;
+							case 2: if(p.zones[t.zone].res.copper[1] >= costs[3]){ canBuyA = true; } break;
+							case 3: if(p.zones[t.zone].res.bronze[1] >= costs[3]){ canBuyA = true; } break;
+							case 4: if(p.zones[t.zone].res.iron[1] >= costs[3]){ canBuyA = true; } break;
+						}
+					}
+				}
+			}
+		}
+		if(canBuyA){
+			p.manpower -= costs[0];
+			if(type == 2){
+				p.zones[t.zone].res.horses -= costs[0];
+			}
+			p.zones[t.zone].res.food -= costs[1];
+			p.zones[t.zone].res.wood -= costs[2];
+			p.gold -= costs[4];
+			curUnit[type].food = costs[1];
+			curUnit[type].size = costs[0];
+			switch(curUnit[type].material){
+				case 0: p.zones[t.zone].res.wood -= costs[3]; break;
+				case 1: p.zones[t.zone].res.stone -= costs[3]; curUnit[type].upkeep += .03; break;
+				case 2: p.zones[t.zone].res.copper[1] -= costs[3]; curUnit[type].upkeep += .05; break;
+				case 3: p.zones[t.zone].res.bronze[1] -= costs[3]; curUnit[type].upkeep += .07; break;
+				case 4: p.zones[t.zone].res.iron[1] -= costs[3]; curUnit[type].upkeep += .09; break;
+			}
+			for(let i = 0; i < p.armies; i++){
+				if(p.armies[i] == -1){
+					curUnit[type].num = i;
+					i = p.armies.length;
+				}
+			}
+			if(curUnit[type].num == -1){
+				curUnit[type].num = p.armies.length;
+			}
+			curUnit[type].upkeep += weapons[curUnit[type].type][curUnit[type].weapons[0]].upkeep;
+			if(weapons[curUnit[type].type][curUnit[type].weapons[0]].hands < 2){
+				curUnit[type].upkeep += weapons[curUnit[type].type][curUnit[type].weapons[1]].upkeep;
+			}
+			curUnit[type].upkeep += .08;
+			p.armies[curUnit[type].num] = curUnit[type];
+			curUnit[type] = JSON.parse(JSON.stringify(curUnit[type]));
+			if(p.armies[curUnit[type].num].type == 0){ //Infantry
+				p.armies[curUnit[type].num].stats[1] += 1 + curUnit[type].material;
+				p.armies[curUnit[type].num].stats[0] += Math.floor(curUnit[type].material/1.1);
+			}
+			else if(p.armies[curUnit[type].num].type == 1){ //Archer
+				p.armies[curUnit[type].num].stats[2] += 2;
+				p.armies[curUnit[type].num].stats[0] += 1 + curUnit[type].material;
+				p.armies[curUnit[type].num].upkeep+=.01;
+				p.armies[curUnit[type].num].upkeep-=p.armies[curUnit[type].num].stats[4]/190;
+			}
+			else if(p.armies[curUnit[type].num].type == 2){ //Cavalry
+				p.armies[curUnit[type].num].stats[3] += 2;
+				p.armies[curUnit[type].num].stats[0] += 1 + curUnit[type].material;
+				p.armies[curUnit[type].num].stats[1] += Math.floor(curUnit[type].material/2);
+				p.armies[curUnit[type].num].upkeep+=.08;
+			}
+			p.armies[curUnit[type].num].upkeep *= .5 * costs[0];
+			p.armies[curUnit[type].num].y = yS;
+			p.armies[curUnit[type].num].x = xS;
+			p.armies[curUnit[type].num].owner = p.turn;
+			p.armies[curUnit[type].num].maxSize = p.armies[curUnit[type].num].size;
+			p.armies[curUnit[type].num].ID = createID(p.armies[curUnit[type].num], p.gold);
+			map[yS][xS].army = (p.armies[curUnit[type].num]);
+			tileChange(yS, xS);
+			armyChange(p.armies[curUnit[type].num], true);
+			curUnit[type].ID = ""; curUnit[type].size -= 10; 
+			curUnit[type].upkeep = 0;
+			curUnit[type].num = -1;
+			delta = true;
+			drawDelta = true;
+		}
+	} else { return; }
 });
 $(document).on("click", "#actionChange", function(){
 	if(p.action == "claiming"){
@@ -267,7 +458,7 @@ function drawRightBar(e){
 	if(tS.length > 0){
 		var t = map[tS[0]][tS[1]];
 	}
-	if($('a#selected-tab').hasClass('active')){
+	if($('#building-select').is(':visible')){
 		var rect = r.getBoundingClientRect();
 		rtx.clearRect(0, 0, rect.width, rect.height);
 		rtx.fillStyle =  "#293134";
@@ -379,7 +570,7 @@ function drawRightBar(e){
 							rtx.fillRect(10 + (1-gir)*18, yCur + (1-gir)*18+ 2+(5*rect.height/12)/7*j , 36*gir, 36*gir);
 						}
 						else{
-							rtx.drawImage(sprites2,  buildings[b0][b1].imgSrc[0], buildings[b0][b1].imgSrc[1], 16, 16, 10, yCur + 2+(5*rect.height/12)/7*j, 36, 36);
+							rtx.drawImage(p.spriteSheet,  buildings[b0][b1].imgSrc[0], buildings[b0][b1].imgSrc[1], 16, 16, 10, yCur + 2+(5*rect.height/12)/7*j, 36, 36);
 						}
 						rtx.fillStyle = "black"; rtx.font = "26px Bookman";
 						rtx.fillText(buildings[b0][b1].name, 50, yCur+30+(5*rect.height/12)/7*j, rect.width-60);
@@ -453,7 +644,7 @@ function drawRightBar(e){
 			}
 		}
 	}
-	else if($('a#building-special').hasClass('active')){ //ie Dock, Market, Military Building
+	else if($('#building-special').is(':visible')){ //ie Dock, Market, Military Building
 		if(t.building[0] == 1 && t.building[1] == 3){ //DOCK
 			curShip.costs = [5, 7, 0] //manpower, wood, gold curShip.costs -- - - - 
 			curShip.costs[0] += (50-curShip.pts) + curShip.stats[0] + curShip.stats[3] + curShip.stats[4] + curShip.stats[5];
@@ -463,8 +654,15 @@ function drawRightBar(e){
 			$('#wSC').html(Math.floor(curShip.costs[1]*20)/20);
 			$('#gSC').html(Math.floor(curShip.costs[2]*20)/20);
 		}
+		else if(t.building[0] == 3 && t.building[1] < 4){
+			var type = t.building[1]-1;
+			let word = "";
+			if(type == 0){ word = "Infantry Yard"; } else if(type == 1){ word = "Archer Yard"; } else{ word = "Cavalry Yard"; }
+			$('#curType').html(word);
+			updateArmyPrice();
+		}
 	}
-	else if($('a#building-upgrade').hasClass('active')){
+	else if($('a#building-upgrade').is(':visible')){
 	
 	}
 }

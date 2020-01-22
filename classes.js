@@ -1,11 +1,4 @@
-	//Sprite Sources//-------------------------------
-	var terrain = new Image();
-	var buildings = new Image();
-	var dBuildings = new Image();
-	terrain.src = "/public/sprites/terrain.png";
-	buildings.src = "/public/sprites/buildings.png";
-	dBuildings.src = "/public/sprites/desert.png";
-	//----------------------------------------------
+
 	function Building(){
 		this.draw = ["brown", .5];
 		this.name;
@@ -599,6 +592,7 @@
 		this.name = "";
 		this.nextMove = 0;
 		this.weapons = [0, 4];
+		this.costs = [0, 0, 0, 0, 0]; //manpower, wood, food, material, gold
 		this.stats = [0, 0, 0, 0, 0]; //Att, Def, Skirmish, Mobility, Foraging
 		this.size = 0;
 		this.food = 0;
@@ -775,7 +769,7 @@
 		this.vassals = [];
 		this.government = [[], [], []];
 		this.culture = new Culture;
-		this.sprites = buildings;
+		this.spriteSheet = desertSheet;
 	}
 	function genAdministrator(a){
 		let p = a;

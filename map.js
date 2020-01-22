@@ -4,11 +4,11 @@
 			console.log("Modifier: " + MODI);
 			console.log("Map Size: " + MAPSIZE);
 			console.log(map.length);
-			//genOceans(MAPSIZE*MAPSIZE, 2);
-			//genOceans(30000 * MODI, 4);
+			genOceans(MAPSIZE*MAPSIZE, 2);
+			genOceans(30000 * MODI, 4);
 			console.log("genOceans");
-			//slap(5000, 'g', 'w', -1, 0, 1400);
-			//slap(400, 'g', 'w', -1, -1);
+			slap(5000, 'g', 'w', -1, 0, 1400);
+			slap(400, 'g', 'w', -1, -1);
 			console.log("Oceans Generated");
 			mountain(20, Math.round(20*MODI));
 			mountain(40* MODI, Math.round(20*MODI));
@@ -385,8 +385,8 @@
 			}
 		}
 		function elevSpread(){
-			for(let m = 0; m < 4; m++){
-				for(let h = 0; h < 2; h++){
+			for(let m = 4; m > 0; m--){
+				for(let h = 1; h >= 0; h--){
 					var i = h*(MAPSIZE-1);
 					while(i < MAPSIZE && i >= 0){
 						var j = h*(MAPSIZE-1);
@@ -453,60 +453,53 @@
 				var lastlast = -1;
 				var bannedDir = -1
 				var dir = -1;
-				var water = 30 * MODI;
+				var water = 6;
 				var y = safeC(yC);
 				var x = safeC(xC);
 				var cS = 0;
-				var limit = 16;
+				var limit = 15;
 				if(map[yC][xC].elevation > 0){ water *= 2; }
 				while(cS < limit && water > 0){
 					y = safeC(y);
 					x = safeC(x);
 					if(map[y][x].type == 'w'){
 						if(fir){
-							water+=15*MODI;
+							water+=6;
 							cS+=.5;
 						}
 						else {
 							bannedDir = lastDir;
-							cS+=1.75;
+							cS+=1.75+MODI;
 						}
 					}
 					else if(!fir && (map[y][x].type == 'r' || map[y][x].type == 'a')){
-						water+=15*MODI;
+						water+=6;
 						cS+=.5;
 					}
 					else{
-						for(let a = 0; a < 13; a+=2){
-							let y1 = safeC(y-6+a);
+						for(let a = 0; a < 11; a+=2){
+							let y1 = safeC(y-5+a);
 							let t = map[y1][x];
-							t.curred += .1/13;
 							if(t.elevation > 0){
+								t.curred += .001;
 								t.heat -= .0025;
-								t.wetness += .002;
-								if(t.wetness < .005 && t.heat > .5){
-									water -= .01;
-									t.wetness += .005;
-								}
-								t.wetness += map[y][x].elevation/300;
-								if(t.heat > 2){
-									t.wetness += .0025;
-									t.wetness += water/20000;
-									water += t.wetness/5000;
-									if(t.heat > 2.5){
-										t.wetness += .005;
-										t.wetness += water/5500;
-										t.wetness += .02;
-										water -= (t.heat/2.9) * MODI/.4;
-										t.wetness += t.elevation/50;
-										water += t.elevation/50;	
+								t.wetness += .0025 + t.elevation/300;
+								if(t.heat > 1.75){
+									t.wetness += .002 + water/20000;
+									water += t.wetness/50 - ((t.heat/10) * .4/MODI);
+
+									if(t.heat > 2.25){
+										t.wetness += water/5500 + .02 + t.elevation/50;
+										water -= (t.heat/5) * .4/MODI;
+										water += t.elevation/50;
 									}
 								}
+								map[y1][x] = t;
 							}
-							map[y1][x] = t;
 						}
 						water += map[y][x].wetness/6;
 						water -= .1;
+						map[y][x].heat += .005;
 						if(map[y][x].elevation >= .5){
 							water -= map[y][x].elevation;
 						}
@@ -531,7 +524,7 @@
 					if(fir){
 						--j;
 					}
-					if((fir && t.type == 'w') || (!fir && (t.type == 'a' || t.type == 'r')) || (t.heat > 2 && t.wetness > 1.5)){
+					if((fir && t.type == 'w') || (!fir && (t.type == 'a' || t.type == 'r')) || (t.heat > 1.75 && t.wetness > 2)){
 						makeCurrent(i, j);
 						makeCurrent(i, j);
 						count+=2;

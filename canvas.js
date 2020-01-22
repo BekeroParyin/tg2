@@ -45,6 +45,13 @@
 				c.height = h;
 				ctx.scale(scale, scale);
 			}
-			
+		//Sprite Sources//-------------------------------
+		var terrain = new Image();
+		var buildingSheet = new Image();
+		var desertSheet = new Image();
+		terrain.src = "/public/sprites/terrain.png";
+		buildingSheet.src = "/public/sprites/buildings.png";
+		desertSheet.src = "/public/sprites/desert.png";
+		//----------------------------------------------
 		ctx.imageSmoothingEnabled = false;
 		rtx.imageSmoothingEnabled = false;

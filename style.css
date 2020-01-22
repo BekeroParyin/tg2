@@ -52,7 +52,11 @@ a{
 	outline: none!important;
 	border:none!important;
 }
-#beginSC {
+#UnitSize{
+	width: 65px;
+	margin-left: 20px;
+}
+.beginC {
 	border:none;
     outline:none;
 	color: #fff;
@@ -62,7 +66,7 @@ a{
 	padding:4px;
 	font-size:1.2rem;
 }
-#beginSC:hover{
+.beginC:hover{
 	background-color:#35819c;
 }
 decr:focus, incr:focus{

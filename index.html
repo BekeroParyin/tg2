@@ -264,11 +264,65 @@
 								<tr class = "blankRow"></tr>
 							</table>
 							<li class="list-group-item d-flex justify-content-center" style = "font-size: 1.2rem;">
-                                <button id = "beginSC"> Begin Construction </button>
+                                <button id = "beginSC" class = "beginC"> Begin Construction </button>
+                            </li>
+							</div>
+							<div id = "army-yard">
+							<li class="list-group-item d-flex justify-content-center" style = "font-size: 1.2rem;">
+                                <span id = "curType" style = "font-size: 1.15rem;">Infantry Yard</span>
+                            </li>
+							<li class="list-group-item d-flex justify-content-around" style = "font-size: 1.2rem;">
+                                Points Remaining: <span id = "curPts" style = "font-size: 1.15rem;">10</span>
+                            </li>
+							<input id = "UnitSize" type = "number" min="0" value = "0" max = "90" step="1" oninput="this.value = Math.min(90, Math.abs(this.value))"></div>
+							<table class="resTable" id = "dockTable">
+                            <tr id = "cAtk">
+								<td class="resLabel">Attack:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="cAttack">0</span></td>
+								<td><button class = "incr"></button></td>
+								
+							</tr>
+							<tr id = "cDef">
+								<td class="resLabel">Defense:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="cDefense">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr id = "cSkirm">
+								<td class="resLabel">Skirmish:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="cSkirmish">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr id = "cMob">
+								<td class="resLabel">Mobility:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="cMobility">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+							<tr id = "cFor">
+								<td class="resLabel">Foraging:</td>
+								<td><button class = "decr"></button></td>
+								<td><span id="cForaging">0</span></td>
+								<td><button class = "incr"></button></td>
+							</tr>
+                            </table>
+							<table class = "resTable">
+								<tr><th class = "resLabel"> Costs: </th></tr>
+								<tr><td class = "resLabel">Manpower: <span id="cMC" class = "resLabel">0</span></td></tr>
+								<tr><td class = "resLabel">Food: <span id="cFC" class = "resLabel">0</span></td></tr>
+								<tr><td class = "resLabel">Wood: <span id = "cWC" class = "resLabel">0</span></td></tr>
+								<tr><td class = "resLabel">Gold: <span id = "cGC" class = "resLabel">0</span></td></tr>
+								<tr><td class = "resLabel">Horses: <span id = "horses" class = "resLabel">0</span></td></tr>
+								<tr><td class = "resLabel"><span id = "cSType">Wood: </span><span id = "cSC" class = "resLabel">25</span></td></tr>
+								<tr class = "clankRow"></tr>
+							</table>
+							<li class="list-group-item d-flex justify-content-center" style = "font-size: 1.2rem;">
+                                <button id = "createUnit" class = "beginC"> Create Unit </button>
                             </li>
 							</div>
                         </div>
-						
                         <div id="nothing">
                             <h1> You can't build here </h1>
                         </div>

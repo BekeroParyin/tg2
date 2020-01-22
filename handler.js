@@ -671,7 +671,7 @@ var MAPSIZE = 1000;
 					$('#building-upgrade').hide();
 					$('#building-special').hide();
 					$('#nothing').hide();
-					let specialIDs = ["Dock", "Manor", "Market"];
+					let specialIDs = ["Dock", "Manor", "Market", "Infantry Yard", "Archery Yard", "Cavalry Yard"];
 					if(tS.length == 2 && tS[0] > -1){
 						let t = map[tS[0]][tS[1]];
 						if(t.owner == p.turn){
@@ -690,11 +690,17 @@ var MAPSIZE = 1000;
 							if(t.building[0] == -1){
 								$('#building-select').show();
 							}
-							else if(t.building[0] != 3){
-								if(t.building[0] == 2 || specialIDs.indexOf(buildings[t.building[0]][t.building[1]].name) != -1){
+							else if(t.building[0] != 2){
+								if(t.building[0] == 3 || specialIDs.indexOf(buildings[t.building[0]][t.building[1]].name) != -1){
+									$('#dock').hide();
 									$('#building-special').fadeIn();
 									if(t.building[0] == 1 && t.building[1] == 3){
 										$('#dock').show();
+									}
+									else if(t.building[0] == 3){
+										if(t.building[1] > 0 && t.building[1] < 4){
+											$('#army-yard').show();
+										}
 									}
 								}
 								else{
