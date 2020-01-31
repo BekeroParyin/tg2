@@ -794,8 +794,8 @@ var MAPSIZE = 1000;
 				drawMap(drawDir);
 				drawDir = -1;
 				drawDelta = false;
-				t+=4;
-				if(t%250==4||t==104||t==304||t==904){t-=4;}
+				//t+=4;
+				//if(t%250==4||t==104||t==304||t==904){t-=4;}
 			}
 			if(delta){
 				if(!p.appraising){

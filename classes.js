@@ -13,7 +13,7 @@
 		this.desert = 10;
 	}
 	var buildings = [[], [], [], []];
-	var bNames = [["Road","Farm", "Orchard", "Lumber Mill","Granary","Warehouse","Mine","Metalworks","Market", "Bazaar", "Stable", "Spice Plantation", "Silk Orchard", "Ebony Orchard"],
+	var bNames = [["Road","Farm", "Orchard", "Lumber Mill","Granary","Warehouse","Mine","Metalworks","Market", "Bazaar", "Stable", "Spice Plantation", "Silk Orchard", "Ebony Orchard", "Quarry"],
 	
 	["House","Plaza","Tax Office","Dock","Temple","Town Office","Manor", "Woodworker's Shop", "Perfumery", "Leather Worker", "Tavern", "Winery", "Weavery", "Theatre", "Library"],
 	
@@ -58,18 +58,19 @@
 	}
 	buildings[0][0].draw[0] = "tan"; buildings[0][0].draw[1] = .4; buildings[0][0].imgSrc = [0, 0];//Road 
 	buildings[0][1].draw[0] = "#767600"; buildings[0][1].draw[1] = .7; buildings[0][1].imgSrc = [0, 32];//Farm
-	buildings[0][2].draw[0] = "rgb(0, 80, 0)"; buildings[0][2].draw[1] = .6; buildings[0][2].imgSrc = [80, 16];//Orchard
+	buildings[0][2].draw[0] = "rgb(0, 80, 0)"; buildings[0][2].draw[1] = .6; buildings[0][2].imgSrc = [64, 16];//Orchard
 	buildings[0][3].draw[0] = "#6F4827"; buildings[0][3].draw[1] = .4; buildings[0][3].imgSrc = [0, 48];//Lumber Mill
 	buildings[0][4].draw[0] = "#767600"; buildings[0][4].draw[1] = .4; buildings[0][4].imgSrc = [144, 128];//Granary
 	buildings[0][5].draw[0] = "#64561E"; buildings[0][5].draw[1] = .8; buildings[0][5].imgSrc = [0, 64];//Warehouse
 	buildings[0][6].draw[0] = "#400000"; buildings[0][6].draw[1] = .8; buildings[0][6].imgSrc = [0, 80];//Mine
 	buildings[0][7].draw[0] = "#543c49"; buildings[0][7].draw[1] = .6; buildings[0][7].imgSrc = [0, 96];//Metalworks
 	buildings[0][8].draw[0] = "#2e496a"; buildings[0][8].draw[1] = .75; //Market
-	buildings[0][9].draw[0] = "#948b7f"; buildings[0][9].draw[1] = .9; //Bazaar
+	buildings[0][9].draw[0] = "#948b7f"; buildings[0][9].draw[1] = .9; buildings[0][9].imgSrc = [128, 48];//Bazaar
 	buildings[0][10].draw[0] = "#83423b"; buildings[0][10].draw[1] = .6; //stable
 	buildings[0][11].draw[0] = "#B35D51"; buildings[0][11].draw[1] = .6; buildings[0][11].imgSrc = [128, 16];//spice
 	buildings[0][12].draw[0] = "#B7A99B"; buildings[0][12].draw[1] = .6; buildings[0][12].imgSrc = [208, 16];//silk orchard
 	buildings[0][13].draw[0] = "#604E42"; buildings[0][13].draw[1] = .6; buildings[0][13].imgSrc = [272, 16];//luxury orchard
+	buildings[0][14].imgSrc = [112, 48];//quarry
 	
 	buildings[1][0].draw[0] = "#463800"; buildings[1][0].draw[1] = .4; buildings[1][0].imgSrc = [0, 128];//House
 	buildings[1][1].draw[0] = "#77BE98"; buildings[1][1].draw[1] = .4; buildings[1][1].imgSrc = [80, 48];//Plaza
@@ -82,7 +83,7 @@
 	buildings[1][8].draw[0] = "#bd7194"; buildings[1][8].draw[1] = .5; buildings[1][8].imgSrc = [48, 48]; //perfumery
 	buildings[1][9].draw[0] = "#a07b60"; buildings[1][9].draw[1] = .55; buildings[1][9].imgSrc = [32, 48]; //Tanner
 	buildings[1][10].draw[0] = "#261806"; buildings[1][10].draw[1] = .7; buildings[1][10].imgSrc = [0, 112]; //Tavern
-	buildings[1][11].draw[0] = "#496456"; buildings[1][11].draw[1] = .45; buildings[1][11].imgSrc = [0, 112]; //Winery
+	buildings[1][11].draw[0] = "#496456"; buildings[1][11].draw[1] = .45; buildings[1][11].imgSrc = [144, 112]; //Winery
 	buildings[1][12].draw[0] = "brown"; buildings[1][12].draw[1] = .6; buildings[1][12].imgSrc = [64, 48]; //weavery
 	buildings[1][13].draw[0] = "#92bf8a"; buildings[1][13].draw[1] = .7; //theatre
 	buildings[1][14].draw[0] = "#948b7f"; buildings[1][14].draw[1] = .55; //Library
@@ -92,7 +93,7 @@
 	buildings[2][2].draw[0] = "Gray"; buildings[2][2].draw[1] = .5; //high wall
 	buildings[2][3].draw[0] = "Brown"; buildings[2][3].draw[1] = .4; //gate house
 	buildings[2][4].draw[0] = "rgb(0, 106, 220)"; buildings[2][4].draw[1] = .5; //moat
-	buildings[2][5].draw[0] = "Gray"; buildings[2][5].draw[1] = .3; //moat
+	buildings[2][5].draw[0] = "Gray"; buildings[2][5].draw[1] = .3; buildings[2][5].imgSrc = [208, 144]; //weavery
 	
 	buildings[3][0].draw[1] = .75; //tgrounds
 	buildings[3][1].draw[0] = "#83423b"; buildings[3][1].draw[1] = .55; //infyard
@@ -138,16 +139,17 @@
 	buildings[0][12].description ="Silk Orchard";
 	buildings[0][13].cost = [5,0,10,7,[12,7.5]];
 	buildings[0][13].description ="Ebony Orchard";
+	buildings[0][13].cost = [15,0,0,30,[-1,0]];
+	buildings[0][13].description ="Quarry";
 
 	//SOCIAL
-	buildings[1][0].cost = [0,0,0,0,[-1,0]];
+	buildings[1][0].cost = [2,0,0,1,[-1,0]];
 	buildings[1][0].description = "House";
 	buildings[1][1].cost = [4,0,0,5,[-1,0]];
 	buildings[1][1].description = "Place by Houses. Gives Wellbeing";
 	buildings[1][2].cost = [3,0,5,3,[-1,0]];
 	buildings[1][2].description = "Place by Houses. Gives Gold";
 	buildings[1][3].cost = [5, 2, 10, 0, [-1,0]];
-	buildings[1][3].cost = [0, 0, 0, 0, [-1,0]];
 	buildings[1][3].description = "Dock. Place by Water"; 
 	buildings[1][4].cost = [12, 8, 75, 15,[-1,0]];
 	buildings[1][4].description = "Temple";
@@ -627,6 +629,8 @@
 	}
 	function Tile()
 	{
+		this.county = -1;
+		this.duchy = -1;
 		this.aiClaimable = true;
 		this.damage = 0;
 		this.rPerc = 0;
@@ -805,7 +809,7 @@
 	}
 	function getValue(y, x, r, playerParam){
 		let p = playerParam;
-		var vals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Wood, Food, 2-Manpower, Population, 4-Gold, 5-Well Being, Stone, market cap // 8-culture, 9-tech, 10- horses
+		var vals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Wood, Food, 2-Manpower, Population, 4-Gold, 5-WellBeing, Stone, market cap // 8-culture, 9-tech, 10- horses
 		var imVals = [0, 0, 0]; //Wood, Food, Manpower
 		var rmVals = [0, 0, 0, 0, 0, 0]; //Wood, Food, Population, size, market cap, horses
 		var luxVals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //Copper Ore, Bronze Ore, 2Iron Ore, rHd, rLux, 5-rPerf, 6-Copper, Bronze, Iron, Hides, 10-Perf, Lux, 12-rSk, Sk, 14-Sp
@@ -982,6 +986,7 @@
 				case 11: luxVals[14] += .5; vals[2] -= .5; break;//spice plantation
 				case 12: luxVals[12] += .1;  break;//silk orchard
 				case 13: luxVals[4] += .1; break; //lux wood orchard
+				case 14: vals[2] -= .25; vals[6] += .5; break; //quarry
 			}
 		}
 		else if(map[y][x].building[0] == 1){ 

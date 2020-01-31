@@ -9,6 +9,13 @@
 			console.log("genOceans");
 			slap(5000, 'g', 'w', -1, 0, 1400);
 			slap(400, 'g', 'w', -1, -1);
+			expandMap();
+			for(let i = 0; i < MAPSIZE; i++){
+				for(let j = 0; j < MAPSIZE; j++){
+					map[i][j].heat = Math.pow((3.2 - Math.abs(MAPSIZE/2 - i)/(MAPSIZE/6)) + Math.random() * .155, 3)/10;
+					map[i][j].wetness = Math.min(.1, .4 - 1.5*Math.min(.35, map[i][j].heat/10));
+				}
+			}
 			console.log("Oceans Generated");
 			mountain(20, Math.round(20*MODI));
 			mountain(40* MODI, Math.round(20*MODI));
@@ -32,7 +39,6 @@
 			currents(false);
 			console.log("currents 2");
 			elevSpread();
-			if(MODI > .5){
 				forest(9000*MODI, 60*MODI);
 				forest(7000*MODI, 60*MODI);
 				forest(4000*MODI, 60*MODI);
@@ -42,8 +48,7 @@
 				forest(200*MODI, Math.round(500* MODI));
 				forest(35, Math.round(5000* MODI));
 				forest(20, Math.round(4000* MODI));
-			}
-			else{
+			/*
 				forest(1500*MODI, Math.floor(5*MODI));
 				forest(850 * MODI, Math.round(10* MODI));
 				forest(900*MODI, Math.round(150* MODI));
@@ -51,7 +56,7 @@
 				forest(200*MODI, Math.round(500* MODI));
 				forest(35, Math.round(5000* MODI));
 				forest(20, Math.round(4000* MODI));
-			}
+			*/
 			cleanForests();
 			console.log("Forests Generated");
 			for(let i=0; i < MAPSIZE; i++){
@@ -136,7 +141,7 @@
 					if(t.type == 'f' && t.elevation <= 0){ t.type = 'w'; t.resource = 14; }
 				}
 			}
-			slap(10, 'd', 'i', 2, 3);
+			//slap(10, 'd', 'i', 2, 3);
 			console.log("Everything Else Completed");
 		}
 		function forest(treeCount, forestsNumber){
@@ -482,28 +487,33 @@
 							let t = map[y1][x];
 							if(t.elevation > 0){
 								t.curred += .001;
-								t.heat -= .0025;
-								t.wetness += .0025 + t.elevation/300;
+								t.heat -= .00025;
+								if(!fir){
+									t.wetness += .0005;
+								}
+								t.wetness += .002 + t.elevation/300;
 								if(t.heat > 1.75){
-									t.wetness += .002 + water/20000;
-									water += t.wetness/50 - ((t.heat/10) * .4/MODI);
-
+									t.wetness += .001 + water/25000;
+									t.heat += .0002;
 									if(t.heat > 2.25){
-										t.wetness += water/5500 + .02 + t.elevation/50;
-										water -= (t.heat/5) * .4/MODI;
-										water += t.elevation/50;
+										t.wetness += .001 + water/10000;
+										water -= (t.heat/100 + t.elevation/10);
 									}
 								}
 								map[y1][x] = t;
 							}
 						}
-						water += map[y][x].wetness/6;
+						water += map[y][x].wetness/8;
+						water = Math.min(water, 250);
 						water -= .1;
 						map[y][x].heat += .005;
 						if(map[y][x].elevation >= .5){
 							water -= map[y][x].elevation;
 						}
 						map[y][x].curred += .1;
+						if(!fir){
+							cS += .1;
+						}
 					}
 					do{
 						dir = Math.floor(Math.random()*4);
@@ -536,11 +546,10 @@
 		}
 		function rivers(){
 			var id = 0;
-			var temp = 0;
+			var temp = 0;	
 			function makeRiver(yC, xC){
 				var spot = new Array(2);
 				var interval = Math.ceil(Math.random() * 40 * MODI);
-				var dirToSea = -1;
 				var stack = [];
 				var stop = false;
 				stack.push([yC, xC]);
@@ -662,13 +671,16 @@
 			}
 			for(let i = 0; i < MAPSIZE; i++){
 				for(let j = 0; j < MAPSIZE; j++){
-					let chance = .9925 - Math.min(.99, map[i][j].wetness/100);
-					if(map[i][j].elevation > 0 && map[i][j].wetness > 0 && map[i][j].elevation < .5 && Math.random() > chance){
-						makeRiver(i, j);
-						id++;
+					if(map[i][j].elevation > 0 && map[i][j].wetness > 0 && map[i][j].elevation < .5){
+						let chance = .9925 - Math.min(.99, map[i][j].wetness/75);
+						 if(Math.random() > chance){
+							makeRiver(i, j);
+							id++;
+						}
 					}
 				}
 			}
+			console.log(id);
 		}
 		function lakes(){
 			var id = 0;
@@ -786,6 +798,42 @@
 			}
 			//console.log(stack.length);
 			return -1;
+		}
+		function expandMap(){
+			let mapCop = [];
+			for(let i = 0; i < 2*MAPSIZE; i++){
+				mapCop.push(new Array(2*MAPSIZE));
+				for(let j = 0; j < 2*MAPSIZE; j++){
+					mapCop[i][j] = new Tile();
+				}
+			}
+			for(let i = 0; i < MAPSIZE; i++){
+				for(let j = 0; j < MAPSIZE; j++){
+					mapCop[(2*i)][(2*j)].type = map[i][j].type;
+					mapCop[(2*i)][(2*j)].elevation = map[i][j].elevation;
+					
+					mapCop[2*i+1][(2*j)].type = map[i][j].type;
+					mapCop[2*i][(2*j)+1].type = map[i][j].type;
+					mapCop[2*i+1][(2*j)+1].type = map[i][j].type;
+					mapCop[2*i+1][(2*j)].elevation = map[i][j].elevation;
+					mapCop[2*i][(2*j)+1].elevation = map[i][j].elevation;
+					mapCop[2*i+1][(2*j)+1].elevation = map[i][j].elevation;
+					
+					/*mapCop[3*i+2][(3*j)].type = map[i][j].type;
+					mapCop[3*i][(3*j)+2].type = map[i][j].type;
+					mapCop[3*i+2][(3*j)+2].type = map[i][j].type;	
+					mapCop[3*i+1][(3*j)+2].type = map[i][j].type;
+					mapCop[3*i+2][(3*j)+1].type = map[i][j].type;
+					mapCop[(3*i)][(3*j)+2].elevation = map[i][j].elevation;
+					mapCop[3*i+2][(3*j)].elevation = map[i][j].elevation;
+					mapCop[3*i+2][(3*j)+2].elevation = map[i][j].elevation;
+					mapCop[3*i+2][(3*j)+1].elevation = map[i][j].elevation;
+					mapCop[3*i+1][(3*j)+2].elevation = map[i][j].elevation;*/
+				}
+			}
+			MAPSIZE=2*MAPSIZE;
+			MODI *= 2;
+			map=mapCop;
 		}
 		function genOceans(oceanSize, numOceans)
 		{

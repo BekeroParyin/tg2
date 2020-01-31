@@ -83,8 +83,8 @@ var io = require('socket.io')(server,{});
 	var day = 0;
 	var map = [];
 
-	const MAPSIZE = 450;
-	const MODI = MAPSIZE/1500;
+	var MAPSIZE = 450;
+	var MODI = MAPSIZE/2000;
 	var map = [];
 	for(let i = 0; i < MAPSIZE; i++){
 		map.push(new Array(MAPSIZE));
@@ -156,7 +156,7 @@ var io = require('socket.io')(server,{});
 						index:i,
 						row:map[i],
 					});
-				}, Math.floor(MAPSIZE/40));
+				}, Math.floor(MAPSIZE/80));
 			}
 		});
 		socket.on('tileCh', function(data){

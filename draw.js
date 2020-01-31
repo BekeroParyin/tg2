@@ -106,7 +106,6 @@ function drawMap(newDir){
 	ctx.fillStyle = "red";
 	drawing = true;
 	if(typeof newDir == 'undefined' || newDir == -1 || newDir > 4 || p.zoom > 20){
-		ctx.clearRect(0, 0, cWidth, cHeight);
 		for(let i = 0; i < Math.ceil(cHeight/p.zoom); i++){
 			for(let j = 0; j < Math.ceil(cWidth/p.zoom); j++){
 				drawTile(p.yView + i, p.xView + j);
@@ -235,9 +234,19 @@ function drawDynamic(type, img, y1, x, y, dx, dy, x11){ //type of tile, img shee
 			}
 		}
 	}
-	else{ //trees prob/ generic
+	else{
 		[leftT, rightT, upT, downT] = [(lT.type == type), (rT.type == type), (uT.type == type), (dT.type == type)];
-	}	
+	}
+	if(type == 'f'){
+		[bL, bR, tL, tR] = [(blT.type == 'f'), 
+		(brT.type == 'f'), 
+		(tlT.type == 'f'),
+		(trT.type == 'f')]
+		bL = bL && leftT && downT;
+		bR = bR && rightT && downT;
+		tL = tL && upT && leftT;
+		tR = tR && upT && rightT;
+	}
 	for(let i = 0; i < 2; i++){ //up
 		for(let j = 0; j < 2; j++){ //down
 			for(let k = 0; k < 2; k++){ //left
@@ -325,37 +334,35 @@ function drawBuilding(y1, x1){
 			drawDynamic('b', spriteSheet, sY, x, y,  Math.floor(dX * p.zoom), drawY);
 		}
 		else if(b1 == 1){ //FARM
-			let ySpot = 160;
-			let pSpot = 144;
-			if(t.type == 'd'){
-				ySpot = 400;
-				pSpot = 336;
-			}
+			let ySpot = 16;
 			let xSpot = Math.floor(day/100)*16;
-			drawDynamic('b', spriteSheet, ySpot, x, y,  Math.floor(dX * p.zoom), drawY);
-			ctx.drawImage(spriteSheet, xSpot, pSpot, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+			drawDynamic('b', spriteSheet, sY, x, y,  Math.floor(dX * p.zoom), drawY);
+			ctx.drawImage(spriteSheet, xSpot, ySpot, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 		}
 		else if((b1 == 2 || b1 == 11 || b1 == 12 || b1 == 13)){ //ORCHARDS/SPICEPLANT
-			let xSpot = 64 + Math.floor(day/100)*16;
+			let xSpot = Math.floor(day/100)*16;
 			if(b1 >= 11){
 				xSpot += (b1-10)*64;
 			}
-			ctx.drawImage(spriteSheet, xSpot, 144, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+			ctx.drawImage(spriteSheet, sX+xSpot, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 		}
 		else if(b1 == 3){ //LUMBER MILL
-			ctx.drawImage(spriteSheet, 0, 176, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+			ctx.drawImage(spriteSheet, sX, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 		}
 		else if(b1 == 4){ //GRANARY
-			drawDynamic('b', spriteSheet, 256, x, y,  Math.floor(dX * p.zoom), drawY, 144);
+			drawDynamic('b', spriteSheet, sY, x, y,  Math.floor(dX * p.zoom), drawY, sX);
 		}
 		else if(b1 == 5){//WAREHOUSE
-			drawDynamic('b', spriteSheet, 192, x, y, Math.floor(dX*p.zoom), drawY);
+			drawDynamic('b', spriteSheet, sY, x, y, Math.floor(dX*p.zoom), drawY);
 		}
 		else if(b1 == 6){ //MINE
-			drawDynamic('b', spriteSheet, 208, x, y, Math.floor(dX*p.zoom), drawY);
+			drawDynamic('b', spriteSheet, sY, x, y, Math.floor(dX*p.zoom), drawY);
 		}
 		else if(b1 == 7){ //METALWORKS
-			ctx.drawImage(spriteSheet, 0, 224, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+			ctx.drawImage(spriteSheet, sX, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+		}
+		else{
+			ctx.drawImage(spriteSheet, sX, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 		}
 	}
 	else if(b0 == 1){ //DRAW SOCIAL BUILDINGS
@@ -374,16 +381,21 @@ function drawBuilding(y1, x1){
 		else if(b1 == 4){ //TEMPLE
 			ctx.drawImage(spriteSheet, sX, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 		}
+		else if(b1 == 5){ //town office
+			ctx.drawImage(spriteSheet, sX, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+		}
 		else if(b1 == 11){ //WINERY
-			drawDynamic('b', spriteSheet, sY, x, y,  Math.floor(dX * p.zoom), drawY, 144);
+			drawDynamic('b', spriteSheet, sY, x, y,  Math.floor(dX * p.zoom), drawY, sX);
 		}	
 		else if((b1 == 7 || b1 == 8 || b1 == 9 || b1 == 12)){
-			let xSpot = 16 + Math.min(3, b1-7)*16;
-			ctx.drawImage(spriteSheet, xSpot, 176, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
+			ctx.drawImage(spriteSheet, sX, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 		}
 		else if(b1 == 10){ //TAVERN
-			drawDynamic('b', spriteSheet, 240, x, y,  Math.floor(dX * p.zoom), drawY);
+			drawDynamic('b', spriteSheet, sY, x, y,  Math.floor(dX * p.zoom), drawY);
 		}
+	}
+	else if(b0 == 2 && b1 == 5){
+		ctx.drawImage(spriteSheet, sX, sY, 16, 16, dX*p.zoom, drawY, p.zoom, p.zoom);
 	}
 	else {
 		var girth = buildings[b0][b1].draw[1];
@@ -397,7 +409,6 @@ function drawTile(y1, x1){
 	var t = map[y][x];
 	let dY = safeC(y1 - p.yView);
 	let dX = safeC(x1 - p.xView);
-	ctx.clearRect(dX*p.zoom, dY*p.zoom, p.zoom, p.zoom);
 	if(p.draw == "normal"){
 		var dDraw = false;
 		if(p.sprites && p.zoom > 6){
@@ -429,7 +440,7 @@ function drawTile(y1, x1){
 				case 'i': let tape2 = rand(srand(srand(y*62*157*y*11*x+941*y+1728*x+1921))); if(!useRand){ tape2=0;}
 				let shif = Math.floor(tape2*12)*16; 
 				ctx.drawImage(terrain, 0+shif, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
-				case 'g': let tape1 = rand(srand(srand(y*62*157*y*11*x+941*y+1728*x+1921))); if(!useRand){ tape2=0;}
+				case 'g': let tape1 = rand(srand(srand(y*62*157*y*11*x+941*y+1728*x+1921)));
 				let shift = Math.floor(tape1*4)*16; 
 				ctx.drawImage(terrain, 128+shift, 0, 16, 16, Math.floor(dX * p.zoom), Math.floor(dY * p.zoom), p.zoom, p.zoom); break;
 				case 'f':

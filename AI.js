@@ -16,7 +16,7 @@ function manageAI(incomeTick, AIList, player){
 						ai.gold -= (newGold-curGold)/5;
 					}
 					ai = armyPay(ai);
-					ai = rebelCheck(ai);
+					//ai = rebelCheck(ai);
 					ai.manpower += 3;
 				}
 				if(ai.manpower > 1){
@@ -125,7 +125,9 @@ function manageAI(incomeTick, AIList, player){
 									ai.goals[z].unshift("office");
 								}
 								else if(n.size > n.maxSize && n.income.stone < 1){
+									ai.goals[z].push("quarry");
 									ai.goals[z].push("stoneInc");
+									ai.goals[z].push("expand");
 								}
 							}
 							let curGoal = -1;
@@ -230,7 +232,7 @@ function manageAI(incomeTick, AIList, player){
 											}
 										}
 									}
-									if(curGoal == "woodInc" && !foundWood || curGoal == "stoneInc" && !foundStone && ai.goals[z].length<5){
+									if(curGoal == "woodInc" && !foundWood || (curGoal == "stoneInc" && !foundStone && ai.goals[z].length<5)){
 										ai.goals[z].push("expand");	
 									}
 								}
@@ -291,6 +293,9 @@ function manageAI(incomeTick, AIList, player){
 									}
 									else if(curGoal == "tower"){
 										b0 = 2; b1 = 5; oneStop = true;
+									}
+									else if(curGoal == "quarry"){
+										b0 = 0; b1 = 14; oneStop = true;
 									}
 									else if(curGoal == "wellImprove"){
 										if(ai.gold < 50 || ai.zones[z].res.stone < 5 || ai.zones[z].res.population < 250 || Math.random() < .2){
@@ -471,6 +476,9 @@ function canP(yS, xS, b0, b1, s){
 		}
 		else if(numSpecial >= 2){
 			return false;
+		}
+		if(b0 == 1 && b1 == 3){
+			return numWater > 0;
 		}
 		if(b0 == 1 && (b1 == 1 || b1 == 2)){
 			return numHouses >= 3;
