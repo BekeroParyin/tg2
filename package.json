@@ -9,7 +9,7 @@
     "path": "^0.12.7",
     "png-js": "^1.0.0",
     "pngjs": "^3.4.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.4.0"
   },
   "devDependencies": {},
   "scripts": {
